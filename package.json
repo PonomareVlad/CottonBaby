@@ -2,6 +2,10 @@
   "name": "lcms",
   "version": "0.0.1",
   "type": "module",
+  "scripts": {
+    "dev": "vc dev --listen 80",
+    "dev-watch": "servor --reload & vc dev --listen 80"
+  },
   "dependencies": {
     "@lit-labs/ssr": "npm:@svalit/ssr@latest",
     "@lit-labs/ssr-client": "npm:@svalit/ssr-client@latest",
@@ -16,5 +20,8 @@
     "#lib/": "./lib/",
     "#db": "./lib/db/server.mjs",
     "#utils": "./lib/utils.mjs"
+  },
+  "devDependencies": {
+    "servor": "latest"
   }
 }

@@ -1,7 +1,7 @@
 import {html, LitElement} from "lit"
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import {SafeUntil} from "../lib/directives.mjs";
-import {all, chain} from "#utils";
+import {all, catcher, chain} from "#utils";
 import './context-node.js'
 import './app-context.mjs'
 import './app-field.mjs'
@@ -54,7 +54,7 @@ class AppPage extends LitElement {
     }
 
     render() {
-        const page = this.fetchRouteData().status === 404 ? page404 : chain(this.fetchPageData(), data => data || page404)
+        const page = this.fetchRouteData().status === 404 ? page404 : catcher(chain(this.fetchPageData(), data => data || page404), () => page404)
         const content = chain(page, ({content}) => content || fetchTemplate('../includes/templates/base.html', 'base', import.meta.url))
         chain(page, data => {
             this.setMeta(data || {})
