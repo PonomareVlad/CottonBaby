@@ -1,0 +1,14 @@
+{
+	"version": "1.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "dev",
+			"problemMatcher": [],
+			"label": "npm: dev",
+			"detail": "vc dev",
+			"isBackground": false,
+			"runOptions": {"instanceLimit": 1}
+		}
+	]
+}
