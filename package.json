@@ -1,11 +1,11 @@
 {
   "name": "cotton-baby",
   "version": "0.0.1",
-  "type": "module",
   "scripts": {
     "dev": "vc dev --listen 80",
     "dev-container": "vc dev --listen 3000",
-    "dev-watch": "servor --reload & vc dev --listen 80"
+    "dev-watch": "servor --reload & vc dev --listen 80",
+    "build-storybook": "build-storybook"
   },
   "dependencies": {
     "@lit-labs/ssr": "npm:@svalit/ssr@latest",
@@ -23,6 +23,8 @@
     "#utils": "./lib/utils.mjs"
   },
   "devDependencies": {
+    "@web/dev-server": "latest",
+    "@web/dev-server-storybook": "latest",
     "servor": "latest"
   }
 }
