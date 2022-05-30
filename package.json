@@ -25,9 +25,8 @@
     "#utils": "./lib/utils.mjs"
   },
   "devDependencies": {
-    "@web/dev-server": "latest",
+    "@ponomarevlad/dev-server": "latest",
     "@ponomarevlad/dev-server-storybook": "latest",
-    "@storybook/web-components": "latest",
     "servor": "latest"
   }
 }
