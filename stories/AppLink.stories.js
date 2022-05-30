@@ -1,11 +1,11 @@
 import {html} from "lit"
-import '../components/simple-counter.mjs'
+import '../components/app-link.mjs'
 
 export default {
-    title: 'App/SimpleCounter'
+    title: 'App/Link'
 }
 
 const Template = () => html`
-    <simple-counter></simple-counter>`
+    <app-link href="/" title="Link"></app-link>`
 
 export const Default = Template.bind({})
