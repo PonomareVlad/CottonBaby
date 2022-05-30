@@ -1,0 +1,14 @@
+{
+	"name": "Vercel",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": { "VARIANT": "16" }
+	},
+	"settings": {},
+	"extensions": [
+		"ph1p.zeit-co-vscode-schemas"
+	],
+	"forwardPorts": [3000],
+	"postCreateCommand": "npm i",
+	"remoteUser": "node"
+}
