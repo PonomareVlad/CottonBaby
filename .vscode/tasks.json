@@ -3,10 +3,10 @@
 	"tasks": [
 		{
 			"type": "npm",
-			"script": "dev",
+			"script": "dev-container",
 			"problemMatcher": [],
-			"label": "npm: dev",
-			"detail": "vc dev",
+			"label": "Vercel Dev for Container",
+			"detail": "vc dev --listen 3000",
 			"isBackground": false,
 			"runOptions": {"instanceLimit": 1}
 		}
