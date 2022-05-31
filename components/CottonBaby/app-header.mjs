@@ -9,10 +9,23 @@ export class AppHeader extends LitElement {
 
           :host {
             --height: 50px;
+            --padding: var(--safe-padding-left, 0);
+            max-width: 100%;
             height: var(--height);
+            box-sizing: border-box;
             justify-content: space-between;
             background: white;
             display: flex;
+            padding-left: var(--padding);
+            padding-right: var(--padding);
+          }
+
+          :host:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
             border-bottom: solid 1px rgba(203, 203, 203, 0.5);
           }
 
@@ -63,9 +76,9 @@ export class AppHeader extends LitElement {
 
     render() {
         return html`
-            <div class="menu-toggle button"></div>
-            <div class="logo image button"></div>
-            <div class="cart image button"></div>
+            <a class="menu-toggle button" href="#"></a>
+            <a class="logo image button" href="#"></a>
+            <a class="cart image button" href="#"></a>
         `
     }
 }
