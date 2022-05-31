@@ -8,6 +8,7 @@ export class AppHero extends LitElement {
           }
 
           :host {
+            font-family: var(--font-family);
             display: block;
             position: relative;
             height: 100%;
@@ -32,13 +33,32 @@ export class AppHero extends LitElement {
             padding-right: var(--root-padding-right);
             height: 100%;
             width: 100%;
+            position: relative;
           }
 
           .overlay:after {
-            display: none;
+            --backdrop-filter: blur(10px);
             content: 'Листайте, чтобы смотреть еще';
+            box-sizing: border-box;
+            padding-right: 18px;
             position: absolute;
-            bottom: 0;
+            line-height: 30px;
+            display: block;
+            width: auto;
+            left: 50%;
+            min-width: 285px;
+            text-align: center;
+            border-radius: 100px;
+            background-size: 8px;
+            bottom: var(--root-padding);
+            background-repeat: no-repeat;
+            transform: translate(-50%, 0);
+            background-position: center right 10px;
+            backdrop-filter: var(--backdrop-filter);
+            background-color: rgba(255, 255, 255, 0.7);
+            -webkit-backdrop-filter: var(--backdrop-filter);
+            background-image: url("/assets/images/arrow.svg");
+            max-width: calc(100% - var(--root-padding-left) - var(--root-padding-right));
           }
 
           .header {
@@ -53,6 +73,14 @@ export class AppHero extends LitElement {
             margin: 20px 0;
             font-size: 24px;
             line-height: normal;
+          }
+
+          @media (min-width: 375px) {
+            .overlay:after {
+              font-size: 18px;
+              min-width: 320px;
+              background-size: 8px;
+            }
           }
 
         `

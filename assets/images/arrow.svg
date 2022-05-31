@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="8px" height="18px" viewBox="0 0 8 18" version="1.1"
+     xmlns="http://www.w3.org/2000/svg">
+    <title>Path</title>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Next" transform="translate(-66.000000, -6.000000)" fill="#000000" fill-rule="nonzero">
+            <polygon id="Path"
+                     points="66.7895501 6 74 15.0056145 66.7895501 24 66 23.3936369 72.7460087 15.0056145 66.011611 6.59513412"></polygon>
+        </g>
+    </g>
+</svg>
