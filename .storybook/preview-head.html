@@ -1,3 +1,14 @@
+<script noshim>
+    if (location.hostname === 'localhost' || location.hostname.endsWith('.local')) init().catch(e => e);
+
+    async function init(url = `http://${location.hostname}:8080/livereload`) {
+        await fetch(url);
+        const source = new EventSource(url);
+        const reload = () => location.reload();
+        source.onmessage = reload;
+        source.onerror = () => (source.onopen = reload);
+    }
+</script>
 <script type="importmap">
       {
         "imports": {
@@ -17,5 +28,6 @@
             "#db": "/lib/db/client.mjs"
         }
       }
+
 </script>
 <script async noshim src="https://unpkg.com/es-module-shims/dist/es-module-shims.js"></script>

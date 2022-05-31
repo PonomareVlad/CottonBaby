@@ -1,11 +1,11 @@
 import {css, html, LitElement} from "lit"
-import {SafeUntil} from "../lib/directives.mjs";
-import {ContextController} from "../lib/context.mjs";
+import {SafeUntil} from "#lib/directives.mjs";
+import {ContextController} from "#lib/context.mjs";
 import {all, chain} from "#utils";
 import {db} from "#db";
 import './app-iterator.mjs'
 import './app-link.mjs'
-import {fetchTemplate} from "../lib/template.mjs";
+import {fetchTemplate} from "#lib/template.mjs";
 
 class AppContext extends LitElement {
     context = new ContextController(this)

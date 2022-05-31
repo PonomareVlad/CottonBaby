@@ -1,11 +1,11 @@
 import {html} from "lit"
-import '../components/simple-counter.mjs'
+import '../components/CottonBaby/app-header.mjs'
 
 export default {
-    title: 'App/SimpleCounter'
+    title: 'App/Header'
 }
 
 const Template = () => html`
-    <simple-counter></simple-counter>`
+    <app-header></app-header>`
 
 export const Default = Template.bind({})

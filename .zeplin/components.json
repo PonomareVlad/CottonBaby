@@ -1,0 +1,17 @@
+{
+  "plugins": [],
+  "projects": [
+    "6294aa7501a3a6176019a0c5"
+  ],
+  "components": [
+    {
+      "path": "components/CottonBaby/app-header.mjs",
+      "zeplinIds": [
+        "6295ff1bec7bc3111932da38"
+      ]
+    }
+  ],
+  "github": {
+    "repository": "PonomareVlad/CottonBaby"
+  }
+}

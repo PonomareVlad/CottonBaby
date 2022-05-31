@@ -7,7 +7,9 @@
     "dev-container": "vc dev --listen 3000",
     "dev-watch": "servor --reload & vc dev --listen 80",
     "storybook": "wds --open",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "zeplin-connect": "zeplin connect",
+    "zeplin-connect-dev-mode": "zeplin connect --dev"
   },
   "dependencies": {
     "@lit-labs/ssr": "npm:@svalit/ssr@latest",
@@ -27,6 +29,7 @@
   "devDependencies": {
     "@ponomarevlad/dev-server": "latest",
     "@ponomarevlad/dev-server-storybook": "latest",
+    "@zeplin/cli": "latest",
     "servor": "latest"
   }
 }

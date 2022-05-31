@@ -1,7 +1,7 @@
 import {chain} from "#utils";
 import {html, LitElement} from "lit"
-import {SafeUntil} from "../lib/directives.mjs";
-import {ContextController} from "../lib/context.mjs";
+import {SafeUntil} from "#lib/directives.mjs";
+import {ContextController} from "#lib/context.mjs";
 
 class ContextNode extends LitElement {
     context = new ContextController(this, {anyProperty: true})
