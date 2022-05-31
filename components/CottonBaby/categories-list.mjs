@@ -14,21 +14,41 @@ export class CategoriesList extends LitElement {
     static get styles() {
         return css`
           :host {
+            display: block;
+          }
+
+          section {
             display: flex;
             flex-wrap: wrap;
             gap: var(--root-padding);
-            margin: var(--root-padding) 0;
           }
 
           category-card {
             width: calc((100% - var(--root-padding)) / 2)
           }
+
+          .button {
+            height: 40px;
+            display: flex;
+            color: inherit;
+            margin: 30px 0;
+            align-items: center;
+            border-radius: 15px;
+            text-decoration: none;
+            justify-content: center;
+            background-color: #d8d8d8;
+
+          }
         `
     }
 
     render() {
-        return categories.map(src => html`
-            <category-card src="${src}"></category-card>`)
+        return html`
+            <section>${categories.map(src => html`
+                <category-card src="${src}"></category-card>`)}
+            </section>
+            <a href="" class="button">Посмотреть все категории</a>
+        `
     }
 }
 

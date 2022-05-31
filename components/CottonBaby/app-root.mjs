@@ -2,6 +2,7 @@ import {css, html, LitElement} from "lit"
 import './app-header.mjs'
 import './app-hero.mjs'
 import './categories-list.mjs'
+import './products-slider.mjs'
 
 export class AppRoot extends LitElement {
     static get styles() {
@@ -37,7 +38,15 @@ export class AppRoot extends LitElement {
             z-index: 100;
           }
 
-          .safe-padding {
+          categories-list {
+            margin: var(--root-padding) 0;
+          }
+
+          products-slider {
+            margin: var(--root-padding) 0;
+          }
+
+          .root-padding {
             padding-left: var(--root-padding-left);
             padding-right: var(--root-padding-right);
           }
@@ -49,10 +58,12 @@ export class AppRoot extends LitElement {
             <app-header></app-header>
             <app-page>
                 <app-hero></app-hero>
-                <h2 class="safe-padding" style="text-align: center">Наш каталог</h2>
-                <categories-list class="safe-padding"></categories-list>
-                <hr>
+                <h2 class="root-padding" style="text-align: center">Наш каталог</h2>
+                <categories-list class="root-padding"></categories-list>
+                <h2 class="root-padding">Новинки</h2>
+                <products-slider></products-slider>
             </app-page>
+            <hr>
         `
     }
 }

@@ -75,7 +75,7 @@ export class AppHero extends LitElement {
             line-height: normal;
           }
 
-          @media (min-width: 375px) {
+          @media (min-width: 350px) {
             .overlay:after {
               font-size: 18px;
               min-width: 320px;
