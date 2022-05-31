@@ -1,6 +1,7 @@
 import {css, html, LitElement} from "lit"
 import './app-header.mjs'
 import './app-hero.mjs'
+import './categories-list.mjs'
 
 export class AppRoot extends LitElement {
     static get styles() {
@@ -49,6 +50,8 @@ export class AppRoot extends LitElement {
             <app-page>
                 <app-hero></app-hero>
                 <h2 class="safe-padding" style="text-align: center">Наш каталог</h2>
+                <categories-list class="safe-padding"></categories-list>
+                <hr>
             </app-page>
         `
     }
