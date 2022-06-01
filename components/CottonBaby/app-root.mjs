@@ -3,6 +3,7 @@ import './app-header.mjs'
 import './app-hero.mjs'
 import './categories-list.mjs'
 import './products-slider.mjs'
+import './images-slider.mjs'
 
 export class AppRoot extends LitElement {
     static get styles() {
@@ -62,8 +63,20 @@ export class AppRoot extends LitElement {
                 <categories-list class="root-padding"></categories-list>
                 <h2 class="root-padding">Новинки</h2>
                 <products-slider></products-slider>
+                <h2 class="root-padding">О производстве</h2>
+                <div class="root-padding">
+                    <p>Краткое описание произовдства, которое можно настроить в бек-офисе.</p>
+                    <p>Также, это описание отображается в результатах поиска Яндекс и Google и помогает в продвижении
+                        сайта.</p>
+                </div>
+                <images-slider>
+                    <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p4.500x500.jpg" alt="Image">
+                    <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p3.500x500.jpg" alt="Image">
+                    <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p2.500x500.jpg" alt="Image">
+                    <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p5.500x500.jpg" alt="Image">
+                    <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p1.500x500.jpg" alt="Image">
+                </images-slider>
             </app-page>
-            <hr>
         `
     }
 }

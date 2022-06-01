@@ -10,11 +10,8 @@ export class CategoryCard extends LitElement {
         return css`
           :host {
             display: block;
-            border-radius: 20px;
-            aspect-ratio: 1/1.5;
+            aspect-ratio: 0.75;
             position: relative;
-            overflow: hidden;
-            z-index: 0;
           }
 
           .title {
@@ -30,6 +27,9 @@ export class CategoryCard extends LitElement {
             font-size: inherit;
             position: absolute;
             text-align: center;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
             min-height: 40px;
             margin: 0;
             bottom: 0;
@@ -38,6 +38,7 @@ export class CategoryCard extends LitElement {
           }
 
           img.background {
+            border-radius: 20px;
             position: absolute;
             object-fit: cover;
             display: block;

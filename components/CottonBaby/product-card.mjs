@@ -12,8 +12,6 @@ export class ProductCard extends LitElement {
             display: block;
             aspect-ratio: 1;
             position: relative;
-            overflow: hidden;
-            z-index: 0;
           }
 
           .overlay {
@@ -47,6 +45,15 @@ export class ProductCard extends LitElement {
           .title {
             font-weight: bold;
             font-size: 20px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+
+          .sizes {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
 
           .sizes span {
