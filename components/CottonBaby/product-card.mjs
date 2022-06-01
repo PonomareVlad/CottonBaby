@@ -10,8 +10,7 @@ export class ProductCard extends LitElement {
         return css`
           :host {
             display: block;
-            aspect-ratio: 1/1;
-            border-radius: 25px;
+            aspect-ratio: 1;
             position: relative;
             overflow: hidden;
             z-index: 0;
@@ -84,6 +83,7 @@ export class ProductCard extends LitElement {
             left: 0;
             right: 0;
             bottom: 0;
+            border-radius: 25px;
           }
         `
     }
