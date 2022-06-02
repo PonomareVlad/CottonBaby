@@ -28,6 +28,35 @@
             "#db": "/lib/db/client.mjs"
         }
       }
-
 </script>
 <script async noshim src="https://unpkg.com/es-module-shims/dist/es-module-shims.js"></script>
+<style>
+    @supports (padding-top: env(safe-area-inset-top)) {
+        :root {
+            --safe-padding-top: env(safe-area-inset-top);
+            --safe-padding-left: env(safe-area-inset-left);
+            --safe-padding-right: env(safe-area-inset-right);
+            --safe-padding-bottom: env(safe-area-inset-bottom);
+        }
+    }
+
+    * {
+        --font-family: Helvetica, sans-serif;
+        font-family: var(--font-family);
+    }
+
+    body {
+        line-height: 1.5;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    :root {
+        --root-padding: 20px;
+        --root-padding-top: max(var(--safe-padding-top), var(--root-padding));
+        --root-padding-left: max(var(--safe-padding-left), var(--root-padding));
+        --root-padding-right: max(var(--safe-padding-right), var(--root-padding));
+        --root-padding-bottom: max(var(--safe-padding-bottom), var(--root-padding));
+        --header-height: 50px;
+    }
+</style>

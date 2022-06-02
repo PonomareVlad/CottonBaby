@@ -1,15 +1,17 @@
 import {css, html, LitElement} from "lit"
 
-export class ImagesSlider extends LitElement {
+export class HeroSlider extends LitElement {
     static get styles() {
         return css`
+          :host {
+            height: 100%;
+            display: block;
+          }
+
           slot {
+            height: 100%;
             display: flex;
-            padding-bottom: var(--root-padding);
-            padding-left: var(--root-padding-left);
-            padding-right: var(--root-padding-right);
-            gap: var(--root-padding);
-            overflow-x: scroll;
+            overflow-x: auto;
             will-change: scroll-position;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
@@ -23,13 +25,9 @@ export class ImagesSlider extends LitElement {
             margin-left: -1px;
           }
 
-          ::slotted(img) {
-            min-width: calc(100% - (var(--root-padding) * 2));
+          ::slotted(*) {
+            min-width: 100%;
             scroll-snap-align: center;
-            border-radius: 20px;
-            object-fit: cover;
-            display: block;
-            aspect-ratio: 3/2;
           }
         `
     }
@@ -40,4 +38,4 @@ export class ImagesSlider extends LitElement {
     }
 }
 
-customElements.define('images-slider', ImagesSlider)
+customElements.define('hero-slider', HeroSlider)

@@ -1,6 +1,8 @@
 import {css, html, LitElement} from "lit"
 import './app-header.mjs'
 import './app-hero.mjs'
+import './hero-slider.mjs'
+import './product-hero.mjs'
 import './categories-list.mjs'
 import './products-slider.mjs'
 import './images-slider.mjs'
@@ -58,7 +60,14 @@ export class AppRoot extends LitElement {
         return html`
             <app-header></app-header>
             <app-page>
-                <app-hero></app-hero>
+                <hero-slider>
+                    <app-hero></app-hero>
+                    <product-hero
+                            title="Слип шапочка Капучино"
+                            description="Описание продукта с упоминанием его качеств и уникальных технологий производства"
+                            src="https://cloudflare-ipfs.com/ipfs/bafybeihgc47txsvnuzo2dl34t3aibkichnc7crsyq7sjlsijtxvslsrrdm/IMG_4895-2.jpg"
+                    ></product-hero>
+                </hero-slider>
                 <h2 class="root-padding" style="text-align: center">Наш каталог</h2>
                 <categories-list class="root-padding"></categories-list>
                 <h2 class="root-padding">Новинки</h2>
