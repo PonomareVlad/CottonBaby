@@ -103,11 +103,13 @@ export class ProductHero extends LitElement {
 
     render() {
         return html`
-            <div class="overlay">
-                <h3 class="title">${this.title || 'Название продукта'}</h3>
-                ${this.description ? html`<p>${this.description}</p>` : null}
+            <div>
+                <div class="overlay">
+                    <h3 class="title">${this.title || 'Название продукта'}</h3>
+                    ${this.description ? html`<p>${this.description}</p>` : null}
+                </div>
+                <img src="${this.src}" class="background" alt="Cover">
             </div>
-            <img src="${this.src}" class="background" alt="Cover">
         `
     }
 }
