@@ -97,14 +97,14 @@ export class ProductCard extends LitElement {
 
     render() {
         return html`
-            <div>
+            <slot>
                 <div class="overlay">
                     <h3 class="title">${this.title || 'Название продукта'}</h3>
                     <p class="sizes">Размеры: <span>10-20</span> <span>20-30</span> <span>30-40</span></p>
                 </div>
                 <div class="price">100</div>
                 <img src="${ifDefined(this.src)}" class="background" alt="Product">
-            </div>
+            </slot>
         `
     }
 }
