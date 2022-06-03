@@ -28,6 +28,12 @@ export class ProductsSlider extends LitElement {
             min-width: calc(100% - (var(--root-padding) * 2));
             scroll-snap-align: center;
           }
+
+          @media (min-width: 1024px) {
+            product-card {
+              min-width: 360px;
+            }
+          }
         `
     }
 
@@ -35,7 +41,9 @@ export class ProductsSlider extends LitElement {
         return html`
             <product-card src="https://cottonbaby.ru/images/pictures/i5.jpg"></product-card>
             <product-card src="https://cottonbaby.ru/images/pictures/i2.jpg"></product-card>
+            <product-card src="https://cottonbaby.ru/images/pictures/i4.jpg"></product-card>
             <product-card src="https://cottonbaby.ru/images/pictures/i3.jpg"></product-card>
+            <product-card src="https://cottonbaby.ru/images/pictures/i1.jpg"></product-card>
         `
     }
 }

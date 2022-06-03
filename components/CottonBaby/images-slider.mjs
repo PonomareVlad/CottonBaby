@@ -36,7 +36,7 @@ export class ImagesSlider extends LitElement {
 
     render() {
         return html`
-            <slot></slot>`
+            <slot part="container"></slot>`
     }
 }
 

@@ -31,13 +31,26 @@ export class CategoriesList extends LitElement {
             height: 40px;
             display: flex;
             color: inherit;
-            margin: 30px 0;
+            margin: 30px auto;
+            max-width: 500px;
             align-items: center;
             border-radius: 15px;
             text-decoration: none;
             justify-content: center;
             background-color: #d8d8d8;
+          }
 
+          @media (min-width: 1024px) {
+            category-card {
+              width: calc((100% - (var(--root-padding) * 3)) / 4)
+            }
+
+            .button {
+              height: 60px;
+              font-size: 24px;
+              border-radius: 24px;
+              margin: var(--root-padding) auto;
+            }
           }
         `
     }

@@ -9,6 +9,7 @@ export class ProductCard extends LitElement {
     static get styles() {
         return css`
           :host {
+            --border-radius: 25px;
             display: block;
             aspect-ratio: 1;
             position: relative;
@@ -19,8 +20,8 @@ export class ProductCard extends LitElement {
             -webkit-backdrop-filter: var(--backdrop-filter);
             background-color: rgba(255, 255, 255, 0.7);
             backdrop-filter: var(--backdrop-filter);
-            padding: var(--root-padding);
-            border-radius: 25px;
+            padding: 20px;
+            border-radius: var(--border-radius);
             position: absolute;
             min-height: 40px;
             bottom: 0;
@@ -61,6 +62,7 @@ export class ProductCard extends LitElement {
           }
 
           .price {
+            --padding: 10px;
             --backdrop-filter: blur(15px);
             -webkit-backdrop-filter: var(--backdrop-filter);
             backdrop-filter: var(--backdrop-filter);
@@ -70,8 +72,8 @@ export class ProductCard extends LitElement {
             font-size: 24px;
             line-height: 1.4;
             position: absolute;
-            right: 10px;
-            top: 10px;
+            right: var(--padding);
+            top: var(--padding);
           }
 
           .price:after {
@@ -90,7 +92,22 @@ export class ProductCard extends LitElement {
             left: 0;
             right: 0;
             bottom: 0;
-            border-radius: 25px;
+            border-radius: var(--border-radius);
+          }
+
+          @media (min-width: 1024px) {
+            :host {
+              --border-radius: 40px;
+            }
+
+            .overlay {
+              padding: 25px;
+            }
+
+            .price {
+              --padding: 20px;
+              font-size: 30px;
+            }
           }
         `
     }

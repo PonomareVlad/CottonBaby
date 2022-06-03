@@ -29,8 +29,9 @@ export class AppHero extends LitElement {
 
           .overlay {
             padding: var(--root-padding);
-            padding-left: var(--root-padding-left);
+            padding-top: calc(var(--root-padding) + var(--header-height));
             padding-right: var(--root-padding-right);
+            padding-left: var(--root-padding-left);
             height: 100%;
             width: 100%;
             position: relative;
@@ -80,6 +81,34 @@ export class AppHero extends LitElement {
               font-size: 18px;
               min-width: 320px;
               background-size: 8px;
+            }
+          }
+
+          @media (min-width: 1024px) {
+            :host {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+            }
+
+            .overlay {
+              height: auto;
+              max-width: 40%;
+              padding: unset;
+              padding-left: var(--root-padding-left);
+            }
+
+            .overlay:after {
+              content: unset;
+            }
+
+            .header {
+              font-size: 80px;
+            }
+
+            p {
+              font-size: 34px;
+              font-weight: 300;
             }
           }
 

@@ -28,7 +28,6 @@ export class AppRoot extends LitElement {
             --header-height: 50px;
             height: 100%;
             display: block;
-            padding-top: var(--header-height);
           }
 
           app-header {
@@ -53,6 +52,54 @@ export class AppRoot extends LitElement {
             padding-left: var(--root-padding-left);
             padding-right: var(--root-padding-right);
           }
+
+          @media (min-width: 1024px) {
+            :host {
+              --header-height: 80px;
+              --root-padding: 60px;
+            }
+
+            app-header {
+              top: var(--root-padding);
+              position: absolute;
+            }
+
+            h2 {
+              font-size: 48px;
+            }
+
+            .about {
+              display: flex;
+              max-width: 100%;
+            }
+
+            .content {
+              min-width: 40%;
+            }
+
+            images-slider {
+              position: relative;
+              flex-shrink: 1;
+              min-width: 60%;
+              /*padding-left: calc(var(--root-padding) * 2);*/
+              /*margin-left: calc(var(--root-padding) * -1);*/
+            }
+
+            images-slider::part(container) {
+              padding-left: calc(var(--root-padding) * 2);
+            }
+
+            images-slider:before {
+              position: absolute;
+              display: block;
+              content: '';
+              top: 0;
+              left: 0;
+              bottom: 0;
+              width: calc(var(--root-padding) * 2);
+              background: linear-gradient(to right, white 15.97%, transparent 42.44%);
+            }
+          }
         `
     }
 
@@ -72,19 +119,24 @@ export class AppRoot extends LitElement {
                 <categories-list class="root-padding"></categories-list>
                 <h2 class="root-padding">Новинки</h2>
                 <products-slider></products-slider>
-                <h2 class="root-padding">О производстве</h2>
-                <div class="root-padding">
-                    <p>Краткое описание произовдства, которое можно настроить в бек-офисе.</p>
-                    <p>Также, это описание отображается в результатах поиска Яндекс и Google и помогает в продвижении
-                        сайта.</p>
+                <div class="about">
+                    <div class="content">
+                        <h2 class="root-padding">О производстве</h2>
+                        <div class="root-padding">
+                            <p>Краткое описание произовдства, которое можно настроить в бек-офисе.</p>
+                            <p>Также, это описание отображается в результатах поиска Яндекс и Google и помогает в
+                                продвижении
+                                сайта.</p>
+                        </div>
+                    </div>
+                    <images-slider>
+                        <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p4.500x500.jpg" alt="Image">
+                        <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p3.500x500.jpg" alt="Image">
+                        <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p2.500x500.jpg" alt="Image">
+                        <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p5.500x500.jpg" alt="Image">
+                        <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p1.500x500.jpg" alt="Image">
+                    </images-slider>
                 </div>
-                <images-slider>
-                    <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p4.500x500.jpg" alt="Image">
-                    <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p3.500x500.jpg" alt="Image">
-                    <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p2.500x500.jpg" alt="Image">
-                    <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p5.500x500.jpg" alt="Image">
-                    <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p1.500x500.jpg" alt="Image">
-                </images-slider>
             </app-page>
         `
     }

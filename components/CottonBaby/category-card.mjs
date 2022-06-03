@@ -9,6 +9,7 @@ export class CategoryCard extends LitElement {
     static get styles() {
         return css`
           :host {
+            --border-radius: 20px;
             display: block;
             aspect-ratio: 0.75;
             position: relative;
@@ -19,7 +20,7 @@ export class CategoryCard extends LitElement {
             -webkit-backdrop-filter: var(--backdrop-filter);
             background-color: rgba(255, 255, 255, 0.7);
             backdrop-filter: var(--backdrop-filter);
-            border-radius: var(--root-padding);
+            border-radius: var(--border-radius);
             justify-content: center;
             display: inline-flex;
             align-items: center;
@@ -30,7 +31,7 @@ export class CategoryCard extends LitElement {
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            min-height: 40px;
+            min-height: calc(var(--border-radius) * 2);
             margin: 0;
             bottom: 0;
             right: 0;
@@ -38,7 +39,7 @@ export class CategoryCard extends LitElement {
           }
 
           img.background {
-            border-radius: 20px;
+            border-radius: var(--border-radius);
             position: absolute;
             object-fit: cover;
             display: block;
@@ -49,6 +50,16 @@ export class CategoryCard extends LitElement {
             left: 0;
             right: 0;
             bottom: 0;
+          }
+
+          @media (min-width: 1024px) {
+            :host {
+              --border-radius: 40px;
+            }
+
+            .title {
+              font-size: 30px;
+            }
           }
         `
     }
