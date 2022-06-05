@@ -5,7 +5,7 @@ import './hero-slider.mjs'
 import './product-hero.mjs'
 import './categories-list.mjs'
 import './products-slider.mjs'
-import './images-slider.mjs'
+import './drag-scroll.mjs'
 
 export class AppRoot extends LitElement {
     static get styles() {
@@ -40,6 +40,18 @@ export class AppRoot extends LitElement {
             z-index: 100;
           }
 
+          .hero-slider {
+            height: 100%;
+          }
+
+          .hero-slider::part(container) {
+            height: 100%;
+            --gap: 0;
+            --padding-left: 0;
+            --padding-right: 0;
+            --padding-bottom: 0;
+          }
+
           categories-list {
             margin: var(--root-padding) 0;
           }
@@ -51,6 +63,18 @@ export class AppRoot extends LitElement {
           .root-padding {
             padding-left: var(--root-padding-left);
             padding-right: var(--root-padding-right);
+          }
+
+          .images-slider img {
+            min-width: calc(100% - (var(--root-padding) * 2));
+            border-radius: 20px;
+            object-fit: cover;
+            display: block;
+            aspect-ratio: 3/2;
+          }
+
+          .about {
+            padding-bottom: var(--root-padding-bottom);
           }
 
           @media (min-width: 1024px) {
@@ -77,19 +101,14 @@ export class AppRoot extends LitElement {
               min-width: 40%;
             }
 
-            images-slider {
+            .images-slider {
               position: relative;
               flex-shrink: 1;
               min-width: 60%;
-              /*padding-left: calc(var(--root-padding) * 2);*/
-              /*margin-left: calc(var(--root-padding) * -1);*/
             }
 
-            images-slider::part(container) {
-              padding-left: calc(var(--root-padding) * 2);
-            }
-
-            images-slider:before {
+            .images-slider:before {
+              pointer-events: none;
               position: absolute;
               display: block;
               content: '';
@@ -107,14 +126,14 @@ export class AppRoot extends LitElement {
         return html`
             <app-header></app-header>
             <app-page>
-                <hero-slider>
+                <drag-scroll class="hero-slider">
                     <app-hero></app-hero>
                     <product-hero
                             title="Слип шапочка Капучино"
                             description="Описание продукта с упоминанием его качеств и уникальных технологий производства"
                             src="https://cloudflare-ipfs.com/ipfs/bafybeihgc47txsvnuzo2dl34t3aibkichnc7crsyq7sjlsijtxvslsrrdm/IMG_4895-2.jpg"
                     ></product-hero>
-                </hero-slider>
+                </drag-scroll>
                 <h2 class="root-padding" style="text-align: center">Наш каталог</h2>
                 <categories-list class="root-padding"></categories-list>
                 <h2 class="root-padding">Новинки</h2>
@@ -129,13 +148,13 @@ export class AppRoot extends LitElement {
                                 сайта.</p>
                         </div>
                     </div>
-                    <images-slider>
+                    <drag-scroll class="images-slider">
                         <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p4.500x500.jpg" alt="Image">
                         <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p3.500x500.jpg" alt="Image">
                         <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p2.500x500.jpg" alt="Image">
                         <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p5.500x500.jpg" alt="Image">
                         <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p1.500x500.jpg" alt="Image">
-                    </images-slider>
+                    </drag-scroll>
                 </div>
             </app-page>
         `

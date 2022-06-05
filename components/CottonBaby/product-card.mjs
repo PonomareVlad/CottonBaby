@@ -15,15 +15,22 @@ export class ProductCard extends LitElement {
             position: relative;
           }
 
+          a {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+          }
+
           .overlay {
             --backdrop-filter: blur(10px);
             -webkit-backdrop-filter: var(--backdrop-filter);
             background-color: rgba(255, 255, 255, 0.7);
             backdrop-filter: var(--backdrop-filter);
-            padding: 20px;
             border-radius: var(--border-radius);
             position: absolute;
             min-height: 40px;
+            padding: 20px;
+            z-index: 1;
             bottom: 0;
             right: 0;
             left: 0;
@@ -68,6 +75,7 @@ export class ProductCard extends LitElement {
             backdrop-filter: var(--backdrop-filter);
             background-color: rgba(255, 255, 255, 0.7);
             border-radius: 100px;
+            z-index: 1;
             padding: 0 15px;
             font-size: 24px;
             line-height: 1.4;
@@ -87,7 +95,7 @@ export class ProductCard extends LitElement {
             display: block;
             width: 100%;
             height: 100%;
-            z-index: -1;
+            z-index: 0;
             top: 0;
             left: 0;
             right: 0;
@@ -114,14 +122,14 @@ export class ProductCard extends LitElement {
 
     render() {
         return html`
-            <slot>
+            <a href="#">
                 <div class="overlay">
                     <h3 class="title">${this.title || 'Название продукта'}</h3>
                     <p class="sizes">Размеры: <span>10-20</span> <span>20-30</span> <span>30-40</span></p>
                 </div>
                 <div class="price">100</div>
                 <img src="${ifDefined(this.src)}" class="background" alt="Product">
-            </slot>
+            </a>
         `
     }
 }
