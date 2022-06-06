@@ -9,6 +9,7 @@ export class ProductHero extends LitElement {
         return css`
           * {
             box-sizing: border-box;
+            touch-action: manipulation;
           }
 
           :host {
@@ -38,7 +39,6 @@ export class ProductHero extends LitElement {
             --backdrop-filter: blur(15px);
             height: auto;
             border-radius: 25px;
-            margin-bottom: 80px;
             padding: var(--root-padding);
             padding-left: var(--root-padding-left);
             padding-right: var(--root-padding-left);
@@ -46,43 +46,13 @@ export class ProductHero extends LitElement {
             background-color: rgba(255, 255, 255, 0.7);
             -webkit-backdrop-filter: var(--backdrop-filter);
             width: calc(100% - (var(--root-padding-left) * 2));
+            margin-bottom: calc((var(--root-padding-bottom) * 2) + 30px);
           }
-
-          /*.overlay:after {
-            --backdrop-filter: blur(10px);
-            content: 'Листайте, чтобы смотреть еще';
-            box-sizing: border-box;
-            padding-right: 18px;
-            position: absolute;
-            line-height: 30px;
-            display: block;
-            width: auto;
-            left: 50%;
-            min-width: 285px;
-            text-align: center;
-            border-radius: 100px;
-            background-size: 8px;
-            bottom: var(--root-padding);
-            background-repeat: no-repeat;
-            transform: translate(-50%, 0);
-            background-position: center right 10px;
-            backdrop-filter: var(--backdrop-filter);
-            background-color: rgba(255, 255, 255, 0.7);
-            -webkit-backdrop-filter: var(--backdrop-filter);
-            background-image: url("/assets/images/arrow.svg");
-            max-width: calc(100% - var(--root-padding-left) - var(--root-padding-right));
-          }*/
 
           @media (min-width: 350px) {
             .overlay {
               font-size: 18px;
             }
-
-            /*.overlay:after {
-              font-size: 18px;
-              min-width: 320px;
-              background-size: 8px;
-            }*/
           }
 
           .overlay :first-child {
@@ -96,6 +66,25 @@ export class ProductHero extends LitElement {
           .title {
             font-size: 22px;
             font-weight: bold;
+          }
+
+          @media (min-width: 1024px) {
+            :host {
+              align-items: flex-start;
+            }
+
+            .overlay {
+              box-sizing: border-box;
+              margin-bottom: var(--root-padding-bottom);
+              margin-left: var(--root-padding-left);
+              font-size: 24px;
+              max-width: 35%;
+              padding: 25px;
+            }
+
+            .title {
+              font-size: 32px;
+            }
           }
 
         `

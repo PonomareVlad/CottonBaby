@@ -5,6 +5,7 @@ export class AppHero extends LitElement {
         return css`
           * {
             box-sizing: border-box;
+            touch-action: manipulation;
           }
 
           :host {
@@ -37,31 +38,6 @@ export class AppHero extends LitElement {
             position: relative;
           }
 
-          /*.overlay:after {
-            --backdrop-filter: blur(10px);
-            content: 'Листайте, чтобы смотреть еще';
-            box-sizing: border-box;
-            padding-right: 18px;
-            position: absolute;
-            line-height: 30px;
-            display: block;
-            width: auto;
-            left: 50%;
-            min-width: 285px;
-            text-align: center;
-            border-radius: 100px;
-            background-size: 8px;
-            bottom: var(--root-padding);
-            background-repeat: no-repeat;
-            transform: translate(-50%, 0);
-            background-position: center right 10px;
-            backdrop-filter: var(--backdrop-filter);
-            background-color: rgba(255, 255, 255, 0.7);
-            -webkit-backdrop-filter: var(--backdrop-filter);
-            background-image: url("/assets/images/arrow.svg");
-            max-width: calc(100% - var(--root-padding-left) - var(--root-padding-right));
-          }*/
-
           .header {
             font-size: 40px;
             font-weight: 300;
@@ -76,14 +52,6 @@ export class AppHero extends LitElement {
             line-height: normal;
           }
 
-          /*@media (min-width: 350px) {
-            .overlay:after {
-              font-size: 18px;
-              min-width: 320px;
-              background-size: 8px;
-            }
-          }*/
-
           @media (min-width: 1024px) {
             :host {
               display: flex;
@@ -93,14 +61,11 @@ export class AppHero extends LitElement {
 
             .overlay {
               height: auto;
-              max-width: 40%;
+              max-width: 35%;
               padding: unset;
-              padding-left: var(--root-padding-left);
+              margin-left: var(--root-padding-left);
             }
 
-            /*.overlay:after {
-              content: unset;
-            }*/
             .header {
               font-size: 80px;
             }

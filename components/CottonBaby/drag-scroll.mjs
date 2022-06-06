@@ -30,6 +30,10 @@ export class DragScroll extends LitElement {
 
     static get styles() {
         return css`
+          * {
+            touch-action: manipulation;
+          }
+
           :host {
             display: block;
             position: relative;

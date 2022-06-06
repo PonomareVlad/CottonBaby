@@ -10,6 +10,10 @@ import './drag-scroll.mjs'
 export class AppRoot extends LitElement {
     static get styles() {
         return css`
+          * {
+            touch-action: manipulation;
+          }
+
           @supports (padding-top: env(safe-area-inset-top)) {
             :host {
               --safe-padding-top: env(safe-area-inset-top);
@@ -117,6 +121,17 @@ export class AppRoot extends LitElement {
 
           }
 
+          @media (min-width: 350px) {
+            .hero-slider::part(next) {
+              min-width: 320px;
+            }
+
+            .hero-slider::part(next):before {
+              background-size: 8px;
+              font-size: 18px;
+            }
+          }
+
           @media (min-width: 1024px) {
             :host {
               --header-height: 80px;
@@ -126,6 +141,10 @@ export class AppRoot extends LitElement {
             app-header {
               top: var(--root-padding);
               position: absolute;
+            }
+
+            .hero-slider::part(next) {
+              min-width: unset;
             }
 
             .hero-slider::part(next):before {
@@ -140,6 +159,7 @@ export class AppRoot extends LitElement {
               align-items: center;
               line-height: initial;
               justify-content: flex-end;
+              text-shadow: 0 0 5px #fff;
               right: calc(var(--size) + 20px);
             }
 
