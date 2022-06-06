@@ -3,14 +3,12 @@ import {ref, createRef} from 'lit/directives/ref.js'
 
 export class DragScroll extends LitElement {
     events = {
-        mousedown: {},
+        mousedown: {dragging: true},
+        mouseup: {target: window, dragging: true},
+        mousemove: {target: window, dragging: true},
         scroll: {options: {passive: true}},
-        mouseup: {target: window, temp: true},
-        mousemove: {target: window, temp: true},
-        // mouseenter: {options: {passive: true}},
-        // mouseleave: {options: {passive: true}},
-        wheel: {handler: 'cancelMomentumTracking', options: {passive: true}},
-        contextmenu: {handler: 'mouseup', target: window, options: {passive: true}}
+        wheel: {handler: 'cancelMomentumTracking', options: {passive: true}, dragging: true},
+        contextmenu: {handler: 'mouseup', target: window, options: {passive: true}, dragging: true}
     }
     startX
     velX = 0
@@ -24,6 +22,12 @@ export class DragScroll extends LitElement {
     scrollPrevButton = createRef()
     scrollNextButton = createRef()
 
+    static get properties() {
+        return {
+            dragging: {type: Boolean}
+        }
+    }
+
     static get styles() {
         return css`
           :host {
@@ -36,7 +40,6 @@ export class DragScroll extends LitElement {
           }
 
           [part="container"] {
-            cursor: grab;
             display: flex;
             gap: var(--gap);
             user-select: none;
@@ -53,7 +56,11 @@ export class DragScroll extends LitElement {
             /*padding-bottom: var(--padding-bottom);*/
           }
 
-          [part="container"]:active {
+          :host([dragging="true"]) [part="container"] {
+            cursor: grab;
+          }
+
+          :host([dragging="true"]) [part="container"]:active {
             cursor: grabbing;
           }
 
@@ -96,10 +103,12 @@ export class DragScroll extends LitElement {
             cursor: pointer;
             pointer-events: all;
             transition: opacity .2s;
+            -webkit-appearance: none;
           }
 
           button:disabled {
             opacity: 0;
+            pointer-events: none;
           }
 
           @media (hover: hover) {
@@ -113,8 +122,9 @@ export class DragScroll extends LitElement {
               --backdrop-filter: blur(25px) saturate(3);
               z-index: 2;
               border: none;
+              font-size: 0;
+              line-height: 0;
               display: block;
-              overflow: hidden;
               color: transparent;
               width: var(--size);
               position: absolute;
@@ -140,12 +150,17 @@ export class DragScroll extends LitElement {
             :host(:not(:hover)) button {
               opacity: 0;
             }
+
+            button:hover {
+              pointer-events: all;
+            }
           }
         `
     }
 
     firstUpdated() {
-        this.setEventHandlers()
+        const {dragging} = this
+        this.setEventHandlers({dragging})
         this.scroll()
     }
 
@@ -184,16 +199,6 @@ export class DragScroll extends LitElement {
         // if (!this.isOver) this.setEventHandlers({temp: true}, true)
     }
 
-    /*mouseenter(e) {
-        this.isOver = true;
-        if (!this.isDown) this.setEventHandlers({temp: true})
-    }*/
-
-    /*mouseleave(e) {
-        this.isOver = false;
-        if (!this.isDown) this.setEventHandlers({temp: true}, true)
-    }*/
-
     mousemove(e) {
         if (!this.isDown) return;
         e.preventDefault();
@@ -227,24 +232,12 @@ export class DragScroll extends LitElement {
         if (Math.abs(this.velX) > 0.5) this.momentumID = requestAnimationFrame(this.momentumLoop.bind(this))
     }
 
-    leaveEvent(e) {
-        this.cancelEvent(e);
-        this.isDown = false;
-    }
-
-    cancelEvent(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-    }
-
-    setEventHandlers(/*filter = {}, remove = false,*/ target = this.scrollContainer.value) {
-        const method = /*remove ? 'removeEventListener' :*/ 'addEventListener'
+    setEventHandlers(filter = {}, remove = false, target = this.scrollContainer.value) {
+        const method = remove ? 'removeEventListener' : 'addEventListener'
         const eventsList = Object.entries(this.events)
-        /*const targetEvents = Object.keys(filter).length ?
-            eventsList.filter(([, event]) => this.objectIncludes(event, filter)) : eventsList*/
-        // console.debug({filter, remove, target, targetEventsLength: targetEvents.length})
-        eventsList.forEach(([name, event]) => {
+        const targetEvents = Object.keys(filter).length ?
+            eventsList.filter(([, event]) => this.objectIncludes(event, filter)) : eventsList
+        targetEvents.forEach(([name, event]) => {
             let handler = name, targetNode = target, options = {}
             if (typeof event === 'object') {
                 if (event.name) name = event.name
@@ -256,19 +249,19 @@ export class DragScroll extends LitElement {
         })
     }
 
-    /*objectIncludes(target, compare) {
-        return !Object.entries(compare).some(([key, value]) => value !== target[key])
-    }*/
+    objectIncludes(target, compare) {
+        return !Object.entries(compare).some(([key, value]) => target[key] !== undefined ? value !== target[key] : false)
+    }
 
     render() {
         return html`
             <slot part="container" ${ref(this.scrollContainer)}></slot>
             <div class="navigation">
-                <button part="prev" ${ref(this.scrollPrevButton)} @click="${this.scrollToPrevNode.bind(this)}">
-                    Назад
+                <button part="prev" ${ref(this.scrollPrevButton)} @click="${this.scrollToPrevNode.bind(this)}"
+                        title="Назад">Назад
                 </button>
-                <button part="next" ${ref(this.scrollNextButton)} @click="${this.scrollToNextNode.bind(this)}">
-                    Вперед
+                <button part="next" ${ref(this.scrollNextButton)} @click="${this.scrollToNextNode.bind(this)}"
+                        title="Вперед">Вперед
                 </button>
             </div>
         `

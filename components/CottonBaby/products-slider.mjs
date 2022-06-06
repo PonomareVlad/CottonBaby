@@ -23,7 +23,7 @@ export class ProductsSlider extends LitElement {
 
     render() {
         return html`
-            <drag-scroll>
+            <drag-scroll dragging="true">
                 <product-card src="https://cottonbaby.ru/images/pictures/i5.jpg"></product-card>
                 <product-card src="https://cottonbaby.ru/images/pictures/i2.jpg"></product-card>
                 <product-card src="https://cottonbaby.ru/images/pictures/i4.jpg"></product-card>

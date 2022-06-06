@@ -52,6 +52,14 @@ export class AppRoot extends LitElement {
             --padding-bottom: 0;
           }
 
+          .hero-slider::part(next):before {
+            content: 'Листайте, чтобы смотреть еще';
+            font-size: initial;
+            display: inline;
+            color: initial;
+            line-height: var(--size);
+          }
+
           categories-list {
             margin: var(--root-padding) 0;
           }
@@ -77,6 +85,38 @@ export class AppRoot extends LitElement {
             padding-bottom: var(--root-padding-bottom);
           }
 
+          @media (max-width: 1023px) {
+            .hero-slider::part(next) {
+              --backdrop-filter: blur(10px);
+              --size: 30px;
+              box-sizing: border-box;
+              padding: unset;
+              padding-right: 18px;
+              position: absolute;
+              display: block;
+              height: auto;
+              width: auto;
+              left: 50%;
+              font-size: 0;
+              border: none;
+              line-height: 0;
+              min-width: 285px;
+              text-align: center;
+              border-radius: 100px;
+              background-size: 8px;
+              bottom: var(--root-padding);
+              background-repeat: no-repeat;
+              transform: translate(-50%, 0);
+              background-position: center right 10px;
+              backdrop-filter: var(--backdrop-filter);
+              background-color: rgba(255, 255, 255, 0.7);
+              -webkit-backdrop-filter: var(--backdrop-filter);
+              background-image: url("/assets/images/arrow.svg");
+              max-width: calc(100% - var(--root-padding-left) - var(--root-padding-right));
+            }
+
+          }
+
           @media (min-width: 1024px) {
             :host {
               --header-height: 80px;
@@ -86,6 +126,21 @@ export class AppRoot extends LitElement {
             app-header {
               top: var(--root-padding);
               position: absolute;
+            }
+
+            .hero-slider::part(next):before {
+              top: 0;
+              bottom: 0;
+              width: 200px;
+              display: flex;
+              font-size: 24px;
+              font-weight: 300;
+              text-align: right;
+              position: absolute;
+              align-items: center;
+              line-height: initial;
+              justify-content: flex-end;
+              right: calc(var(--size) + 20px);
             }
 
             h2 {
@@ -133,6 +188,16 @@ export class AppRoot extends LitElement {
                             description="Описание продукта с упоминанием его качеств и уникальных технологий производства"
                             src="https://cloudflare-ipfs.com/ipfs/bafybeihgc47txsvnuzo2dl34t3aibkichnc7crsyq7sjlsijtxvslsrrdm/IMG_4895-2.jpg"
                     ></product-hero>
+                    <product-hero
+                            title="Название продукта"
+                            description="Описание продукта с упоминанием его качеств и уникальных технологий производства"
+                            src="https://cottonbaby.ru/images/pictures/i1.jpg"
+                    ></product-hero>
+                    <product-hero
+                            title="Название продукта"
+                            description="Описание продукта с упоминанием его качеств и уникальных технологий производства"
+                            src="https://cottonbaby.ru/images/pictures/i3.jpg"
+                    ></product-hero>
                 </drag-scroll>
                 <h2 class="root-padding" style="text-align: center">Наш каталог</h2>
                 <categories-list class="root-padding"></categories-list>
@@ -148,7 +213,7 @@ export class AppRoot extends LitElement {
                                 сайта.</p>
                         </div>
                     </div>
-                    <drag-scroll class="images-slider">
+                    <drag-scroll class="images-slider" dragging="true">
                         <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p4.500x500.jpg" alt="Image">
                         <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p3.500x500.jpg" alt="Image">
                         <img src="https://cottonbaby.ru/images/cache/thumb/images/pictures/p2.500x500.jpg" alt="Image">

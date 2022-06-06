@@ -48,7 +48,7 @@ export class ProductHero extends LitElement {
             width: calc(100% - (var(--root-padding-left) * 2));
           }
 
-          .overlay:after {
+          /*.overlay:after {
             --backdrop-filter: blur(10px);
             content: 'Листайте, чтобы смотреть еще';
             box-sizing: border-box;
@@ -71,18 +71,18 @@ export class ProductHero extends LitElement {
             -webkit-backdrop-filter: var(--backdrop-filter);
             background-image: url("/assets/images/arrow.svg");
             max-width: calc(100% - var(--root-padding-left) - var(--root-padding-right));
-          }
+          }*/
 
           @media (min-width: 350px) {
             .overlay {
               font-size: 18px;
             }
 
-            .overlay:after {
+            /*.overlay:after {
               font-size: 18px;
               min-width: 320px;
               background-size: 8px;
-            }
+            }*/
           }
 
           .overlay :first-child {
