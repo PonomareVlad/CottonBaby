@@ -6,10 +6,11 @@ import {html} from "lit";
 import '../components/CottonBaby/app-root.mjs'
 
 const importmap = `<script type="importmap">${readFileSync(new URL('../includes/importmap.json', import.meta.url))}</script>`,
+    liveReload = process.env.VERCEL_ENV === 'development' ? `<script src="/lib/livereload.mjs" noshim></script>` : '',
     content = {
         loader: '',
         footer: readFileSync(new URL('../includes/footer.html', import.meta.url)),
-        head: readFileSync(new URL('../includes/head.html', import.meta.url)) + importmap,
+        head: readFileSync(new URL('../includes/head.html', import.meta.url)) + importmap + liveReload,
     }
 
 export default async (req, res) => {

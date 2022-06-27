@@ -4,6 +4,7 @@ import {SafeUntil} from "svalit/directives.mjs"
 import {Router} from '@svalit/router'
 import './app-header.mjs'
 import './index-page.mjs'
+import './catalog-page.mjs'
 
 export class AppRoot extends LitElement {
     safeUntil = new SafeUntil(this)
@@ -16,12 +17,12 @@ export class AppRoot extends LitElement {
         {
             path: '/catalog',
             render: ({category}) => html`
-                <br><br><h1>Catalog — ${category}</h1>`
+                <catalog-page category="${category}"></catalog-page>`
         },
         {
             path: '/catalog/:category',
             render: ({category}) => html`
-                <br><br><h1>Catalog — ${category}</h1>`
+                <catalog-page category="${category}"></catalog-page>`
         },
         {
             path: '/catalog/:category/:product',
