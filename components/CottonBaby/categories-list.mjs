@@ -60,7 +60,7 @@ export class CategoriesList extends LitElement {
             <section>${categories.map(src => html`
                 <category-card src="${src}"></category-card>`)}
             </section>
-            <a href="" class="button">Посмотреть все категории</a>
+            <a href="/catalog" class="button">Посмотреть все категории</a>
         `
     }
 }

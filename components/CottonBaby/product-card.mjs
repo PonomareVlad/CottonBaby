@@ -122,7 +122,7 @@ export class ProductCard extends LitElement {
 
     render() {
         return html`
-            <a href="#">
+            <a href="/catalog/category/product">
                 <div class="overlay">
                     <h3 class="title">${this.title || 'Название продукта'}</h3>
                     <p class="sizes">Размеры: <span>10-20</span> <span>20-30</span> <span>30-40</span></p>

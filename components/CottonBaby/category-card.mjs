@@ -15,6 +15,16 @@ export class CategoryCard extends LitElement {
             position: relative;
           }
 
+          a {
+            color: inherit;
+            text-decoration: none;
+          }
+
+          div {
+            width: 100%;
+            height: 100%;
+          }
+
           .title {
             --backdrop-filter: blur(10px);
             -webkit-backdrop-filter: var(--backdrop-filter);
@@ -66,10 +76,12 @@ export class CategoryCard extends LitElement {
 
     render() {
         return html`
-            <div>
-                <h3 class="title">${this.title || 'Категория'}</h3>
-                <img src="${ifDefined(this.src)}" class="background" alt="Category">
-            </div>
+            <a href="/catalog/category">
+                <div>
+                    <h3 class="title">${this.title || 'Категория'}</h3>
+                    <img src="${ifDefined(this.src)}" class="background" alt="Category">
+                </div>
+            </a>
         `
     }
 }

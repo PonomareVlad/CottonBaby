@@ -12,6 +12,12 @@
     "@lit/reactive-element/": "https://cdn.jsdelivr.net/npm/@svalit/reactive-element/",
     "@lit/reactive-element": "https://cdn.jsdelivr.net/npm/@svalit/reactive-element/reactive-element.js",
     "@webcomponents/template-shadowroot/": "https://cdn.skypack.dev/@webcomponents/template-shadowroot/",
-    "bson-objectid": "https://cdn.skypack.dev/bson-objectid"
+    "@lit-labs/router": "https://ga.jspm.io/npm:@lit-labs/router@0.1.0/development/index.js",
+    "urlpattern-polyfill": "https://cdn.jsdelivr.net/npm/urlpattern-polyfill/index.js",
+    "@lit-labs/router/": "https://ga.jspm.io/npm:@lit-labs/router@0.1.0/development/",
+    "@svalit/ssr-client/": "https://cdn.jsdelivr.net/npm/@svalit/ssr-client/",
+    "@svalit/router": "https://cdn.jsdelivr.net/npm/@svalit/router",
+    "bson-objectid": "https://cdn.skypack.dev/bson-objectid",
+    "svalit/": "https://cdn.jsdelivr.net/npm/svalit/"
   }
 }

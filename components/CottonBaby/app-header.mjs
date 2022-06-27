@@ -144,15 +144,15 @@ export class AppHeader extends LitElement {
     render() {
         return html`
             <a class="menu-toggle button" href="#" title="Открыть меню">Меню</a>
-            <a class="logo image button" href="#" title="Перейти на главную страницу">Главная</a>
+            <a class="logo image button" href="/#" title="Перейти на главную страницу">Главная</a>
             <a class="cart image button" href="#" title="Перейти в корзину">Корзина</a>
             <nav class="menu">
-                <a href="#">Каталог</a>
-                <a href="#">Коллекции</a>
-                <a href="#">Доставка</a>
-                <a href="#">Оплата</a>
-                <a href="#">Оптом</a>
-                <a href="#">О компании</a>
+                <a href="/catalog">Каталог</a>
+                <a href="/collections">Коллекции</a>
+                <a href="/delivery">Доставка</a>
+                <a href="/payment">Оплата</a>
+                <a href="/wholesale">Оптом</a>
+                <a href="/about">О компании</a>
             </nav>
         `
     }
