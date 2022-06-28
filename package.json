@@ -28,7 +28,8 @@
   "imports": {
     "#lib/*": "./lib/*",
     "#db": "./lib/db/server.mjs",
-    "#utils": "./lib/utils.mjs"
+    "#utils": "./lib/utils.mjs",
+    "#styles": "./includes/styles.mjs"
   },
   "devDependencies": {
     "@ponomarevlad/dev-server": "latest",

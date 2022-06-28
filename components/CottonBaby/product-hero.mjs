@@ -1,4 +1,5 @@
 import {css, html, LitElement} from "lit"
+import styles from "#styles"
 
 export class ProductHero extends LitElement {
     static get properties() {
@@ -6,12 +7,7 @@ export class ProductHero extends LitElement {
     }
 
     static get styles() {
-        return css`
-          * {
-            box-sizing: border-box;
-            touch-action: manipulation;
-          }
-
+        return [styles, css`
           :host {
             font-family: var(--font-family);
             position: relative;
@@ -86,8 +82,7 @@ export class ProductHero extends LitElement {
               font-size: 32px;
             }
           }
-
-        `
+        `]
     }
 
     render() {

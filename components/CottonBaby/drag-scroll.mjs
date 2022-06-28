@@ -1,5 +1,6 @@
 import {css, html, LitElement} from "lit"
 import {ref, createRef} from 'lit/directives/ref.js'
+import styles from "#styles"
 
 export class DragScroll extends LitElement {
     events = {
@@ -29,10 +30,7 @@ export class DragScroll extends LitElement {
     }
 
     static get styles() {
-        return css`
-          * {
-            touch-action: manipulation;
-          }
+        return [styles, css`
 
           :host {
             display: block;
@@ -116,8 +114,22 @@ export class DragScroll extends LitElement {
           }
 
           @media (hover: hover) {
+            :host(:not([dragging="true"])) [part="container"].allow-scroll {
+              will-change: scroll-position;
+            }
+
             [part="container"] {
               scroll-snap-type: none;
+            }
+
+            [part="container"]:not(.allow-scroll) {
+              touch-action: none;
+              overflow: hidden;
+            }
+
+            :host([dragging="true"]) [part="container"] {
+              touch-action: pan-x pan-y;
+              overflow: auto;
             }
 
             button {
@@ -159,7 +171,7 @@ export class DragScroll extends LitElement {
               pointer-events: all;
             }
           }
-        `
+        `]
     }
 
     firstUpdated() {
@@ -218,7 +230,17 @@ export class DragScroll extends LitElement {
         this.scrollPrevButton.value.disabled = this.scrollContainer.value.scrollLeft <= 0;
         this.scrollNextButton.value.disabled = this.scrollContainer.value.scrollWidth - this.scrollContainer.value.clientWidth - this.scrollContainer.value.scrollLeft <= 0;
         clearTimeout(this.isScrolling);
-        this.isScrolling = setTimeout(() => this.targetScroll = null, 66);
+        this.isScrolling = setTimeout(this.scrollEnd.bind(this), 66);
+    }
+
+    scrollEnd() {
+        this.isScrolling = null
+        this.targetScroll = null
+    }
+
+    toggleScroll(state = true) {
+        if (!state && this.isScrolling) return requestAnimationFrame(() => this.toggleScroll(state))
+        requestAnimationFrame(() => this.scrollContainer.value.classList.toggle('allow-scroll', state))
     }
 
     beginMomentumTracking() {
@@ -262,10 +284,12 @@ export class DragScroll extends LitElement {
             <slot part="container" ${ref(this.scrollContainer)}></slot>
             <div class="navigation">
                 <button part="prev" ${ref(this.scrollPrevButton)} @click="${this.scrollToPrevNode.bind(this)}"
-                        title="Назад">Назад
+                        title="Назад" @mouseenter="${this.toggleScroll.bind(this, true)}"
+                        @mouseleave="${this.toggleScroll.bind(this, false)}">Назад
                 </button>
                 <button part="next" ${ref(this.scrollNextButton)} @click="${this.scrollToNextNode.bind(this)}"
-                        title="Вперед">Вперед
+                        title="Вперед" @mouseenter="${this.toggleScroll.bind(this, true)}"
+                        @mouseleave="${this.toggleScroll.bind(this, false)}">Вперед
                 </button>
             </div>
         `

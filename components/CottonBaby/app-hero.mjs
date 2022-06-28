@@ -1,13 +1,9 @@
 import {css, html, LitElement} from "lit"
+import styles from "#styles"
 
 export class AppHero extends LitElement {
     static get styles() {
-        return css`
-          * {
-            box-sizing: border-box;
-            touch-action: manipulation;
-          }
-
+        return [styles, css`
           :host {
             font-family: var(--font-family);
             display: block;
@@ -75,8 +71,7 @@ export class AppHero extends LitElement {
               font-weight: 300;
             }
           }
-
-        `
+        `]
     }
 
     render() {

@@ -2,9 +2,11 @@ import "urlpattern-polyfill"
 import {css, html, LitElement} from "lit"
 import {SafeUntil} from "svalit/directives.mjs"
 import {Router} from '@svalit/router'
+import styles from "#styles"
 import './app-header.mjs'
 import './index-page.mjs'
 import './catalog-page.mjs'
+import './product-page.mjs'
 
 export class AppRoot extends LitElement {
     safeUntil = new SafeUntil(this)
@@ -27,7 +29,7 @@ export class AppRoot extends LitElement {
         {
             path: '/catalog/:category/:product',
             render: ({product}) => html`
-                <br><br><h1>Product — ${product}</h1>`
+                <product-page product="${product}"></product-page>`
         }
     ], {fallback: {render: () => html`<br><br><h1>404</h1>`}})
 
@@ -36,11 +38,7 @@ export class AppRoot extends LitElement {
     }
 
     static get styles() {
-        return css`
-          * {
-            touch-action: manipulation;
-          }
-
+        return [styles, css`
           @supports (padding-top: env(safe-area-inset-top)) {
             :host {
               --safe-padding-top: env(safe-area-inset-top);
@@ -86,7 +84,7 @@ export class AppRoot extends LitElement {
               position: absolute;
             }
           }
-        `
+        `]
     }
 
     render() {
