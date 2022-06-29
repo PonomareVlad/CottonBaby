@@ -15,7 +15,7 @@
     "@lit-labs/ssr": "npm:@svalit/ssr@latest",
     "@lit-labs/ssr-client": "npm:@svalit/ssr-client@latest",
     "@svalit/router": "^0.1.0-alpha.3",
-    "@svalit/vercel": "^0.1.0-alpha.3",
+    "@svalit/vercel": "^0.1.0-alpha.4",
     "bson-objectid": "latest",
     "clean-stack": "latest",
     "lit": "npm:@svalit/lit@latest",

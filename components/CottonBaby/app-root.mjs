@@ -34,7 +34,7 @@ export class AppRoot extends LitElement {
     ], {
         fallback: {
             render: () => {
-                this.setMeta({title: '404'})
+                this.setMeta({title: '404', status: 404})
                 return html`<h1>404</h1>`
             }
         }
