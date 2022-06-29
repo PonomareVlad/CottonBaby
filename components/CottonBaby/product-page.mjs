@@ -6,8 +6,6 @@ export class ProductPage extends LitElement {
     static get styles() {
         return [styles, css`
           :host {
-            height: 100%;
-            display: block;
             padding-top: var(--header-height);
           }
 
@@ -15,18 +13,15 @@ export class ProductPage extends LitElement {
             :host {
               padding-top: calc(var(--header-height) + var(--root-padding-top));
             }
-
-            h2 {
-              font-size: 48px;
-            }
           }
         `]
     }
 
     render() {
+        this?.setMeta({title: 'Product'})
         return html`
             <product-gallery></product-gallery>
-            <div class="root-padding"><h2>Название продукта</h2></div>
+            <div class="root-padding"><h1>Название продукта</h1></div>
         `
     }
 }

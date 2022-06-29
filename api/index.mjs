@@ -25,8 +25,8 @@ export default async (req, res) => {
             importMapOptions: {disableGeneration: true}
         }
         const page = new RenderStream(options)
-        return page.renderTemplate(({meta: {url}}) => html`
-            <app-root url="${url}"></app-root>`)
+        return page.renderTemplate(({meta: {url, setMeta}}) => html`
+            <app-root url="${url}" .setMeta="${setMeta}"></app-root>`)
     } catch (e) {
         return errorHandler(e, res)
     }

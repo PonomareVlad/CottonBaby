@@ -27,7 +27,7 @@ export class CatalogPage extends LitElement {
               padding-top: calc(var(--header-height) + var(--root-padding-top));
             }
 
-            h2 {
+            h1 {
               font-size: 48px;
             }
           }
@@ -52,8 +52,9 @@ export class CatalogPage extends LitElement {
     }
 
     render() {
+        this?.setMeta({title: 'Catalog'})
         return html`
-            <h2 class="root-padding">Каталог</h2>
+            <h1 class="root-padding">Каталог</h1>
             <section class="root-padding products-list">
                 <product-card src="https://cottonbaby.ru/images/pictures/i5.jpg"></product-card>
                 <product-card src="https://cottonbaby.ru/images/pictures/i2.jpg"></product-card>

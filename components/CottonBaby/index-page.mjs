@@ -153,6 +153,7 @@ export class IndexPage extends LitElement {
     }
 
     render() {
+        this?.setMeta({title: 'Index'})
         return html`
             <drag-scroll class="hero-slider">
                 <app-hero></app-hero>
