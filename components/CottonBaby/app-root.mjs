@@ -30,6 +30,11 @@ export class AppRoot extends LitElement {
             path: '/catalog/:category/:product',
             render: ({product}) => html`
                 <product-page product="${product}" .setMeta="${this.setMeta}"></product-page>`
+        },
+        {
+            path: '/product/:product',
+            render: ({product}) => html`
+                <product-page product="${product}" .setMeta="${this.setMeta}"></product-page>`
         }
     ], {
         fallback: {

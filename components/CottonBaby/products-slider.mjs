@@ -24,11 +24,11 @@ export class ProductsSlider extends LitElement {
     render() {
         return html`
             <drag-scroll dragging="true">
-                <product-card src="https://cottonbaby.ru/images/pictures/i5.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i2.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i4.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i3.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i1.jpg"></product-card>
+                <product-card href="/product/1" src="https://cottonbaby.ru/images/pictures/i5.jpg"></product-card>
+                <product-card href="/product/2" src="https://cottonbaby.ru/images/pictures/i2.jpg"></product-card>
+                <product-card href="/product/3" src="https://cottonbaby.ru/images/pictures/i4.jpg"></product-card>
+                <product-card href="/product/4" src="https://cottonbaby.ru/images/pictures/i3.jpg"></product-card>
+                <product-card href="/product/5" src="https://cottonbaby.ru/images/pictures/i1.jpg"></product-card>
             </drag-scroll>
         `
     }

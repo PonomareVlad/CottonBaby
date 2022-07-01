@@ -3,7 +3,7 @@ import {ifDefined} from 'lit/directives/if-defined.js'
 
 export class ProductCard extends LitElement {
     static get properties() {
-        return {src: {type: String}, title: {type: String}}
+        return {title: {type: String}, href: {type: String}, src: {type: String}}
     }
 
     static get styles() {
@@ -122,7 +122,7 @@ export class ProductCard extends LitElement {
 
     render() {
         return html`
-            <a href="/catalog/category/product">
+            <a href="${this.href || '/catalog/category/product'}">
                 <div class="overlay">
                     <h3 class="title">${this.title || 'Название продукта'}</h3>
                     <p class="sizes">Размеры: <span>10-20</span> <span>20-30</span> <span>30-40</span></p>
