@@ -12,6 +12,36 @@ export class ProductPage extends LitElement {
             padding-bottom: var(--root-padding-bottom);
           }
 
+          .back-button {
+            --padding: 10px;
+            z-index: 10;
+            color: inherit;
+            font-size: 14px;
+            line-height: 30px;
+            position: absolute;
+            border-radius: 20px;
+            padding-right: 10px;
+            left: var(--padding);
+            display: inline-flex;
+            text-decoration: none;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            background-color: rgba(255, 255, 255, 0.7);
+            top: calc(var(--header-height) + var(--padding));
+          }
+
+          .back-button:before {
+            content: '';
+            width: 25px;
+            height: 30px;
+            transform: scaleX(-1);
+            display: inline-block;
+            background-size: 5px;
+            background-position: center left 10px;
+            background-repeat: no-repeat;
+            background-image: url("/assets/images/arrow.svg");
+          }
+
           .title-row {
             padding-top: 20px;
             display: flex;
@@ -81,7 +111,13 @@ export class ProductPage extends LitElement {
 
           @media (min-width: 1024px) {
             :host {
-              padding-top: calc(var(--header-height) + var(--root-padding-top));
+              padding-top: calc(var(--header-height) + (var(--root-padding-top) * 2));
+            }
+
+            .back-button {
+              position: initial;
+              margin-left: var(--root-padding-left);
+              background-color: rgba(120, 120, 128, 0.16);
             }
 
             product-card {
@@ -91,9 +127,15 @@ export class ProductPage extends LitElement {
         `]
     }
 
+    back(e) {
+        e.preventDefault()
+        history.back()
+    }
+
     render() {
         this?.setMeta({title: 'Product'})
         return html`
+            <a href="../" class="back-button" @click="${this.back}">Назад</a>
             <product-gallery></product-gallery>
             <div class="root-padding title-row">
                 <div class="title-content">
