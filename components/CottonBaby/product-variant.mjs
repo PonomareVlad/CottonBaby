@@ -18,17 +18,16 @@ export class ProductVariant extends LitElement {
     static get styles() {
         return [styles, css`
           :host {
-            --inner-gap: 1ch;
-            gap: var(--inner-gap);
+            --background-color: white;
             font-size: 18px;
             line-height: 38px;
             font-weight: bold;
             user-select: none;
+            position: relative;
             padding-left: 15px;
             border-radius: 20px;
             white-space: nowrap;
-            display: inline-flex;
-            justify-content: space-between;
+            background-color: var(--background-color);
             border: solid 1px rgba(151, 151, 151, 0.54);
           }
 
@@ -40,9 +39,13 @@ export class ProductVariant extends LitElement {
           }
 
           .count {
-            position: relative;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            position: absolute;
+            border-radius: 40px;
             display: inline-flex;
-            /*max-width: calc((100% - var(--inner-gap)) / 2);*/
+            background: linear-gradient(to right, transparent, var(--background-color) 10px);
           }
 
           input[type="number"] {
@@ -69,14 +72,16 @@ export class ProductVariant extends LitElement {
           button {
             -webkit-appearance: none;
             display: inline-block;
-            line-height: inherit;
-            font-weight: inherit;
-            font-size: inherit;
+            border-radius: 40px;
+            line-height: 38px;
+            font-weight: 100;
             background: none;
+            min-width: 38px;
+            font-size: 25px;
+            cursor: pointer;
             color: inherit;
-            min-width: 40px;
             border: none;
-            width: 40px;
+            width: 38px;
             padding: 0;
             margin: 0;
           }
@@ -88,14 +93,10 @@ export class ProductVariant extends LitElement {
           }
 
           :host([value="0"]:not(:focus-within)) {
+            --background-color: rgb(233 233 235);
             padding-right: 15px;
-            border: solid 1px transparent;
-            background-color: rgba(120, 120, 128, 0.16);
-          }
-
-          :host([value="0"]:not(:focus-within)) .count {
-            min-width: 6.5ch;
-            max-width: 6.5ch;
+            border: solid 1px var(--background-color);
+            background-color: var(--background-color);
           }
 
           :host([value="0"]:not(:focus-within)) .count > * {
@@ -112,16 +113,15 @@ export class ProductVariant extends LitElement {
           }
 
           :host([value="0"]:not(:focus-within)) button.add:after {
-            display: inline-block;
             content: 'Выбрать';
+            border-radius: inherit;
+            display: inline-block;
             font-weight: normal;
+            padding-right: 15px;
+            padding-left: 15px;
             line-height: 38px;
             font-size: 16px;
             color: black;
-            width: 100%;
-            overflow-x: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
           }
         `]
     }

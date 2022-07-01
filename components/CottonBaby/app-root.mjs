@@ -107,7 +107,7 @@ export class AppRoot extends LitElement {
 
     render() {
         attachStateProxy()
-        if (window.scrollTo) window.scrollTo(0, 0)
+        if (window.scrollTo && this.hasUpdated) window.scrollTo(0, 0)
         this.router.serverPath = new URL(this.url).pathname;
         return html`
             <app-header></app-header>

@@ -105,9 +105,9 @@ export class ProductPage extends LitElement {
             <p class="root-padding">Состав: 100% хлопок</p>
             <h2 class="root-padding">Размеры в наличии:</h2>
             <div class="root-padding variants">
-                <product-variant value="1">10-20</product-variant>
+                <product-variant>10-20</product-variant>
                 <product-variant>20-30</product-variant>
-                <product-variant title="30-40"></product-variant>
+                <product-variant>30-40</product-variant>
             </div>
             <div class="root-padding">
                 <h2>Описание:</h2>
