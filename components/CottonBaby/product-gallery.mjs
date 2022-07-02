@@ -8,12 +8,18 @@ export class ProductGallery extends LitElement {
           drag-scroll {
             --gap: 0;
             --padding-left: 0;
-            --padding-right: 0;
+            --padding-right: 0
           }
 
           img {
             object-fit: cover;
             aspect-ratio: 1;
+          }
+
+          @media (min-width: 1024px) {
+            drag-scroll::part(container) {
+              border-radius: 40px;
+            }
           }
         `]
     }

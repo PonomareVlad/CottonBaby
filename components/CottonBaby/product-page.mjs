@@ -42,6 +42,11 @@ export class ProductPage extends LitElement {
             background-image: url("/assets/images/arrow.svg");
           }
 
+          .product-content {
+            padding-left: var(--root-padding-left);
+            padding-right: var(--root-padding-right);
+          }
+
           .title-row {
             padding-top: 20px;
             display: flex;
@@ -111,13 +116,47 @@ export class ProductPage extends LitElement {
 
           @media (min-width: 1024px) {
             :host {
-              padding-top: calc(var(--header-height) + (var(--root-padding-top) * 2));
+              --inner-padding: 70px;
+              padding-top: calc(var(--header-height) + var(--root-padding-top) + (var(--root-padding) / 2));
             }
 
             .back-button {
               position: initial;
+              margin-bottom: 30px;
               margin-left: var(--root-padding-left);
               background-color: rgba(120, 120, 128, 0.16);
+            }
+
+            .product-section {
+              display: flex;
+              gap: var(--root-padding);
+              margin-bottom: var(--root-padding);
+              padding-left: var(--root-padding-left);
+              padding-right: calc(var(--root-padding-right) * 2);
+            }
+
+            product-gallery {
+              max-width: 45%;
+              aspect-ratio: 1;
+              max-height: 500px;
+            }
+
+            .product-content {
+              width: calc(55% - var(--root-padding));
+              display: flex;
+              padding: unset;
+              flex-direction: column;
+              justify-content: space-between;
+            }
+
+            .title-row {
+              gap: 30px;
+              padding-top: unset;
+              justify-content: flex-start;
+            }
+
+            .variants > product-variant {
+              width: calc((100% - (var(--gap)) * 2) / 3);
             }
 
             product-card {
@@ -136,27 +175,35 @@ export class ProductPage extends LitElement {
         this?.setMeta({title: 'Product'})
         return html`
             <a href="../" class="back-button" @click="${this.back}">Назад</a>
-            <product-gallery></product-gallery>
-            <div class="root-padding title-row">
-                <div class="title-content">
-                    <h1 class="title">Название продукта</h1>
-                    <p class="product-code">123456789</p>
+            <div class="product-section">
+                <product-gallery></product-gallery>
+                <div class="product-content">
+                    <div class="title-row">
+                        <div class="title-content">
+                            <h1 class="title">Название продукта</h1>
+                            <p class="product-code">123456789</p>
+                        </div>
+                        <div class="price">100</div>
+                    </div>
+                    <p>Состав: 100% хлопок</p>
+                    <div>
+                        <h2>Размеры в наличии:</h2>
+                        <div class="variants">
+                            <product-variant>10-20</product-variant>
+                            <product-variant>20-30</product-variant>
+                            <product-variant>30-40</product-variant>
+                        </div>
+                    </div>
+                    <div>
+                        <h2>Описание:</h2>
+                        <p>Длинное описание продукта, которое можно настроить в бек-офисе или синхронизировать из
+                            карточки
+                            оптового сайта.</p>
+                        <p>Также, это описание отображается в результатах поиска Яндекс и Google и помогает в
+                            продвижении
+                            страницы товара.</p>
+                    </div>
                 </div>
-                <div class="price">100</div>
-            </div>
-            <p class="root-padding">Состав: 100% хлопок</p>
-            <h2 class="root-padding">Размеры в наличии:</h2>
-            <div class="root-padding variants">
-                <product-variant>10-20</product-variant>
-                <product-variant>20-30</product-variant>
-                <product-variant>30-40</product-variant>
-            </div>
-            <div class="root-padding">
-                <h2>Описание:</h2>
-                <p>Длинное описание продукта, которое можно настроить в бек-офисе или синхронизировать из карточки
-                    оптового сайта.</p>
-                <p>Также, это описание отображается в результатах поиска Яндекс и Google и помогает в продвижении
-                    страницы товара.</p>
             </div>
             <h2 class="root-padding">Из этой коллекции:</h2>
             <drag-scroll dragging="true">
