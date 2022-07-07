@@ -40,7 +40,8 @@ export class AppRoot extends LitElement {
         fallback: {
             render: () => {
                 this.setMeta({title: '404', status: 404})
-                return html`<h1>404</h1>`
+                return html`
+                    <section class="header-padding root-padding"><h1>Страница не найдена</h1></section>`
             }
         }
     })
@@ -67,6 +68,10 @@ export class AppRoot extends LitElement {
             --root-padding-right: max(var(--safe-padding-right), var(--root-padding));
             --root-padding-bottom: max(var(--safe-padding-bottom), var(--root-padding));
             --header-height: 50px;
+            --viewport-height: 100vh;
+            --viewport-height: -moz-available;
+            --viewport-height: -webkit-fill-available;
+            --viewport-height: 100dvh;
             height: 100%;
             display: block;
           }

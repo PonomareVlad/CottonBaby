@@ -19,6 +19,10 @@ export default css`
     overflow-wrap: break-word;
   }
 
+  .header-padding {
+    padding-top: var(--header-height)
+  }
+
   .root-padding {
     padding-left: var(--root-padding-left);
     padding-right: var(--root-padding-right);

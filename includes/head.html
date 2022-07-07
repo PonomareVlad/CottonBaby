@@ -54,4 +54,13 @@
     app-root {
         isolation: isolate;
     }
+
+    [data-disable-scroll=true] body {
+        touch-action: none;
+        -ms-scroll-chaining: none;
+        overscroll-behavior: none;
+        -webkit-overflow-scrolling: auto;
+        overflow: hidden;
+        position: sticky;
+    }
 </style>
