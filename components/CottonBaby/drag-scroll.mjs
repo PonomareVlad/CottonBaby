@@ -53,8 +53,8 @@ export class DragScroll extends LitElement {
             will-change: scroll-position;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
-            padding-left: var(--padding-right);
-            padding-right: var(--padding-left);
+            padding-left: var(--padding-left);
+            /*padding-right: var(--padding-right);*/
             /*padding-bottom: var(--padding-bottom);*/
           }
 
@@ -78,13 +78,18 @@ export class DragScroll extends LitElement {
             margin-left: -1px;
           }
 
+          [part="container"] slot {
+            display: contents;
+          }
+
           ::slotted(*) {
             scroll-snap-align: center;
             -webkit-user-drag: none;
             min-width: 100%;
           }
 
-          [part="container"].dragging::slotted(*) {
+          [part="container"].dragging::slotted(*),
+          [part="container"].dragging slot::slotted(*) {
             pointer-events: none;
           }
 
@@ -193,7 +198,7 @@ export class DragScroll extends LitElement {
     }
 
     getScrollWidth() {
-        const childElement = this.scrollContainer.value.assignedElements().shift()
+        const childElement = this.scrollContainer.value.querySelector('slot').assignedElements().shift()
         return childElement ? (childElement.clientWidth + parseInt(window.getComputedStyle(childElement).marginRight)) : 0
     }
 
@@ -281,7 +286,9 @@ export class DragScroll extends LitElement {
 
     render() {
         return html`
-            <slot part="container" ${ref(this.scrollContainer)}></slot>
+            <div part="container" ${ref(this.scrollContainer)}>
+                <slot></slot>
+            </div>
             <div class="navigation">
                 <button part="prev" ${ref(this.scrollPrevButton)} @click="${this.scrollToPrevNode.bind(this)}"
                         title="Назад" @mouseenter="${this.toggleScroll.bind(this, true)}"
