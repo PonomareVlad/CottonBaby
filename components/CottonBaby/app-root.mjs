@@ -61,17 +61,20 @@ export class AppRoot extends LitElement {
             }
           }
 
+          @supports (height: 100dvh) {
+            :host {
+              --dynamic-viewport-height: 100dvh;
+            }
+          }
+
           :host {
             --root-padding: 20px;
             --root-padding-top: max(var(--safe-padding-top), var(--root-padding));
             --root-padding-left: max(var(--safe-padding-left), var(--root-padding));
             --root-padding-right: max(var(--safe-padding-right), var(--root-padding));
             --root-padding-bottom: max(var(--safe-padding-bottom), var(--root-padding));
+            --viewport-height: var(--dynamic-viewport-height, 100vh);
             --header-height: 50px;
-            --viewport-height: 100vh;
-            --viewport-height: -moz-available;
-            --viewport-height: -webkit-fill-available;
-            --viewport-height: 100dvh;
             height: 100%;
             display: block;
           }
