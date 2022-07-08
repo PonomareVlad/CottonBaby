@@ -74,6 +74,8 @@ export class AppRoot extends LitElement {
             --root-padding-right: max(var(--safe-padding-right), var(--root-padding));
             --root-padding-bottom: max(var(--safe-padding-bottom), var(--root-padding));
             --viewport-height: var(--dynamic-viewport-height, 100vh);
+            --backdrop-filter: blur(25px) saturate(3);
+            --backdrop-opacity: 0.8;
             --header-height: 50px;
             height: 100%;
             display: block;
