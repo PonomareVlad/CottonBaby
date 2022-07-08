@@ -26,9 +26,8 @@ export class CategoryCard extends LitElement {
           }
 
           .title {
-            --backdrop-filter: blur(10px);
             -webkit-backdrop-filter: var(--backdrop-filter);
-            background-color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(255, 255, 255, var(--backdrop-opacity));
             backdrop-filter: var(--backdrop-filter);
             border-radius: var(--border-radius);
             justify-content: center;

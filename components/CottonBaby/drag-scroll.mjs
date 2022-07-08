@@ -140,7 +140,6 @@ export class DragScroll extends LitElement {
             button {
               --size: 70px;
               --padding: var(--root-padding);
-              --backdrop-filter: blur(25px) saturate(3);
               z-index: 2;
               border: none;
               font-size: 0;
@@ -156,7 +155,7 @@ export class DragScroll extends LitElement {
               background-position: center;
               background-repeat: no-repeat;
               backdrop-filter: var(--backdrop-filter);
-              background-color: rgba(255, 255, 255, 0.7);
+              background-color: rgba(255, 255, 255, var(--backdrop-opacity));
               box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
               -webkit-backdrop-filter: var(--backdrop-filter);
               background-image: url("/assets/images/arrow.svg");

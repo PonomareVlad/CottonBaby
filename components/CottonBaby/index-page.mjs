@@ -56,7 +56,6 @@ export class IndexPage extends LitElement {
 
           @media (max-width: 1023px) {
             .hero-slider::part(next) {
-              --backdrop-filter: blur(10px);
               --size: 30px;
               box-sizing: border-box;
               padding: unset;
@@ -78,7 +77,7 @@ export class IndexPage extends LitElement {
               transform: translate(-50%, 0);
               background-position: center right 10px;
               backdrop-filter: var(--backdrop-filter);
-              background-color: rgba(255, 255, 255, 0.7);
+              background-color: rgba(255, 255, 255, var(--backdrop-opacity));
               -webkit-backdrop-filter: var(--backdrop-filter);
               background-image: url("/assets/images/arrow.svg");
               max-width: calc(100% - var(--root-padding-left) - var(--root-padding-right));

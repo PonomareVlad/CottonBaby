@@ -188,10 +188,9 @@ export class AppHeader extends LitElement {
             .cart {
               --size: 70px;
               --padding: var(--root-padding);
-              --backdrop-filter: blur(25px) saturate(3);
               -webkit-backdrop-filter: var(--backdrop-filter);
               box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
-              background-color: rgba(255, 255, 255, 0.7);
+              background-color: rgba(255, 255, 255, var(--backdrop-opacity));
               backdrop-filter: var(--backdrop-filter);
               background-size: 20px;
               bottom: var(--padding);

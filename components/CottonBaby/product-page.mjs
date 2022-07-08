@@ -24,9 +24,9 @@ export class ProductPage extends LitElement {
             left: var(--padding);
             display: inline-flex;
             text-decoration: none;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: var(--backdrop-filter);
+            -webkit-backdrop-filter: var(--backdrop-filter);
+            background-color: rgba(255, 255, 255, var(--backdrop-opacity));
             top: calc(var(--header-height) + var(--padding));
           }
 

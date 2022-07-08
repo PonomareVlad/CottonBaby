@@ -32,14 +32,13 @@ export class ProductHero extends LitElement {
           }
 
           .overlay {
-            --backdrop-filter: blur(15px);
             height: auto;
             border-radius: 25px;
             padding: var(--root-padding);
             padding-left: var(--root-padding-left);
             padding-right: var(--root-padding-left);
             backdrop-filter: var(--backdrop-filter);
-            background-color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(255, 255, 255, var(--backdrop-opacity));
             -webkit-backdrop-filter: var(--backdrop-filter);
             width: calc(100% - (var(--root-padding-left) * 2));
             margin-bottom: calc((var(--root-padding-bottom) * 2) + 30px);

@@ -22,9 +22,8 @@ export class ProductCard extends LitElement {
           }
 
           .overlay {
-            --backdrop-filter: blur(10px);
             -webkit-backdrop-filter: var(--backdrop-filter);
-            background-color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(255, 255, 255, var(--backdrop-opacity));
             backdrop-filter: var(--backdrop-filter);
             border-radius: var(--border-radius);
             position: absolute;
@@ -70,10 +69,9 @@ export class ProductCard extends LitElement {
 
           .price {
             --padding: 10px;
-            --backdrop-filter: blur(15px);
             -webkit-backdrop-filter: var(--backdrop-filter);
             backdrop-filter: var(--backdrop-filter);
-            background-color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(255, 255, 255, var(--backdrop-opacity));
             border-radius: 100px;
             z-index: 1;
             padding: 0 15px;
