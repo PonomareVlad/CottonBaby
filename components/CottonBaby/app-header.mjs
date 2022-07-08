@@ -1,5 +1,6 @@
 import {css, html, LitElement} from "lit"
 import styles from "#styles"
+import "./app-cart.mjs"
 
 export class AppHeader extends LitElement {
     static get styles() {
@@ -48,7 +49,8 @@ export class AppHeader extends LitElement {
             overflow: hidden;
           }
 
-          .menu-toggle {
+          .menu.button,
+          .close.button {
             --size: 17px;
             display: flex;
             flex-direction: column;
@@ -59,7 +61,8 @@ export class AppHeader extends LitElement {
             font-size: 0;
           }
 
-          .menu-toggle:before, .menu-toggle:after {
+          .menu.button:before, .menu.button:after,
+          .close.button:before, .close.button:after {
             content: '';
             width: var(--size);
             display: block;
@@ -69,6 +72,19 @@ export class AppHeader extends LitElement {
             border-radius: 0.5px;
           }
 
+          .close.button:before,
+          .close.button:after {
+            --size: 20px;
+            transform: rotate(45deg);
+            transform-origin: center;
+          }
+
+          .close.button:after {
+            width: 1px;
+            position: absolute;
+            height: var(--size);
+          }
+
           .logo {
             background-image: url("/assets/images/logo.svg");
             background-origin: content-box;
@@ -76,7 +92,7 @@ export class AppHeader extends LitElement {
             flex-grow: 1;
           }
 
-          .cart {
+          .cart.button {
             background-image: url("/assets/images/cart.svg");
             background-size: 15px;
           }
@@ -104,11 +120,12 @@ export class AppHeader extends LitElement {
             background-image: url("/assets/images/search.svg");
           }
 
-          .menu {
-            gap: 20px;
-            display: none;
-            font-size: 34px;
-            font-weight: 300;
+          #cartTitle {
+            font-size: 18px;
+            line-height: var(--height);
+          }
+
+          nav.menu, app-cart {
             overflow-y: auto;
             flex-direction: column;
             overscroll-behavior-y: contain;
@@ -120,38 +137,61 @@ export class AppHeader extends LitElement {
             padding: var(--root-padding-top) var(--root-padding-right) var(--root-padding-bottom) var(--root-padding-left);
           }
 
-          .menu a {
+          nav.menu {
+            gap: 20px;
+            font-size: 34px;
+            font-weight: 300;
+          }
+
+          nav.menu a {
             color: inherit;
             text-decoration: none;
           }
 
-          #headerMenuState {
+          [name="state"],
+          #menuClose,
+          #cartClose,
+          #cartTitle,
+          nav.menu,
+          app-cart {
             display: none;
           }
 
-          #headerMenuState:checked ~ .controls .menu-toggle:before,
-          #headerMenuState:checked ~ .controls .menu-toggle:after {
-            --size: 20px;
-            transform: rotate(45deg);
-            transform-origin: center;
-          }
-
-          #headerMenuState:checked ~ .controls .menu-toggle:after {
-            width: 1px;
-            position: absolute;
-            height: var(--size);
-          }
-
-          #headerMenuState:checked ~ .controls .logo {
+          #menuState:checked ~ .controls #menuOpen {
             display: none;
           }
 
-          #headerMenuState:checked ~ .controls #headerSearch {
+          #menuState:checked ~ .controls #menuClose {
+            display: flex;
+          }
+
+          #menuState:checked ~ .controls .logo,
+          #cartState:checked ~ .controls .logo {
+            display: none;
+          }
+
+          #menuState:checked ~ .controls #headerSearch {
             display: block;
           }
 
-          #headerMenuState:checked ~ .menu {
+          #menuState:checked ~ nav.menu {
             display: flex;
+          }
+
+          #cartState:checked ~ .controls #cartOpen {
+            display: none;
+          }
+
+          #cartState:checked ~ .controls #cartClose {
+            display: flex;
+          }
+
+          #cartState:checked ~ .controls #cartTitle {
+            display: revert;
+          }
+
+          #cartState:checked ~ app-cart {
+            display: revert;
           }
 
           @media (min-width: 1024px) {
@@ -174,18 +214,19 @@ export class AppHeader extends LitElement {
               content: unset;
             }
 
-            .menu-toggle {
+            .menu.button, .close.button, app-cart, #cartTitle {
               display: none;
             }
 
             .logo {
               padding: unset;
+              display: block;
               flex-grow: unset;
               min-width: 130px;
               margin-right: var(--root-padding);
             }
 
-            .cart {
+            #cartOpen, #cartClose {
               --size: 70px;
               --padding: var(--root-padding);
               -webkit-backdrop-filter: var(--backdrop-filter);
@@ -199,9 +240,14 @@ export class AppHeader extends LitElement {
               height: var(--size);
               width: var(--size);
               position: fixed;
+              z-index: 10;
             }
 
-            .menu {
+            #cartClose{
+              box-shadow: unset;
+            }
+
+            nav.menu {
               gap: unset;
               flex-grow: 1;
               height: auto;
@@ -215,23 +261,43 @@ export class AppHeader extends LitElement {
               -webkit-backdrop-filter: var(--backdrop-filter);
               background: rgba(255, 255, 255, var(--backdrop-opacity));
             }
+
+            app-cart {
+              height: auto;
+              position: fixed;
+              border-radius: 35px;
+              right: var(--root-padding);
+              bottom: var(--root-padding);
+              width: calc(1024px - (var(--root-padding) * 2));
+              box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+              background-color: rgba(255, 255, 255, var(--backdrop-opacity));
+              max-height: calc(100vh - var(--header-height) - var(--root-padding-top) - (var(--root-padding) * 2));
+            }
+
+            #menuState:checked ~ .controls .logo,
+            #cartState:checked ~ .controls .logo {
+              display: block;
+            }
+
+            #cartState:checked ~ .controls #cartTitle {
+              display: none;
+            }
           }
 
         `]
     }
 
-    set menuState(value) {
-        this.shadowRoot.querySelector('#headerMenuState').checked = value
-        this.menuStateHandler()
-        return true;
+    get headerState() {
+        return this.shadowRoot.querySelector('[name="state"]:checked').value
     }
 
-    get menuState() {
-        return this.shadowRoot.querySelector('#headerMenuState').checked
+    setDefaultState() {
+        this.shadowRoot.querySelector('#defaultState').checked = true
+        this.menuStateHandler()
     }
 
     menuStateHandler() {
-        document.documentElement.dataset.disableScroll = this.menuState
+        document.documentElement.dataset.disableScroll = this.headerState
     }
 
     onClick(e) {
@@ -247,23 +313,29 @@ export class AppHeader extends LitElement {
         const href = anchor.href;
         if (href === '' || href.startsWith('mailto:')) return;
         if (anchor.origin !== (location.origin || location.protocol + '//' + location.host)) return;
-        this.menuState = false;
+        this.setDefaultState();
     }
 
     firstUpdated() {
         this.addEventListener('click', this.onClick)
-        window.addEventListener('popstate', () => this.menuState = false);
-        this.shadowRoot.querySelector('#headerMenuState').addEventListener('change', this.menuStateHandler.bind(this))
+        window.addEventListener('popstate', this.setDefaultState.bind(this));
+        this.shadowRoot.querySelectorAll('[name="state"]').forEach(state =>
+            state.addEventListener('change', this.menuStateHandler.bind(this)))
     }
 
     render() {
         return html`
-            <input id="headerMenuState" type="checkbox">
+            <input id="defaultState" name="state" type="radio" value="false" checked>
+            <input id="menuState" name="state" type="radio" value="true">
+            <input id="cartState" name="state" type="radio" value="true">
             <div class="controls">
-                <label title="Открыть меню" class="menu-toggle button" for="headerMenuState">Меню</label>
-                <a class="logo image button" href="/#" title="Перейти на главную страницу">Главная</a>
-                <input id="headerSearch" type="search" placeholder="Поиск по каталогу">
-                <a class="cart image button" href="#" title="Перейти в корзину">Корзина</a>
+                <label title="Открыть меню" for="menuState" id="menuOpen" class="menu button">Меню</label>
+                <label title="Закрыть меню" for="defaultState" id="menuClose" class="close button">Закрыть</label>
+                <a title="Перейти на главную страницу" href="/#" class="logo image button">Главная</a>
+                <span id="cartTitle">Корзина</span>
+                <input placeholder="Поиск по каталогу" id="headerSearch" type="search">
+                <label title="Перейти в корзину" for="cartState" id="cartOpen" class="cart image button">Корзина</label>
+                <label title="Закрыть корзину" for="defaultState" id="cartClose" class="close button">Закрыть</label>
             </div>
             <nav class="menu">
                 <a href="/catalog">Каталог</a>
@@ -273,6 +345,7 @@ export class AppHeader extends LitElement {
                 <a href="/wholesale">Оптом</a>
                 <a href="/about">О компании</a>
             </nav>
+            <app-cart></app-cart>
         `
     }
 }

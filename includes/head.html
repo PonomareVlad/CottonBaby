@@ -55,12 +55,14 @@
         isolation: isolate;
     }
 
-    [data-disable-scroll=true] body {
-        touch-action: none;
-        -ms-scroll-chaining: none;
-        overscroll-behavior: none;
-        -webkit-overflow-scrolling: auto;
-        overflow: hidden;
-        position: sticky;
+    @media (max-width: 1023px) {
+        [data-disable-scroll=true] body {
+            touch-action: none;
+            -ms-scroll-chaining: none;
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: auto;
+            overflow: hidden;
+            position: sticky;
+        }
     }
 </style>

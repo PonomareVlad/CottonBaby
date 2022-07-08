@@ -20,7 +20,7 @@ export default css`
   }
 
   .header-padding {
-    padding-top: var(--header-height)
+    padding-top: calc(var(--header-height) + var(--root-padding-top))
   }
 
   .root-padding {

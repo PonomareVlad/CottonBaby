@@ -64,10 +64,6 @@ export class ProductPage extends LitElement {
             margin-bottom: 5px;
           }
 
-          .product-code {
-            margin-top: 0;
-          }
-
           .price {
             padding: 0 1ch;
             line-height: 32px;
@@ -83,6 +79,7 @@ export class ProductPage extends LitElement {
           }
 
           .product-code {
+            margin-top: 0;
             color: #b1b1b1;
             font-size: 16px;
             margin-bottom: 0;
