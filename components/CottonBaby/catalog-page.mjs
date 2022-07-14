@@ -42,6 +42,7 @@ export class CatalogPage extends LitElement {
             -webkit-appearance: none;
             outline: none;
             margin: 1px 0;
+            color: black;
             cursor: pointer;
             white-space: nowrap;
             display: inline-block;
