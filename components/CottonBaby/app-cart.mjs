@@ -204,7 +204,7 @@ export class AppCart extends LitElement {
             }
 
             .checkout:before {
-              content: 'Оформить заказ на';
+              content: 'Нажмите, чтобы оформить заказ на';
             }
 
             .checkout:after {
