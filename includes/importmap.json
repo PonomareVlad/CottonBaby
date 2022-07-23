@@ -19,6 +19,7 @@
     "@svalit/ssr-client/": "https://cdn.jsdelivr.net/npm/@svalit/ssr-client/",
     "@svalit/router": "https://cdn.jsdelivr.net/npm/@svalit/router",
     "bson-objectid": "https://cdn.skypack.dev/bson-objectid",
-    "svalit/": "https://cdn.jsdelivr.net/npm/svalit/"
+    "svalit/": "https://cdn.jsdelivr.net/npm/svalit/",
+    "core-js/": "https://cdn.skypack.dev/core-js/"
   }
 }
