@@ -1,6 +1,9 @@
 import {css, html, LitElement} from "lit"
 import styles from "#styles"
 import './product-card.mjs'
+import {db} from "#db";
+import {chain} from "#lib/utils.mjs";
+import {syncUntil} from "#lib/directives.mjs";
 
 export class CatalogPage extends LitElement {
     static get styles() {
@@ -126,7 +129,21 @@ export class CatalogPage extends LitElement {
         `]
     }
 
+    fetchProducts() {
+        return chain(db.collection('products').find({}, {limit: 32}), data => data || [])
+    }
+
+    renderProductCard({id, images, title, price, variants} = {}) {
+        const href = `/product/${id}`,
+            src = images ? images.shift() : '',
+            variantsList = variants ? Object.values(variants).map(({title}) => title) : []
+        return html`
+            <product-card title="${title}" price="${price}" src="${src}" href="${href}"
+                          .variants="${variantsList}"></product-card>`
+    }
+
     render() {
+        const data = this.fetchProducts()
         this?.setMeta({title: 'Catalog'})
         return html`
             <h1 class="root-padding">Каталог</h1>
@@ -159,21 +176,7 @@ export class CatalogPage extends LitElement {
                 </div>
             </div>
             <section class="root-padding products-list">
-                <product-card src="https://cottonbaby.ru/images/pictures/i5.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i2.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i4.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i3.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i1.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i5.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i2.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i4.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i3.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i1.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i5.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i2.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i4.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i3.jpg"></product-card>
-                <product-card src="https://cottonbaby.ru/images/pictures/i1.jpg"></product-card>
+                ${syncUntil(chain(data, products => products.map(this.renderProductCard)), 'Загрузка ...')}
             </section>
         `
     }

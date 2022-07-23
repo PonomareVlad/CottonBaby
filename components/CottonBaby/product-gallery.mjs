@@ -27,12 +27,7 @@ export class ProductGallery extends LitElement {
     render() {
         return html`
             <drag-scroll>
-                <img src="https://cloudflare-ipfs.com/ipfs/bafybeihh7elsjpovblkglgve6b6mvgryljgn7be47xgttelv3crmllh2wq/1.jpg"
-                     alt="Image">
-                <img src="https://cottonbaby.ru/images/pictures/i4.jpg" alt="Image">
-                <img src="https://cottonbaby.ru/images/pictures/i3.jpg" alt="Image">
-                <img src="https://cottonbaby.ru/images/pictures/i2.jpg" alt="Image">
-                <img src="https://cottonbaby.ru/images/pictures/i1.jpg" alt="Image">
+                <slot></slot>
             </drag-scroll>`
     }
 }

@@ -38,8 +38,9 @@ const data = readFileSync(file.toString(), 'utf16le'),
         (schema[value] ? {...result, [schema[value]]: index} : result), {}),
     catalogSegment = segment => segment?.toLowerCase() !== 'каталог',
     isPublished = item => item?.published?.toLowerCase() === 'выставлен',
-    parseCategoryName = (string) => parseCategorySegments(string)?.filter(catalogSegment)?.shift(),
-    parseCategorySegments = (string) => string?.split(' ## ')?.filter(catalogSegment)?.shift()?.split('/'),
+    parseImages = string => string ? string.trim().split(' ') : [],
+    parseCategoryName = string => parseCategorySegments(string)?.filter(catalogSegment)?.shift(),
+    parseCategorySegments = string => string?.split(' ## ')?.filter(catalogSegment)?.shift()?.split('/'),
     filterFields = (data, fields) => Object.fromEntries(Object.entries(data).filter(([_]) => fields.includes(_))),
     parseItem = row => Object.fromEntries(Object.entries(parsedSchema).map(([k, i]) => [k, row[i] === '""' ? null : row[i]]));
 
@@ -54,10 +55,12 @@ for await (const row of rows) {
     item.id = parseInt(item.id) || null;
     item.count = parseInt(item.count) || null;
     item.price = parseFloat(item.price) || null;
-    item.images = item.images ? [item.images] : null;
+    item.images = parseImages(item.images) || [];
     item.variantId = parseInt(item.variantId) || null;
     item.basePrice = parseFloat(item.basePrice) || null;
     item.category = category[parseCategoryName(item.category)] || null;
+
+    if (!item.published) continue;
 
     const {id, ...product} = filterFields(item, productFields);
     await products.findOneAndUpdate({id}, {$set: product}, {upsert: true})

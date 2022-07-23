@@ -3,8 +3,11 @@ import './app-hero.mjs'
 import './hero-slider.mjs'
 import './product-hero.mjs'
 import './categories-list.mjs'
-import './products-slider.mjs'
+// import './products-slider.mjs'
 import './drag-scroll.mjs'
+import {db} from "#db";
+import {chain} from "#lib/utils.mjs";
+import {syncUntil} from "#lib/directives.mjs";
 
 export class IndexPage extends LitElement {
     static get styles() {
@@ -33,8 +36,13 @@ export class IndexPage extends LitElement {
             margin: var(--root-padding) 0;
           }
 
-          products-slider {
+          .products-slider {
+            display: block;
             margin: var(--root-padding) 0;
+          }
+
+          .products-slider product-card {
+            min-width: calc(100% - (var(--root-padding) * 2));
           }
 
           .root-padding {
@@ -117,6 +125,10 @@ export class IndexPage extends LitElement {
               right: calc(var(--size) + 20px);
             }
 
+            .products-slider product-card {
+              min-width: 360px;
+            }
+
             h2 {
               font-size: 48px;
             }
@@ -151,7 +163,21 @@ export class IndexPage extends LitElement {
         `
     }
 
+    fetchProducts() {
+        return chain(db.collection('products').find({}, {limit: 16}), data => data || [])
+    }
+
+    renderProductCard({id, images, title, price, variants} = {}) {
+        const href = `/product/${id}`,
+            src = images ? images.shift() : '',
+            variantsList = variants ? Object.values(variants).map(({title}) => title) : []
+        return html`
+            <product-card title="${title}" price="${price}" src="${src}" href="${href}"
+                          .variants="${variantsList}"></product-card>`
+    }
+
     render() {
+        const data = this.fetchProducts()
         this?.setMeta({title: 'Index'})
         return html`
             <drag-scroll class="hero-slider">
@@ -175,7 +201,9 @@ export class IndexPage extends LitElement {
             <h2 class="root-padding" style="text-align: center">Наш каталог</h2>
             <categories-list class="root-padding"></categories-list>
             <h2 class="root-padding">Новинки</h2>
-            <products-slider></products-slider>
+            <drag-scroll class="products-slider" dragging="true">
+                ${syncUntil(chain(data, products => products.map(this.renderProductCard)))}
+            </drag-scroll>
             <div class="about">
                 <div class="content">
                     <h2 class="root-padding">О производстве</h2>

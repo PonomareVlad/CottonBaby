@@ -1,9 +1,16 @@
 import {css, html, LitElement} from "lit"
-import './product-gallery.mjs'
+import {unsafeHTML} from 'lit/directives/unsafe-html.js';
+import {syncUntil} from "#lib/directives.mjs"
 import './product-variant.mjs'
+import {chain} from "#utils"
 import styles from "#styles"
+import {db} from '#db'
 
 export class ProductPage extends LitElement {
+    static get properties() {
+        return {product: {type: Number}}
+    }
+
     static get styles() {
         return [styles, css`
           :host {
@@ -40,6 +47,19 @@ export class ProductPage extends LitElement {
             background-position: center left 10px;
             background-repeat: no-repeat;
             background-image: url("/assets/images/arrow.svg");
+          }
+
+          .product-gallery {
+            --gap: 0;
+            --padding-left: 0;
+            --padding-right: 0;
+            width: 100%;
+          }
+
+          .product-gallery img {
+            aspect-ratio: 1;
+            object-fit: cover;
+            object-position: top;
           }
 
           .product-content {
@@ -132,10 +152,14 @@ export class ProductPage extends LitElement {
               padding-right: calc(var(--root-padding-right) * 2);
             }
 
-            product-gallery {
+            .product-gallery {
               max-width: 45%;
               aspect-ratio: 1;
               max-height: 500px;
+            }
+
+            .product-gallery::part(container) {
+              border-radius: 40px;
             }
 
             .product-content {
@@ -143,7 +167,6 @@ export class ProductPage extends LitElement {
               display: flex;
               padding: unset;
               flex-direction: column;
-              justify-content: space-between;
             }
 
             .title-row {
@@ -168,50 +191,65 @@ export class ProductPage extends LitElement {
         history.back()
     }
 
+    fetchProductDataByID(id = this.product) {
+        return chain(db.collection('products').findOne({id}), data => data || {})
+    }
+
+    fetchCategoryProducts(category) {
+        return chain(db.collection('products').find({category}, {limit: 16}), data => data || [])
+    }
+
+    renderProductCard({id, images, title, price, variants} = {}) {
+        const href = `/product/${id}`,
+            src = images ? images.shift() : '',
+            variantsList = variants ? Object.values(variants).map(({title}) => title) : []
+        return html`
+            <product-card title="${title}" price="${price}" src="${src}" href="${href}"
+                          .variants="${variantsList}"></product-card>`
+    }
+
     render() {
-        this?.setMeta({title: 'Product'})
+        const data = this.fetchProductDataByID()
+        const category = chain(data, ({category}) => this.fetchCategoryProducts(category))
+        chain(data, ({title}) => this?.setMeta({title}))
         return html`
             <a href="../" class="back-button" @click="${this.back}">Назад</a>
             <div class="product-section">
-                <product-gallery></product-gallery>
+                <drag-scroll class="product-gallery">
+                    ${syncUntil(chain(data, ({images}) => images.map(image => html`<img src="${image}">`)), '')}
+                </drag-scroll>
                 <div class="product-content">
                     <div class="title-row">
                         <div class="title-content">
-                            <h1 class="title">Название продукта</h1>
-                            <p class="product-code">123456789</p>
+                            <h1 class="title">${syncUntil(chain(data, ({title}) => title), '')}</h1>
+                            <p class="product-code">${syncUntil(chain(data, ({code}) => code), '')}</p>
                         </div>
-                        <div class="price">100</div>
+                        <div class="price">${syncUntil(chain(data, ({price}) => price), '')}</div>
                     </div>
-                    <p>Состав: 100% хлопок</p>
+                    <br>
+                    <p>Состав: ${syncUntil(chain(data, ({composition}) => composition), '')}</p>
                     <div>
                         <h2>Размеры в наличии:</h2>
                         <div class="variants">
-                            <product-variant>10-20</product-variant>
-                            <product-variant>20-30</product-variant>
-                            <product-variant>30-40</product-variant>
+                            ${syncUntil(chain(data, ({variants}) => Object.values(variants).map(({title}) => html`
+                                <product-variant>${title}</product-variant> `)), '')}
                         </div>
                     </div>
+                    <br>
                     <div>
                         <h2>Описание:</h2>
-                        <p>Длинное описание продукта, которое можно настроить в бек-офисе или синхронизировать из
-                            карточки
-                            оптового сайта.</p>
-                        <p>Также, это описание отображается в результатах поиска Яндекс и Google и помогает в
-                            продвижении
-                            страницы товара.</p>
+                        ${syncUntil(chain(data, ({description}) => description ? unsafeHTML(description) : ''), '')}
                     </div>
                 </div>
             </div>
             <h2 class="root-padding">Из этой коллекции:</h2>
             <drag-scroll dragging="true">
-                <product-card href="/product/5" src="https://cottonbaby.ru/images/pictures/i1.jpg"></product-card>
-                <product-card href="/product/4" src="https://cottonbaby.ru/images/pictures/i3.jpg"></product-card>
-                <product-card href="/product/3" src="https://cottonbaby.ru/images/pictures/i4.jpg"></product-card>
-                <product-card href="/product/2" src="https://cottonbaby.ru/images/pictures/i2.jpg"></product-card>
-                <product-card href="/product/1" src="https://cottonbaby.ru/images/pictures/i5.jpg"></product-card>
+                ${syncUntil(chain(category, products => [...products].reverse().map(this.renderProductCard)), '')}
             </drag-scroll>
             <h2 class="root-padding">Похожие товары:</h2>
-            <products-slider></products-slider>
+            <drag-scroll dragging="true">
+                ${syncUntil(chain(category, products => products.map(this.renderProductCard)), '')}
+            </drag-scroll>
         `
     }
 }

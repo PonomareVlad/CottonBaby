@@ -3,7 +3,13 @@ import {ifDefined} from 'lit/directives/if-defined.js'
 
 export class ProductCard extends LitElement {
     static get properties() {
-        return {title: {type: String}, href: {type: String}, src: {type: String}}
+        return {
+            variants: {type: Array},
+            title: {type: String},
+            price: {type: Number},
+            href: {type: String},
+            src: {type: String}
+        }
     }
 
     static get styles() {
@@ -88,6 +94,7 @@ export class ProductCard extends LitElement {
           }
 
           img.background {
+            object-position: top;
             position: absolute;
             object-fit: cover;
             display: block;
@@ -123,10 +130,12 @@ export class ProductCard extends LitElement {
             <a href="${this.href || '/catalog/category/product'}">
                 <div class="overlay">
                     <h3 class="title">${this.title || 'Название продукта'}</h3>
-                    <p class="sizes">Размеры: <span>10-20</span> <span>20-30</span> <span>30-40</span></p>
+                    <p class="sizes">Размеры:
+                        ${this.variants ? this.variants.map(variant => html` <span>${variant}</span> `) :
+                                html` <span>10-20</span> <span>20-30</span> <span>30-40</span>`}</p>
                 </div>
-                <div class="price">100</div>
-                <img src="${ifDefined(this.src)}" class="background" alt="Product">
+                <div class="price">${this.price || 100}</div>
+                <img src="${ifDefined(this.src)}" class="background" loading="lazy" decoding="async">
             </a>
         `
     }
