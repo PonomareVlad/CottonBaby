@@ -1,0 +1,26 @@
+{
+  "id": 153600306,
+  "code": "0101цвет",
+  "title": "Слип ц/з Цветочек",
+  "path": "Slip_c_z_Cvetochek",
+  "caption": null,
+  "description": "<p><span>Длина изделия от шеи до пяточки 65 см</span></p>",
+  "published": true,
+  "price": 603,
+  "basePrice": 335,
+  "category": 10774174,
+  "collection": 123456789,
+  "color": "молочный+цветастые узоры",
+  "sex": "Девочка",
+  "composition": "100% хлопок",
+  "images": [
+    "https://static.insales-cdn.com/images/products/1/601/247997017/c493b12e530c371c7a5945cb4575702f.jpg"
+  ],
+  "variants": {
+    "265516676": {
+      "id": 265516676,
+      "size": "74-80",
+      "count": 2
+    }
+  }
+}
