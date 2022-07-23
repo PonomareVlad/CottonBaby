@@ -135,7 +135,7 @@ export class CatalogPage extends LitElement {
 
     renderProductCard({id, images, title, price, variants} = {}) {
         const href = `/product/${id}`,
-            src = images ? images.shift() : '',
+            src = images && images[0] ? images[0] : '',
             variantsList = variants ? Object.values(variants).map(({title}) => title) : []
         return html`
             <product-card title="${title}" price="${price}" src="${src}" href="${href}"
