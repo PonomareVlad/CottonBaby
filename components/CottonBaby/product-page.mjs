@@ -4,6 +4,7 @@ import {syncUntil} from "#lib/directives.mjs"
 import './product-variant.mjs'
 import {chain} from "#utils"
 import styles from "#styles"
+import './app-image.mjs'
 import {db} from '#db'
 
 export class ProductPage extends LitElement {
@@ -56,7 +57,10 @@ export class ProductPage extends LitElement {
             width: 100%;
           }
 
-          .product-gallery img {
+          .product-gallery app-image {
+            width: 100%;
+            height: 100%;
+            display: block;
             aspect-ratio: 1;
             object-fit: cover;
             object-position: top;
@@ -216,7 +220,10 @@ export class ProductPage extends LitElement {
             <a href="../" class="back-button" @click="${this.back}">Назад</a>
             <div class="product-section">
                 <drag-scroll class="product-gallery">
-                    ${syncUntil(chain(data, ({images}) => images.map(image => html`<img src="${image}">`)), '')}
+                    ${syncUntil(chain(data, ({images}) => images && images.length ? images.map(image => html`
+                        <app-image src="${image}" decoding="async"></app-image>`) : html`
+                        <app-image></app-image>`), html`
+                        <app-image></app-image>`)}
                 </drag-scroll>
                 <div class="product-content">
                     <div class="title-row">

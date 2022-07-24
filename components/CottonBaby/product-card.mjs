@@ -1,5 +1,6 @@
 import {css, html, LitElement} from "lit"
 import {ifDefined} from 'lit/directives/if-defined.js'
+import './app-image.mjs'
 
 export class ProductCard extends LitElement {
     static get properties() {
@@ -34,7 +35,7 @@ export class ProductCard extends LitElement {
             border-radius: var(--border-radius);
             position: absolute;
             min-height: 40px;
-            padding: 20px;
+            padding: 10px 20px;
             z-index: 1;
             bottom: 0;
             right: 0;
@@ -47,12 +48,9 @@ export class ProductCard extends LitElement {
             }
           }
 
-          .overlay :first-child {
-            margin-top: 0;
-          }
-
+          .overlay :first-child,
           .overlay :last-child {
-            margin-bottom: 0;
+            margin: 0;
           }
 
           .title {
@@ -93,11 +91,8 @@ export class ProductCard extends LitElement {
             font-family: HelveticaNeue, sans-serif, -apple-system;
           }
 
-          img.background {
-            object-position: top;
+          .background {
             position: absolute;
-            object-fit: cover;
-            display: block;
             width: 100%;
             height: 100%;
             z-index: 0;
@@ -114,7 +109,7 @@ export class ProductCard extends LitElement {
             }
 
             .overlay {
-              padding: 25px;
+              padding: 15px 25px;
             }
 
             .price {
@@ -135,7 +130,7 @@ export class ProductCard extends LitElement {
                                 html` <span>10-20</span> <span>20-30</span> <span>30-40</span>`}</p>
                 </div>
                 <div class="price">${this.price || 100}</div>
-                <img src="${ifDefined(this.src)}" class="background" loading="lazy" decoding="async">
+                <app-image src="${ifDefined(this.src)}" class="background" loading="lazy" decoding="async"></app-image>
             </a>
         `
     }
