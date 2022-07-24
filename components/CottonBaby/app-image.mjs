@@ -1,10 +1,14 @@
 import {css, html, LitElement} from "lit"
 import {ifDefined} from 'lit/directives/if-defined.js'
+import {ref, createRef} from "lit/directives/ref.js"
 
 export class AppImage extends LitElement {
+    img = createRef()
+
     static get properties() {
         return {
             src: {type: String},
+            alt: {type: String},
             loading: {type: String},
             decoding: {type: String}
         }
@@ -33,16 +37,31 @@ export class AppImage extends LitElement {
             height: calc(100% + 2px);
             display: block;
             object-fit: cover;
+            opacity: 1;
+            transition: opacity .3s;
             object-position: center;
             border-radius: var(--border-radius);
+          }
+
+          .loading {
+            opacity: 0;
+            transition: opacity .3s;
           }
         `
     }
 
+    load() {
+        this.img.value.classList.toggle('loading', false)
+    }
+
+    updated() {
+        if (!this.img.value.complete) this.img.value.classList.toggle('loading', true)
+    }
+
     render() {
         return html`
-            <picture><img src="${ifDefined(this.src)}"
-                          loading="${ifDefined(this.loading)}" decoding="${ifDefined(this.decoding)}"></picture>`
+            <picture><img src="${ifDefined(this.src)}" alt="${ifDefined(this.alt)}" loading="${ifDefined(this.loading)}"
+                          decoding="${ifDefined(this.decoding)}" @load="${this.load}" ${ref(this.img)}></picture>`
     }
 }
 

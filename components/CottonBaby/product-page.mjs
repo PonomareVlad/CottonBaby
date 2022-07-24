@@ -228,35 +228,29 @@ export class ProductPage extends LitElement {
                 <div class="product-content">
                     <div class="title-row">
                         <div class="title-content">
-                            <h1 class="title">${syncUntil(chain(data, ({title}) => title), '')}</h1>
-                            <p class="product-code">${syncUntil(chain(data, ({code}) => code), '')}</p>
+                            ${syncUntil(chain(data, ({title}) => html`<h1 class="title">${title}</h1>`), '')}
+                            ${syncUntil(chain(data, ({code}) => html`<p class="product-code">${code}</p>`), '')}
                         </div>
-                        <div class="price">${syncUntil(chain(data, ({price}) => price), '')}</div>
+                        ${syncUntil(chain(data, ({price}) => html`
+                            <div class="price">${price}</div>`), '')}
                     </div>
                     <br>
-                    <p>Состав: ${syncUntil(chain(data, ({composition}) => composition), '')}</p>
-                    <div>
-                        <h2>Размеры в наличии:</h2>
-                        <div class="variants">
-                            ${syncUntil(chain(data, ({variants}) => Object.values(variants).map(({title}) => html`
-                                <product-variant>${title}</product-variant> `)), '')}
-                        </div>
-                    </div>
-                    <br>
-                    <div>
-                        <h2>Описание:</h2>
-                        ${syncUntil(chain(data, ({description}) => description ? unsafeHTML(description) : ''), '')}
-                    </div>
+                    ${syncUntil(chain(data, ({composition}) => html`<p>Состав: ${composition}</p>`), '')}
+                    ${syncUntil(chain(data, ({variants}) => html`
+                        <div>
+                            <h2>Размеры в наличии:</h2>
+                            <div class="variants">${Object.values(variants).map(({title}) => html`
+                                <product-variant>${title}</product-variant> `)}
+                            </div>
+                        </div>`), '')}
+                    ${syncUntil(chain(data, ({description}) => description ? html`<br>
+                    <div><h2>Описание:</h2>${unsafeHTML(description)}</div>` : ''), '')}
                 </div>
             </div>
-            <h2 class="root-padding">Из этой коллекции:</h2>
-            <drag-scroll dragging="true">
-                ${syncUntil(chain(category, products => [...products].reverse().map(this.renderProductCard)), '')}
-            </drag-scroll>
-            <h2 class="root-padding">Похожие товары:</h2>
-            <drag-scroll dragging="true">
-                ${syncUntil(chain(category, products => products.map(this.renderProductCard)), '')}
-            </drag-scroll>
+            ${syncUntil(chain(category, products => html`<h2 class="root-padding">Из этой коллекции:</h2>
+            <drag-scroll dragging="true">${[...products].reverse().map(this.renderProductCard)}</drag-scroll>`), '')}
+            ${syncUntil(chain(category, products => html`<h2 class="root-padding">Похожие товары:</h2>
+            <drag-scroll dragging="true">${products.map(this.renderProductCard)}</drag-scroll>`), '')}
         `
     }
 }

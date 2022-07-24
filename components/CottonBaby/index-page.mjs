@@ -202,7 +202,8 @@ export class IndexPage extends LitElement {
             <categories-list class="root-padding"></categories-list>
             <h2 class="root-padding">Новинки</h2>
             <drag-scroll class="products-slider" dragging="true">
-                ${syncUntil(chain(data, products => products.map(this.renderProductCard)))}
+                ${syncUntil(chain(data, products => products.map(this.renderProductCard)), html`
+                    <product-card></product-card>`)}
             </drag-scroll>
             <div class="about">
                 <div class="content">

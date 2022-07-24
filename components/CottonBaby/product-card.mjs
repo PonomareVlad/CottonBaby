@@ -122,14 +122,15 @@ export class ProductCard extends LitElement {
 
     render() {
         return html`
-            <a href="${this.href || '/catalog/category/product'}">
-                <div class="overlay">
-                    <h3 class="title">${this.title || 'Название продукта'}</h3>
-                    <p class="sizes">Размеры:
-                        ${this.variants ? this.variants.map(variant => html` <span>${variant}</span> `) :
-                                html` <span>10-20</span> <span>20-30</span> <span>30-40</span>`}</p>
-                </div>
-                <div class="price">${this.price || 100}</div>
+            <a href="${ifDefined(this.href)}">
+                ${this.title || this.variants ? html`
+                    <div class="overlay">
+                        ${this.title ? html`<h3 class="title">${this.title}</h3>` : ''}
+                        ${this.variants ? html`<p class="sizes">Размеры:
+                            ${this.variants.map(variant => html` <span>${variant}</span> `)}</p>` : ''}
+                    </div>` : ''}
+                ${this.price ? html`
+                    <div class="price">${this.price}</div>` : ''}
                 <app-image src="${ifDefined(this.src)}" class="background" loading="lazy" decoding="async"></app-image>
             </a>
         `

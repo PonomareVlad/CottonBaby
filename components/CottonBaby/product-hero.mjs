@@ -18,7 +18,7 @@ export class ProductHero extends LitElement {
             align-items: center;
           }
 
-          img.background {
+          .background {
             position: absolute;
             object-fit: cover;
             display: block;
@@ -91,7 +91,7 @@ export class ProductHero extends LitElement {
                     <h3 class="title">${this.title || 'Название продукта'}</h3>
                     ${this.description ? html`<p>${this.description}</p>` : null}
                 </div>
-                <img src="${this.src}" class="background" alt="Cover">
+                <app-image src="${this.src}" class="background" alt="Cover"></app-image>
             </slot>
         `
     }
