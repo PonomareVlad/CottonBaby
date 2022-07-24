@@ -117,6 +117,12 @@ export class ProductCard extends LitElement {
               font-size: 30px;
             }
           }
+
+          @media (hover: hover) {
+            :host(:hover) .background {
+              --img-transform: scale(1.05);
+            }
+          }
         `
     }
 

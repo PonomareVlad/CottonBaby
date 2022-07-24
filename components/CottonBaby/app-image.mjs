@@ -26,20 +26,21 @@ export class AppImage extends LitElement {
             background-position: center;
             background-repeat: no-repeat;
             border-radius: var(--border-radius);
-            /*background-color: rgba(128, 128, 128, 0.1);*/
+            background-color: rgba(200, 200, 200, 0.1);
             background-image: url("/assets/images/logo.svg");
           }
 
           img {
+            opacity: 1;
             margin: -1px;
-            position: absolute;
-            width: calc(100% + 2px);
-            height: calc(100% + 2px);
             display: block;
             object-fit: cover;
-            opacity: 1;
-            transition: opacity .3s;
+            position: absolute;
             object-position: center;
+            width: calc(100% + 2px);
+            height: calc(100% + 2px);
+            transition: all .3s ease;
+            transform: var(--img-transform);
             border-radius: var(--border-radius);
           }
 
@@ -51,7 +52,7 @@ export class AppImage extends LitElement {
     }
 
     load() {
-        this.img.value.classList.toggle('loading', false)
+        if (this.img.value.complete) this.img.value.classList.toggle('loading', false)
     }
 
     updated() {

@@ -157,6 +157,21 @@ export class AppHeader extends LitElement {
             display: none;
           }
 
+          #backdrop {
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            opacity: 0;
+            display: block;
+            position: fixed;
+            cursor: pointer;
+            pointer-events: none;
+            will-change: transform;
+            transition: opacity .3s ease .1s;
+            background-color: rgba(0, 0, 0, 0.3);
+          }
+
           #menuState:checked ~ .controls #menuOpen {
             display: none;
           }
@@ -243,7 +258,7 @@ export class AppHeader extends LitElement {
               z-index: 10;
             }
 
-            #cartClose{
+            #cartClose {
               box-shadow: unset;
             }
 
@@ -263,15 +278,26 @@ export class AppHeader extends LitElement {
             }
 
             app-cart {
+              opacity: 0;
               height: auto;
+              display: revert;
               position: fixed;
               border-radius: 35px;
+              pointer-events: none;
+              will-change: transform;
               right: var(--root-padding);
               bottom: var(--root-padding);
+              transition: opacity .3s ease;
               width: calc(1024px - (var(--root-padding) * 2));
               box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
               background-color: rgba(255, 255, 255, var(--backdrop-opacity));
               max-height: calc(100vh - var(--header-height) - var(--root-padding-top) - (var(--root-padding) * 2));
+            }
+
+            #cartState:checked ~ app-cart {
+              transition: opacity .3s ease .1s !important;
+              pointer-events: all;
+              opacity: 1;
             }
 
             #menuState:checked ~ .controls .logo,
@@ -281,6 +307,12 @@ export class AppHeader extends LitElement {
 
             #cartState:checked ~ .controls #cartTitle {
               display: none;
+            }
+
+            #cartState:checked ~ .controls #backdrop {
+              transition: opacity .3s ease !important;
+              pointer-events: all;
+              opacity: 1;
             }
           }
 
@@ -336,6 +368,7 @@ export class AppHeader extends LitElement {
                 <input placeholder="Поиск по каталогу" id="headerSearch" type="search">
                 <label title="Перейти в корзину" for="cartState" id="cartOpen" class="cart image button">Корзина</label>
                 <label title="Закрыть корзину" for="defaultState" id="cartClose" class="close button">Закрыть</label>
+                <label title="Закрыть" for="defaultState" id="backdrop"></label>
             </div>
             <nav class="menu">
                 <a href="/catalog">Каталог</a>

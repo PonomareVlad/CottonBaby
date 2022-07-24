@@ -89,7 +89,9 @@ export class DragScroll extends LitElement {
           }
 
           [part="container"].dragging::slotted(*),
-          [part="container"].dragging slot::slotted(*) {
+          [part="container"].dragging slot::slotted(*),
+          [part="container"].animation::slotted(*),
+          [part="container"].animation slot::slotted(*) {
             pointer-events: none;
           }
 
@@ -203,6 +205,7 @@ export class DragScroll extends LitElement {
 
     mousedown(e) {
         e.preventDefault();
+        this.velX = 0;
         this.isDown = true;
         this.scrollContainer.value.classList.toggle('dragging', false);
         this.startX = e.pageX - this.scrollContainer.value.offsetLeft;
@@ -250,16 +253,19 @@ export class DragScroll extends LitElement {
     beginMomentumTracking() {
         this.cancelMomentumTracking();
         this.momentumID = requestAnimationFrame(this.momentumLoop.bind(this));
+        this.scrollContainer.value.classList.toggle('animation', true);
     }
 
     cancelMomentumTracking() {
         cancelAnimationFrame(this.momentumID);
+        this.scrollContainer.value.classList.toggle('animation', false);
     }
 
     momentumLoop() {
         this.scrollContainer.value.scrollLeft += this.velX;
         this.velX *= 0.95;
-        if (Math.abs(this.velX) > 0.5) this.momentumID = requestAnimationFrame(this.momentumLoop.bind(this))
+        if (Math.abs(this.velX) > 0.5) this.momentumID = requestAnimationFrame(this.momentumLoop.bind(this));
+        else this.scrollContainer.value.classList.toggle('animation', false);
     }
 
     setEventHandlers(filter = {}, remove = false, target = this.scrollContainer.value) {
@@ -286,7 +292,7 @@ export class DragScroll extends LitElement {
     render() {
         return html`
             <div part="container" ${ref(this.scrollContainer)}>
-                <slot></slot>
+                <slot @slotchange="${this.scroll.bind(this)}"></slot>
             </div>
             <div class="navigation">
                 <button part="prev" ${ref(this.scrollPrevButton)} @click="${this.scrollToPrevNode.bind(this)}"
