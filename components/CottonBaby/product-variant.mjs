@@ -12,7 +12,12 @@ export class ProductVariant extends LitElement {
     }
 
     static get properties() {
-        return {title: {type: String}, value: {type: String, reflect: true}}
+        return {
+            id: {type: String},
+            title: {type: String},
+            product: {type: String},
+            value: {type: String, reflect: true}
+        }
     }
 
     static get styles() {
@@ -129,6 +134,7 @@ export class ProductVariant extends LitElement {
     updateValue() {
         if (!this.input.value.reportValidity()) return;
         this.value = parseInt(this.input.value.value) || '0';
+        return this.dispatchEvent(new Event('change', {bubbles: true, composed: true}));
     }
 
     render() {

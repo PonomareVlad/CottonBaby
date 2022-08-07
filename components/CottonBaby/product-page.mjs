@@ -1,6 +1,7 @@
 import {css, html, LitElement} from "lit"
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import {syncUntil} from "#lib/directives.mjs"
+import Cart from "#root/controllers/cart.mjs"
 import './product-variant.mjs'
 import {chain} from "#utils"
 import styles from "#styles"
@@ -8,8 +9,10 @@ import './app-image.mjs'
 import {db} from '#db'
 
 export class ProductPage extends LitElement {
+    cart = new Cart(this)
+
     static get properties() {
-        return {product: {type: Number}}
+        return {product: {type: Number}, hydrated: {state: true}}
     }
 
     static get styles() {
@@ -196,7 +199,7 @@ export class ProductPage extends LitElement {
     }
 
     fetchProductDataByID(id = this.product) {
-        return chain(db.collection('products').findOne({id}), data => data || {})
+        return chain(db.collection('products').findOne({id}), data => (this.data = data || {}))
     }
 
     fetchCategoryProducts(category) {
@@ -210,6 +213,17 @@ export class ProductPage extends LitElement {
         return html`
             <product-card title="${title}" price="${price}" src="${src}" href="${href}"
                           .variants="${variantsList}"></product-card>`
+    }
+
+    getCartValue(productId, variantId) {
+        const value = this.cart.getItemValue(productId, variantId)
+        return this.hydrated ? value ? value.toString() : '0' : '0'
+    }
+
+    firstUpdated() {
+        this.addEventListener('change', (event, variant = event.composedPath().shift()) =>
+            this.cart.setItem(this.data.id, {[variant.id]: parseInt(variant.value)}))
+        this.hydrated = true
     }
 
     render() {
@@ -236,11 +250,12 @@ export class ProductPage extends LitElement {
                     </div>
                     <br>
                     ${syncUntil(chain(data, ({composition}) => html`<p>Состав: ${composition}</p>`), '')}
-                    ${syncUntil(chain(data, ({variants}) => html`
+                    ${syncUntil(chain(data, ({id, variants}) => html`
                         <div>
                             <h2>Размеры в наличии:</h2>
-                            <div class="variants">${Object.values(variants).map(({title}) => html`
-                                <product-variant>${title}</product-variant> `)}
+                            <div class="variants">${Object.values(variants).map(({id: vid, title}) => html`
+                                <product-variant value="${this.getCartValue(id, vid)}" title="${title}"
+                                                 id="${vid}"></product-variant> `)}
                             </div>
                         </div>`), '')}
                     ${syncUntil(chain(data, ({description}) => description ? html`<br>

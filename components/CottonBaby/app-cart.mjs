@@ -1,8 +1,20 @@
-import {css, html, LitElement} from "lit"
+import {css, html, LitElement} from "lit";
+import {all, chain} from "#utils"
 import './product-variant.mjs'
 import styles from "#styles"
+import Cart from "#root/controllers/cart.mjs";
+import {repeat} from 'lit/directives/repeat.js';
+import {syncUntil} from "svalit/directives.mjs";
+import Catalog from "#root/controllers/catalog.mjs";
 
 export class AppCart extends LitElement {
+    catalog = new Catalog(this)
+    cart = new Cart(this)
+
+    static get properties() {
+        return {hydrated: {state: true}}
+    }
+
     static get styles() {
         return [styles, css`
           :host {
@@ -215,58 +227,70 @@ export class AppCart extends LitElement {
         `]
     }
 
-    render() {
+    productTemplate({id, images, title, code, price, variants} = {}, cartItem = {}) {
+        const href = `/product/${id}`,
+            pid = id,
+            count = cartItem ? Object.values(cartItem).reduce((a, b) => a + b, 0) : 0,
+            src = images && images[0] ? images[0] : '',
+            sum = (parseInt(price) || 0) * count
         return html`
-            <div class="products-section">
-                <div class="product">
-                    <a href="/product/1" class="product-content">
-                        <img src="https://cloudflare-ipfs.com/ipfs/bafybeihgc47txsvnuzo2dl34t3aibkichnc7crsyq7sjlsijtxvslsrrdm/IMG_4895-2.jpg"
-                             alt="Image">
-                        <div class="title-content">
-                            <h1 class="title">Слип шапочка Капучино</h1>
-                            <p class="product-code">123456789</p>
-                        </div>
-                    </a>
-                    <div class="price-content">
-                        <div class="price">100</div>
-                        <div class="multiply symbol"></div>
-                        <div class="count">1</div>
-                        <div class="equals symbol"></div>
-                        <div class="summary price">100</div>
+            <div class="product">
+                <a href="${href}" class="product-content">
+                    <img src="${src}">
+                    <div class="title-content">
+                        <h1 class="title">${title}</h1>
+                        <p class="product-code">${code}</p>
                     </div>
-                    <div class="variants">
-                        <product-variant value="1">10-20</product-variant>
-                        <product-variant>20-30</product-variant>
-                        <product-variant>30-40</product-variant>
-                    </div>
+                </a>
+                <div class="price-content">
+                    <div class="price">${price}</div>
+                    <div class="multiply symbol"></div>
+                    <div class="count">${count}</div>
+                    <div class="equals symbol"></div>
+                    <div class="summary price">${sum}</div>
                 </div>
-                <div class="product">
-                    <a href="/product/2" class="product-content">
-                        <img src="https://cloudflare-ipfs.com/ipfs/bafybeihh7elsjpovblkglgve6b6mvgryljgn7be47xgttelv3crmllh2wq/1.jpg"
-                             alt="Image">
-                        <div class="title-content">
-                            <h1 class="title">Название товара</h1>
-                            <p class="product-code">123456789</p>
-                        </div>
-                    </a>
-                    <div class="price-content">
-                        <div class="price">100</div>
-                        <div class="multiply symbol"></div>
-                        <div class="count">1</div>
-                        <div class="equals symbol"></div>
-                        <div class="summary price">100</div>
-                    </div>
-                    <div class="variants">
-                        <product-variant value="1">10-20</product-variant>
-                        <product-variant>20-30</product-variant>
-                        <product-variant>30-40</product-variant>
-                    </div>
+                <div class="variants">
+                    ${variants ? Object.values(variants).map(({id, title} = {}) => html`
+                        <product-variant value="${cartItem[id] || '0'}" title="${title}" id="${id}"
+                                         .product="${pid}"></product-variant>`) : ''}
                 </div>
-            </div>
-            <a href="/checkout" class="checkout">
-                <div class="price">100</div>
-            </a>
-        `
+            </div>`
+    }
+
+    renderProductsList() {
+        const productsList = Object.entries(this.cart.getItems())
+        return repeat(productsList, ([id]) => id, ([id, item]) =>
+            syncUntil(chain(this.catalog.fetchProductDataByID(id),
+                    product => this.productTemplate(product, item)),
+                this.productTemplate({title: 'Загрузка...', price: 0})))
+    }
+
+    renderCartPrice() {
+        const productsList = Object.entries(this.cart.getItems()),
+            productsData = all(productsList.map(([id]) => this.catalog.fetchProductDataByID(id))),
+            sum = () => productsList.map(([id, item]) => this.productSum(id, item)).reduce((a, b) => a + b, 0)
+        return syncUntil(chain(productsData, sum, sum => sum ? html`<a href="/checkout" class="checkout">
+            <div class="price">${sum}</div>
+        </a>` : html`<p>Корзина пуста</p>`))
+    }
+
+    productSum(id, cartItem = {}) {
+        const {price} = this.catalog.fetchProductDataByID(id)
+        return parseFloat(price) * Object.values(cartItem).reduce((a, b) => a + b, 0)
+    }
+
+    firstUpdated() {
+        this.addEventListener('change', (event, variant = event.composedPath().shift()) =>
+            this.cart.setItem(variant.product, {[variant.id]: parseInt(variant.value)}))
+        this.hydrated = true
+    }
+
+    render() {
+        return this.hydrated ? html`
+            <div class="products-section">${this.renderProductsList()}</div>
+            ${this.renderCartPrice()}
+        ` : html`
+            <div class="products-section"><p>Загрузка данных...</p></div>`
     }
 }
 

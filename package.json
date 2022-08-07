@@ -29,6 +29,7 @@
     "urlpattern-polyfill": "^5.0.3"
   },
   "imports": {
+    "#root/*": "./*",
     "#lib/*": "./lib/*",
     "#db": "./lib/db/server.mjs",
     "#utils": "./lib/utils.mjs",

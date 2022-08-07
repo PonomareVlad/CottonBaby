@@ -1,5 +1,6 @@
 {
   "imports": {
+    "#root/": "/",
     "#lib/": "/lib/",
     "#utils": "/lib/utils.mjs",
     "#db": "/lib/db/client.mjs",
