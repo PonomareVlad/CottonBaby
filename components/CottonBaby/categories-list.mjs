@@ -1,16 +1,12 @@
+import Catalog from "#root/controllers/catalog.mjs"
 import {css, html, LitElement} from "lit"
+import {syncUntil} from "svalit/directives.mjs"
+import {chain} from "#utils"
 import './category-card.mjs'
 
-const categories = [
-    'https://cloudflare-ipfs.com/ipfs/bafybeiegxvs5wfga2jlcf7b2zrnqq3onsdjwevlrawjsaw7mh6ikozgf4y/2.jpg',
-    'https://cottonbaby.ru/images/pictures/i2.jpg',
-    'https://cloudflare-ipfs.com/ipfs/bafybeiff6zjwprspp33j2ex6xm3alxrnxaq56jufzpn4raykahio7esply/3.jpg',
-    'https://cottonbaby.ru/images/pictures/i4.jpg',
-    'https://cottonbaby.ru/images/pictures/i3.jpg',
-    'https://cottonbaby.ru/images/pictures/i1.jpg'
-]
-
 export class CategoriesList extends LitElement {
+    catalog = new Catalog(this)
+
     static get styles() {
         return css`
           :host {
@@ -55,11 +51,20 @@ export class CategoriesList extends LitElement {
         `
     }
 
+    renderCategoriesList() {
+        return syncUntil(chain(this.catalog.fetchCategoriesWithProducts(),
+            categories => Object.values(categories).splice(0, 8).map(({title, id, products} = {}) => {
+                const href = `/catalog/${id}`, src = products.reduce((image, {images} = {}) =>
+                    image || Array.isArray(images) ? images.shift() : undefined, undefined)
+                return html`
+                    <category-card href="${href}" title="${title}" src="${src}"></category-card>`
+            })), Array(4).fill(null).map(() => html`
+            <category-card></category-card>`))
+    }
+
     render() {
         return html`
-            <section>${categories.map(src => html`
-                <category-card src="${src}"></category-card>`)}
-            </section>
+            <section>${this.renderCategoriesList()}</section>
             <a href="/catalog" class="button">Посмотреть все категории</a>
         `
     }

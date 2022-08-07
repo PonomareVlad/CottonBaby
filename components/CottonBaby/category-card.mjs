@@ -1,9 +1,10 @@
 import {css, html, LitElement} from "lit"
 import {ifDefined} from 'lit/directives/if-defined.js'
+import './app-image.mjs'
 
 export class CategoryCard extends LitElement {
     static get properties() {
-        return {src: {type: String}, title: {type: String}}
+        return {href: {type: String}, src: {type: String}, title: {type: String}}
     }
 
     static get styles() {
@@ -47,7 +48,7 @@ export class CategoryCard extends LitElement {
             left: 0;
           }
 
-          img.background {
+          app-image {
             border-radius: var(--border-radius);
             position: absolute;
             object-fit: cover;
@@ -63,7 +64,7 @@ export class CategoryCard extends LitElement {
 
           @media (min-width: 1024px) {
             :host {
-              --border-radius: 40px;
+              --border-radius: 30px;
             }
 
             .title {
@@ -75,10 +76,10 @@ export class CategoryCard extends LitElement {
 
     render() {
         return html`
-            <a href="/catalog/category">
+            <a href="${ifDefined(this.href)}">
                 <div>
-                    <h3 class="title">${this.title || 'Категория'}</h3>
-                    <img src="${ifDefined(this.src)}" class="background" alt="Category">
+                    ${this.title ? html`<h3 class="title">${this.title}</h3>` : ''}
+                    <app-image src="${ifDefined(this.src)}" loading="lazy" decoding="async"></app-image>
                 </div>
             </a>
         `
