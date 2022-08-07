@@ -1,11 +1,21 @@
 import {css, html, LitElement} from "lit"
 import styles from "#styles"
 import './product-card.mjs'
-import {db} from "#db";
 import {chain} from "#lib/utils.mjs";
 import {syncUntil} from "#lib/directives.mjs";
+import Catalog from "#root/controllers/catalog.mjs";
 
 export class CatalogPage extends LitElement {
+    catalog = new Catalog(this)
+
+    static get properties() {
+        return {
+            category: {type: Number, reflect: true},
+            variant: {type: String, reflect: true},
+            sort: {type: String, reflect: true}
+        }
+    }
+
     static get styles() {
         return [styles, css`
           :host {
@@ -104,9 +114,9 @@ export class CatalogPage extends LitElement {
 
             select.button {
               min-width: initial;
-              max-width: initial;
+              /*max-width: initial;
               overflow-x: initial;
-              text-overflow: initial;
+              text-overflow: initial;*/
             }
           }
 
@@ -129,8 +139,14 @@ export class CatalogPage extends LitElement {
         `]
     }
 
-    fetchProducts() {
-        return chain(db.collection('products').find({}, {limit: 32}), data => data || [])
+    categoryChange(e) {
+        if (this.category !== e.target.value) history.pushState(null, null, `/catalog/${e.target.value}`)
+        this.category = e.target.value
+    }
+
+    sortChange(e) {
+        if (this.sort !== e.target.value) history.pushState(null, null, `?sort=${e.target.value}`)
+        this.sort = e.target.value
     }
 
     renderProductCard({id, images, title, price, variants} = {}) {
@@ -143,17 +159,23 @@ export class CatalogPage extends LitElement {
     }
 
     render() {
-        const data = this.fetchProducts()
-        this?.setMeta({title: 'Catalog'})
+        const filter = {}, options = {}
+        if (this.category) filter.category = this.category
+        options.sort = this.sort === 'price' ? {price: 1} : {id: -1}
+        const products = this.catalog.fetchProducts(filter, options),
+            category = this.catalog.fetchCategoryByID(this.category),
+            categories = this.catalog.fetchCategories(),
+            variants = chain(this.catalog.fetchVariants(), variants =>
+                [...new Set(variants.map(({title} = {}) => title))].sort((a, b) => parseInt(a) - parseInt(b)))
+        chain(category, ({title = 'Каталог'} = {}) => this?.setMeta({title}))
         return html`
-            <h1 class="root-padding">Каталог</h1>
+            <h1 class="root-padding">${syncUntil(chain(category, ({title = 'Каталог'} = {}) => title), 'Каталог')}</h1>
             <div class="controls-section">
                 <div class="controls">
-                    <select class="button" style="--length: 10">
+                    <select class="button" style="--length: 15" @change="${this.categoryChange}">
                         <option selected disabled>Категория</option>
-                        <option>Категория 1</option>
-                        <option>Категория 2</option>
-                        <option>Категория 3</option>
+                        ${syncUntil(chain(categories, categories => categories.map(({id, title}) => html`
+                            <option value="${id}" ?selected="${this.category === id}">${title}</option>`)))}
                     </select>
                     <select class="button" style="--length: 10">
                         <option selected disabled>Коллекция</option>
@@ -161,22 +183,23 @@ export class CatalogPage extends LitElement {
                         <option>Коллекция 2</option>
                         <option>Коллекция 3</option>
                     </select>
-                    <select class="button" style="--length: 7">
+                    <select class="button" style="--length: 10">
                         <option selected disabled>Размер</option>
-                        <option>10-20</option>
-                        <option>20-30</option>
-                        <option>30-40</option>
+                        ${syncUntil(chain(variants, variants => variants.map(variant => html`
+                            <option value="${variant}" ?selected="${this.variant === variant}">${variant}</option>`)))}
                     </select>
                 </div>
                 <div class="controls">Сортировка:
-                    <input value="date" name="sort" type="radio" id="sort_date" class="hidden" checked>
+                    <input value="date" name="sort" type="radio" id="sort_date" class="hidden"
+                           @change="${this.sortChange}" ?checked="${this.sort !== 'price'}">
                     <label for="sort_date" class="button">По дате</label>
-                    <input value="price" name="sort" type="radio" id="sort_price" class="hidden">
+                    <input value="price" name="sort" type="radio" id="sort_price" class="hidden"
+                           @change="${this.sortChange}" ?checked="${this.sort === 'price'}">
                     <label for="sort_price" class="button">По цене</label>
                 </div>
             </div>
             <section class="root-padding products-list">
-                ${syncUntil(chain(data, products => products.map(this.renderProductCard)), 'Загрузка ...')}
+                ${syncUntil(chain(products, products => products.map(this.renderProductCard)), 'Загрузка ...')}
             </section>
         `
     }

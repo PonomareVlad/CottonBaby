@@ -6,24 +6,32 @@ export default class Catalog {
         (this.host = host).addController(this)
     }
 
-    fetchCategories(filter = {}) {
-        return chain(db.collection('categories').find(filter), data => Array.isArray(data) ? data : [])
+    fetchCategories(filter = {}, options = {}) {
+        return chain(db.collection('categories').find(filter, options), data => Array.isArray(data) ? data : [])
     }
 
-    fetchProducts(filter = {}) {
-        return chain(db.collection('products').find(filter), data => Array.isArray(data) ? data : [])
-    }
-
-    fetchCategoriesWithProducts(categoryFilter = {}, productFilter = {}) {
-        const products = this.fetchProducts(productFilter),
-            categories = chain(this.fetchCategories(categoryFilter), categories =>
+    fetchCategoriesWithProducts({cFilter = {}, cOptions = {}, pFilter = {}, pOptions = {}} = {}) {
+        const products = this.fetchProducts(pFilter, pOptions),
+            categories = chain(this.fetchCategories(cFilter, cOptions), categories =>
                 Object.fromEntries(categories.map(category => [category.id, Object.assign(category, {products: []})])))
         return chain(all([categories, products]), ([categories, products]) =>
-            (products.forEach(product => categories[product.category]?categories[product.category].products.push(product):null), categories))
+            (products.forEach(product => categories[product.category] ? categories[product.category].products.push(product) : null), categories))
     }
 
-    fetchProductDataByID(id) {
+    fetchCategoryByID(id) {
+        return chain(db.collection('categories').findOne({id}), data => data || {})
+    }
+
+    fetchProducts(filter = {}, options = {}) {
+        return chain(db.collection('products').find(filter, options), data => Array.isArray(data) ? data : [])
+    }
+
+    fetchProductByID(id) {
         return chain(db.collection('products').findOne({id}), data => data || {})
+    }
+
+    fetchVariants(filter = {}) {
+        return chain(this.fetchProducts(filter), products => products.flatMap(({variants} = {}) => Object.values(variants)))
     }
 
 }

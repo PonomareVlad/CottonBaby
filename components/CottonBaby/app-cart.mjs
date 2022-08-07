@@ -260,14 +260,14 @@ export class AppCart extends LitElement {
     renderProductsList() {
         const productsList = Object.entries(this.cart.getItems())
         return repeat(productsList, ([id]) => id, ([id, item]) =>
-            syncUntil(chain(this.catalog.fetchProductDataByID(id),
+            syncUntil(chain(this.catalog.fetchProductByID(id),
                     product => this.productTemplate(product, item)),
                 this.productTemplate({title: 'Загрузка...', price: 0})))
     }
 
     renderCartPrice() {
         const productsList = Object.entries(this.cart.getItems()),
-            productsData = all(productsList.map(([id]) => this.catalog.fetchProductDataByID(id))),
+            productsData = all(productsList.map(([id]) => this.catalog.fetchProductByID(id))),
             sum = () => productsList.map(([id, item]) => this.productSum(id, item)).reduce((a, b) => a + b, 0)
         return syncUntil(chain(productsData, sum, sum => sum ? html`<a href="/checkout" class="checkout">
             <div class="price">${sum}</div>
@@ -275,7 +275,7 @@ export class AppCart extends LitElement {
     }
 
     productSum(id, cartItem = {}) {
-        const {price} = this.catalog.fetchProductDataByID(id)
+        const {price} = this.catalog.fetchProductByID(id)
         return parseFloat(price) * Object.values(cartItem).reduce((a, b) => a + b, 0)
     }
 

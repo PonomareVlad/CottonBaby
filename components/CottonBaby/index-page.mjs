@@ -178,7 +178,7 @@ export class IndexPage extends LitElement {
 
     render() {
         const data = this.fetchProducts()
-        this?.setMeta({title: 'Index'})
+        this?.setMeta({title: 'Cotton Baby'})
         return html`
             <drag-scroll class="hero-slider">
                 <app-hero></app-hero>
