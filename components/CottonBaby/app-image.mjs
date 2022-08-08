@@ -9,6 +9,9 @@ export class AppImage extends LitElement {
         return {
             src: {type: String},
             alt: {type: String},
+            cdn: {type: Boolean},
+            width: {type: Number},
+            quality: {type: Number},
             loading: {type: String},
             decoding: {type: String}
         }
@@ -59,10 +62,22 @@ export class AppImage extends LitElement {
         if (!this.img.value.complete) this.img.value.classList.toggle('loading', true)
     }
 
+    getImageURL() {
+        if (!this.cdn) return this.src;
+        const url = this.src
+        const q = this.width || 100
+        const w = this.width || 2048
+        const parametersURL = new URL('localhost')
+        Object.entries({url, q, w}).forEach(([name, value]) => parametersURL.searchParams.set(name, value))
+        return `/_vercel/image?${parametersURL.search}`
+    }
+
     render() {
         return html`
-            <picture><img src="${ifDefined(this.src)}" alt="${ifDefined(this.alt)}" loading="${ifDefined(this.loading)}"
-                          decoding="${ifDefined(this.decoding)}" @load="${this.load}" ${ref(this.img)}></picture>`
+            <picture>
+                <img src="${ifDefined(this.getImageURL())}" alt="${ifDefined(this.alt)}" @load="${this.load}"
+                     loading="${ifDefined(this.loading)}" decoding="${ifDefined(this.decoding)} ${ref(this.img)}">
+            </picture>`
     }
 }
 

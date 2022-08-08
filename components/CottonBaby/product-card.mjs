@@ -137,7 +137,8 @@ export class ProductCard extends LitElement {
                     </div>` : ''}
                 ${this.price ? html`
                     <div class="price">${this.price}</div>` : ''}
-                <app-image src="${ifDefined(this.src)}" class="background" loading="lazy" decoding="async"></app-image>
+                <app-image src="${ifDefined(this.src)}" class="background" loading="lazy" decoding="async"
+                           cdn="true" width="1024" quality="75"></app-image>
             </a>
         `
     }

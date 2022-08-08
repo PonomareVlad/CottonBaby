@@ -91,7 +91,7 @@ export class ProductHero extends LitElement {
                     <h3 class="title">${this.title || 'Название продукта'}</h3>
                     ${this.description ? html`<p>${this.description}</p>` : null}
                 </div>
-                <app-image src="${this.src}" class="background" alt="Cover"></app-image>
+                <app-image src="${this.src}" class="background" alt="Cover" cdn="true" quality="75"></app-image>
             </slot>
         `
     }

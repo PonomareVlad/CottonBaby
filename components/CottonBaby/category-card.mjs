@@ -79,7 +79,8 @@ export class CategoryCard extends LitElement {
             <a href="${ifDefined(this.href)}">
                 <div>
                     ${this.title ? html`<h3 class="title">${this.title}</h3>` : ''}
-                    <app-image src="${ifDefined(this.src)}" loading="lazy" decoding="async"></app-image>
+                    <app-image src="${ifDefined(this.src)}" loading="lazy" decoding="async" cdn="true" width="1024"
+                               quality="75"></app-image>
                 </div>
             </a>
         `
