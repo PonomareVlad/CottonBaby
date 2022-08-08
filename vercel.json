@@ -14,7 +14,7 @@
       "destination": "/api/page.mjs"
     },
     {
-      "source": "(.*)",
+      "source": "/((?!_vercel).*)",
       "destination": "/api/index.mjs"
     }
   ],
