@@ -69,7 +69,7 @@ export class AppImage extends LitElement {
         const q = this.quality || 95
         const parametersURL = new URL('http://localhost')
         Object.entries({url, q, w}).forEach(([name, value]) => parametersURL.searchParams.set(name, value))
-        return `/_vercel/image${parametersURL.search}`
+        return `https://cotton-baby-cdn.vercel.app/_vercel/image${parametersURL.search}`
     }
 
     render() {

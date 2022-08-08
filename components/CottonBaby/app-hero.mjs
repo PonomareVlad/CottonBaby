@@ -80,7 +80,7 @@ export class AppHero extends LitElement {
                 <h1 class="header">Cotton Baby</h1>
                 <p>Магазин десткой одежды собственного производства</p>
             </div>
-            <img src="https://cotton-baby.vercel.app/_vercel/image?url=https://cloudflare-ipfs.com/ipfs/bafybeihh7elsjpovblkglgve6b6mvgryljgn7be47xgttelv3crmllh2wq/1.jpg&q=75&w=2048"
+            <img src="https://cotton-baby-cdn.vercel.app/_vercel/image?url=https://cloudflare-ipfs.com/ipfs/bafybeihh7elsjpovblkglgve6b6mvgryljgn7be47xgttelv3crmllh2wq/1.jpg&q=75&w=2048"
                  class="background" alt="Cover">
         `
     }
