@@ -1,0 +1,20 @@
+{
+  "version": 3,
+  "images": {
+    "sizes": [
+      128,
+      1024,
+      2048
+    ],
+    "domains": [
+      "cottonbaby.ru",
+      "cloudflare-ipfs.com",
+      "static.insales-cdn.com"
+    ],
+    "minimumCacheTTL": 31536000,
+    "formats": [
+      "image/webp",
+      "image/avif"
+    ]
+  }
+}
