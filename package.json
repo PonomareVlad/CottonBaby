@@ -3,14 +3,13 @@
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "vc dev --listen 80",
+    "dev-local": "vc dev --listen 80",
     "dev-container": "vc dev --listen 3000",
     "dev-watch": "servor --reload & vc dev --listen 80",
     "storybook": "wds --open",
     "build-storybook": "build-storybook",
     "zeplin-connect": "zeplin connect",
-    "zeplin-connect-dev-mode": "zeplin connect --dev",
-    "vercel-build": "node ./lib/build.mjs"
+    "zeplin-connect-dev-mode": "zeplin connect --dev"
   },
   "dependencies": {
     "@lit-labs/ssr": "npm:@svalit/ssr@latest",
