@@ -66,7 +66,7 @@ export class AppImage extends LitElement {
         if (!this.cdn) return this.src;
         const url = this.src
         const w = this.width || 2048
-        const q = this.quality || 100
+        const q = this.quality || 95
         const parametersURL = new URL('http://localhost')
         Object.entries({url, q, w}).forEach(([name, value]) => parametersURL.searchParams.set(name, value))
         return `/_vercel/image${parametersURL.search}`
