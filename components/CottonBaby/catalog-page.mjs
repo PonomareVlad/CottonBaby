@@ -3,10 +3,12 @@ import styles from "#styles"
 import './product-card.mjs'
 import {chain} from "#lib/utils.mjs";
 import {syncUntil} from "#lib/directives.mjs";
+import {ref, createRef} from 'lit/directives/ref.js'
 import Catalog from "#root/controllers/catalog.mjs";
 
 export class CatalogPage extends LitElement {
     catalog = new Catalog(this)
+    list = createRef()
 
     static get properties() {
         return {
@@ -49,6 +51,10 @@ export class CatalogPage extends LitElement {
             min-width: calc(var(--root-padding-right) - var(--gap));
           }
 
+          .controls input {
+            display: none;
+          }
+
           .button {
             --size: 30px;
             --padding: calc(var(--size) / 2);
@@ -75,10 +81,6 @@ export class CatalogPage extends LitElement {
             max-width: var(--width);
           }
 
-          .hidden {
-            display: none;
-          }
-
           input[type="radio"]:checked + label {
             background-color: transparent;
           }
@@ -88,6 +90,10 @@ export class CatalogPage extends LitElement {
             flex-direction: column;
             gap: var(--root-padding);
             padding-bottom: var(--root-padding-bottom);
+          }
+
+          .products-list .hidden {
+            visibility: hidden;
           }
 
           @media (min-width: 1024px) {
@@ -158,6 +164,37 @@ export class CatalogPage extends LitElement {
                           .variants="${variantsList}"></product-card>`
     }
 
+    intersect(elements = []) {
+        const visibleElements = elements.filter(({isIntersecting}) => isIntersecting).map(({target}) => target)
+
+        if (!visibleElements.length) return;
+
+        let prevElement = visibleElements.at(0).previousElementSibling, remainPrev = 30,
+            nextElement = visibleElements.at(-1).nextElementSibling, remainNext = 30
+
+        while (remainPrev-- > 0 && prevElement) {
+            visibleElements.unshift(prevElement)
+            prevElement = prevElement.previousElementSibling
+        }
+        while (remainNext-- > 0 && nextElement) {
+            visibleElements.push(nextElement)
+            nextElement = nextElement.nextElementSibling
+        }
+
+        Array.from(this.list.value.children).forEach(element =>
+            element.classList.toggle('hidden', !visibleElements.includes(element)))
+    }
+
+    connectedCallback() {
+        super.connectedCallback()
+        this.observer = new IntersectionObserver(elements =>
+            requestAnimationFrame(this.intersect.bind(this, elements)), {threshold: 0});
+    }
+
+    updated() {
+        Array.from(this.list.value.children).forEach(this.observer.observe.bind(this.observer))
+    }
+
     render() {
         const filter = {}, options = {}
         if (this.category) filter.category = this.category
@@ -190,15 +227,15 @@ export class CatalogPage extends LitElement {
                     </select>
                 </div>
                 <div class="controls">Сортировка:
-                    <input value="date" name="sort" type="radio" id="sort_date" class="hidden"
-                           @change="${this.sortChange}" ?checked="${this.sort !== 'price'}">
+                    <input value="date" name="sort" type="radio" id="sort_date" @change="${this.sortChange}"
+                           ?checked="${this.sort !== 'price'}">
                     <label for="sort_date" class="button">По дате</label>
-                    <input value="price" name="sort" type="radio" id="sort_price" class="hidden"
-                           @change="${this.sortChange}" ?checked="${this.sort === 'price'}">
+                    <input value="price" name="sort" type="radio" id="sort_price" @change="${this.sortChange}"
+                           ?checked="${this.sort === 'price'}">
                     <label for="sort_price" class="button">По цене</label>
                 </div>
             </div>
-            <section class="root-padding products-list">
+            <section class="root-padding products-list" ${ref(this.list)}>
                 ${syncUntil(chain(products, products => products.map(this.renderProductCard)), 'Загрузка ...')}
             </section>
         `
