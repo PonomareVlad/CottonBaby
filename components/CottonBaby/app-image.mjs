@@ -63,7 +63,7 @@ export class AppImage extends LitElement {
     }
 
     getImageURL() {
-        if (!this.cdn) return this.src;
+        if (!this.src || !this.cdn) return this.src;
         const url = this.src
         const w = this.width || 2048
         const q = this.quality || 95
