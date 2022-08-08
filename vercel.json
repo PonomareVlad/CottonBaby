@@ -4,20 +4,6 @@
       "includeFiles": "+(components|includes|lib)/**"
     }
   },
-  "rewrites": [
-    {
-      "source": "/api/db/:collection/:method",
-      "destination": "/api/db.mjs"
-    },
-    {
-      "source": "/api/page/:page",
-      "destination": "/api/page.mjs"
-    },
-    {
-      "source": "/((?!_vercel).*)",
-      "destination": "/api/index.mjs"
-    }
-  ],
   "trailingSlash": false,
   "github": {
     "silent": true
