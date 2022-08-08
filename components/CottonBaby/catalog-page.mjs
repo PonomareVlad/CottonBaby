@@ -164,7 +164,7 @@ export class CatalogPage extends LitElement {
                           .variants="${variantsList}"></product-card>`
     }
 
-    intersect(elements = []) {
+    /*intersect(elements = []) {
         const visibleElements = elements.filter(({isIntersecting}) => isIntersecting).map(({target}) => target)
 
         if (!visibleElements.length) return;
@@ -193,7 +193,7 @@ export class CatalogPage extends LitElement {
 
     updated() {
         Array.from(this.list.value.children).forEach(this.observer.observe.bind(this.observer))
-    }
+    }*/
 
     render() {
         const filter = {}, options = {}

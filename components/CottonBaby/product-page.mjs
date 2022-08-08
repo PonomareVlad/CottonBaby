@@ -235,7 +235,9 @@ export class ProductPage extends LitElement {
             <div class="product-section">
                 <drag-scroll class="product-gallery">
                     ${syncUntil(chain(data, ({images}) => images && images.length ? images.map(image => html`
-                        <app-image src="${image}" decoding="async" cdn="true"></app-image>`) : html`
+                        <app-image src="${image}" decoding="async" cdn="true">
+                            <app-image src="${image}" decoding="async" cdn="true" quality="75" width="1024"></app-image>
+                        </app-image>`) : html`
                         <app-image></app-image>`), html`
                         <app-image></app-image>`)}
                 </drag-scroll>

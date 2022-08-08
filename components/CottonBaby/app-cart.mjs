@@ -42,13 +42,12 @@ export class AppCart extends LitElement {
             align-items: flex-start;
           }
 
-          img {
+          app-image {
             --size: 57px;
-            aspect-ratio: 1;
-            object-fit: cover;
-            width: var(--size);
+            --border-radius: 17px;
             height: var(--size);
-            border-radius: 17px;
+            width: var(--size);
+            flex-shrink: 0;
           }
 
           .title-content .title {
@@ -236,7 +235,7 @@ export class AppCart extends LitElement {
         return html`
             <div class="product">
                 <a href="${href}" class="product-content">
-                    <img src="${src}">
+                    <app-image src="${src}" cdn="true" width="128" quality="75"></app-image>
                     <div class="title-content">
                         <h1 class="title">${title}</h1>
                         <p class="product-code">${code}</p>

@@ -25,7 +25,7 @@ export class AppImage extends LitElement {
             display: block;
             overflow: hidden;
             position: relative;
-            background-size: 100px;
+            background-size: 30%;
             background-position: center;
             background-repeat: no-repeat;
             border-radius: var(--border-radius);
@@ -51,6 +51,15 @@ export class AppImage extends LitElement {
             opacity: 0;
             transition: opacity .3s;
           }
+
+          ::slotted(*) {
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 0;
+            position: absolute;
+          }
         `
     }
 
@@ -74,6 +83,7 @@ export class AppImage extends LitElement {
 
     render() {
         return html`
+            <slot></slot>
             <picture>
                 <img src="${ifDefined(this.getImageURL())}" alt="${ifDefined(this.alt)}" @load="${this.load}"
                      loading="${ifDefined(this.loading)}" decoding="${ifDefined(this.decoding)} ${ref(this.img)}">
