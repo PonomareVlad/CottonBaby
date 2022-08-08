@@ -63,13 +63,13 @@ export class AppImage extends LitElement {
     }
 
     getImageURL() {
-        if (!this.cdn || location.host === 'localhost') return this.src;
+        if (!this.cdn) return this.src;
         const url = this.src
         const w = this.width || 2048
         const q = this.quality || 95
-        const parametersURL = new URL('http://localhost')
-        Object.entries({url, q, w}).forEach(([name, value]) => parametersURL.searchParams.set(name, value))
-        return `https://cotton-baby-cdn.vercel.app/_vercel/image${parametersURL.search}`
+        const cdnURL = new URL('https://cotton-baby-cdn.vercel.app/_vercel/image')
+        Object.entries({url, q, w}).forEach(([name, value]) => cdnURL.searchParams.set(name, value))
+        return cdnURL.href
     }
 
     render() {
