@@ -3,13 +3,14 @@ import './app-hero.mjs'
 import './hero-slider.mjs'
 import './product-hero.mjs'
 import './categories-list.mjs'
-// import './products-slider.mjs'
 import './drag-scroll.mjs'
-import {db} from "#db";
 import {chain} from "#lib/utils.mjs";
 import {syncUntil} from "#lib/directives.mjs";
+import Catalog from "#root/controllers/catalog.mjs";
 
 export class IndexPage extends LitElement {
+    catalog = new Catalog(this)
+
     static get styles() {
         return css`
           .hero-slider {
@@ -163,10 +164,6 @@ export class IndexPage extends LitElement {
         `
     }
 
-    fetchProducts() {
-        return chain(db.collection('products').find({}, {limit: 16}), data => data || [])
-    }
-
     renderProductCard({id, images, title, price, variants} = {}) {
         const href = `/product/${id}`,
             src = images && images[0] ? images[0] : '',
@@ -177,7 +174,7 @@ export class IndexPage extends LitElement {
     }
 
     render() {
-        const data = this.fetchProducts()
+        const data = this.catalog.fetchProducts(null, {sort: {id: -1}, limit: 16})
         this?.setMeta({title: 'Cotton Baby'})
         return html`
             <drag-scroll class="hero-slider">

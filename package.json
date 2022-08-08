@@ -9,7 +9,8 @@
     "storybook": "wds --open",
     "build-storybook": "build-storybook",
     "zeplin-connect": "zeplin connect",
-    "zeplin-connect-dev-mode": "zeplin connect --dev"
+    "zeplin-connect-dev-mode": "zeplin connect --dev",
+    "vercel-build": "node ./lib/build.mjs"
   },
   "dependencies": {
     "@lit-labs/ssr": "npm:@svalit/ssr@latest",
