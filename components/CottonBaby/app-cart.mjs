@@ -249,8 +249,8 @@ export class AppCart extends LitElement {
                     <div class="summary price">${sum}</div>
                 </div>
                 <div class="variants">
-                    ${variants ? Object.values(variants).map(({id, title} = {}) => html`
-                        <product-variant value="${cartItem[id] || '0'}" title="${title}" id="${id}"
+                    ${variants ? Object.values(variants).map(({id, title, count} = {}) => html`
+                        <product-variant value="${cartItem[id] || '0'}" title="${title}" id="${id}" max="${count}"
                                          .product="${pid}"></product-variant>`) : ''}
                 </div>
             </div>`

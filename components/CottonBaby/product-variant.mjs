@@ -15,6 +15,7 @@ export class ProductVariant extends LitElement {
         return {
             id: {type: String},
             title: {type: String},
+            max: {type: Number},
             product: {type: String},
             value: {type: String, reflect: true}
         }
@@ -91,6 +92,11 @@ export class ProductVariant extends LitElement {
             margin: 0;
           }
 
+          button[disabled] {
+            visibility: hidden;
+            pointer-events: none;
+          }
+
           input::-webkit-outer-spin-button,
           input::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -112,6 +118,7 @@ export class ProductVariant extends LitElement {
             display: inline-block;
             white-space: nowrap;
             color: transparent;
+            visibility: revert;
             line-height: 0;
             font-size: 0;
             width: 100%;
@@ -128,6 +135,10 @@ export class ProductVariant extends LitElement {
             font-size: 16px;
             color: black;
           }
+
+          :host([max="0"]:not(:focus-within)) button.add:after {
+            content: 'Нет в наличии';
+          }
         `]
     }
 
@@ -138,13 +149,16 @@ export class ProductVariant extends LitElement {
     }
 
     render() {
+        const max = typeof this.max === 'number' ? (this.max < 0 ? 0 : this.max) : 99
+        const value = typeof this.value === 'number' ? this.value : parseInt(this.value)
         return html`
             <span class="title"><slot>${this.title}</slot></span>
             <span class="count">
                 <button @click="${() => this.input.value.stepDown() || this.updateValue()}">-</button>
-                <input type="number" placeholder="0" max="99" min="0" inputmode="numeric" ${ref(this.input)}
-                       .value="${live(this.value || 0)}" @change="${this.updateValue}" @input="${this.updateValue}">
-                <button @click="${() => this.input.value.stepUp() || this.updateValue()}" class="add">+</button>
+                <input type="number" placeholder="0" max="${max}" min="0" inputmode="numeric" ${ref(this.input)}
+                       .value="${live(value)}" @change="${this.updateValue}" @input="${this.updateValue}">
+                <button @click="${() => this.input.value.stepUp() || this.updateValue()}" class="add"
+                        ?disabled="${value >= max}">+</button>
             </span>`
     }
 }

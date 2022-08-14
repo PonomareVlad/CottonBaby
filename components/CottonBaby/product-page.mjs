@@ -255,8 +255,8 @@ export class ProductPage extends LitElement {
                     ${syncUntil(chain(data, ({id, variants}) => html`
                         <div>
                             <h2>Размеры в наличии:</h2>
-                            <div class="variants">${Object.values(variants).map(({id: vid, title}) => html`
-                                <product-variant value="${this.getCartValue(id, vid)}" title="${title}"
+                            <div class="variants">${Object.values(variants).map(({id: vid, title, count}) => html`
+                                <product-variant value="${this.getCartValue(id, vid)}" title="${title}" max="${count}"
                                                  id="${vid}"></product-variant> `)}
                             </div>
                         </div>`), '')}
