@@ -105,7 +105,7 @@ export class CheckoutPage extends LitElement {
             sum,
             orderid,
             lang: 'ru',
-            cart: fiscalCart,
+            cart: JSON.stringify(fiscalCart),
             service_name: `Оплата заказа ID: ${orderid}`,
             user_result_callback: `${new URL(`/order/${orderid}`, location.href)}`
         })
