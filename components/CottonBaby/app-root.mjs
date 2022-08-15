@@ -75,7 +75,7 @@ export class AppRoot extends LitElement {
 
           @supports (height: 100dvh) {
             :host {
-              --dynamic-viewport-height: 100 dvh;
+              --dynamic-viewport-height: 100dvh;
             }
           }
 
