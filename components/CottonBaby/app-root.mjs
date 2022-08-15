@@ -5,8 +5,10 @@ import {Router} from '@svalit/router'
 import styles from "#styles"
 import './app-header.mjs'
 import './index-page.mjs'
+import './order-page.mjs'
 import './catalog-page.mjs'
 import './product-page.mjs'
+import './checkout-page.mjs'
 
 export class AppRoot extends LitElement {
     safeUntil = new SafeUntil(this)
@@ -35,7 +37,17 @@ export class AppRoot extends LitElement {
             path: '/product/:product',
             render: ({product}) => html`
                 <product-page product="${product}" .setMeta="${this.setMeta}"></product-page>`
-        }
+        },
+        {
+            path: '/checkout',
+            render: () => html`
+                <checkout-page .setMeta="${this.setMeta}"></checkout-page>`
+        },
+        {
+            path: '/order/:order',
+            render: ({order}) => html`
+                <order-page order="${order}" .setMeta="${this.setMeta}"></order-page>`
+        },
     ], {
         fallback: {
             render: () => {
@@ -63,7 +75,7 @@ export class AppRoot extends LitElement {
 
           @supports (height: 100dvh) {
             :host {
-              --dynamic-viewport-height: 100dvh;
+              --dynamic-viewport-height: 100 dvh;
             }
           }
 

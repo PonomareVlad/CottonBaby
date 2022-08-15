@@ -30,8 +30,22 @@ export default class Catalog {
         return chain(db.collection('products').findOne({id}), data => data || {})
     }
 
+    fetchProductsByID(products = []) {
+        return all(products.map(id => this.fetchProductByID(id)))
+    }
+
     fetchVariants(filter = {}) {
         return chain(this.fetchProducts(filter), products => products.flatMap(({variants} = {}) => Object.values(variants)))
+    }
+
+    getProductsSum(products = {}) {
+        return Object.entries(products).map(([id, variants]) =>
+            this.getVariantsSum(id, variants)).reduce((a, b) => chain(a, a => chain(b, b => a + b)), 0)
+    }
+
+    getVariantsSum(id, cartItem = {}) {
+        return chain(this.fetchProductByID(id), ({price}) =>
+            parseFloat(price) * Object.values(cartItem).reduce((a, b) => a + b, 0))
     }
 
 }
