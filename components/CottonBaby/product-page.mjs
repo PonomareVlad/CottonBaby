@@ -3,7 +3,7 @@ import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import {syncUntil} from "#lib/directives.mjs"
 import Cart from "#root/controllers/cart.mjs"
 import './product-variant.mjs'
-import {chain} from "#utils"
+import {chain, currency} from "#utils"
 import styles from "#styles"
 import './app-image.mjs'
 import {db} from '#db'
@@ -98,12 +98,12 @@ export class ProductPage extends LitElement {
             white-space: nowrap;
             display: inline-block;
             border: solid 1px black;
-          }
-
-          .price:after {
-            content: ' ₽';
             font-family: HelveticaNeue, sans-serif, -apple-system;
           }
+
+          /*.price:after {
+            content: ' ₽';
+          }*/
 
           .product-code {
             margin-top: 0;
@@ -248,7 +248,7 @@ export class ProductPage extends LitElement {
                             ${syncUntil(chain(data, ({code}) => html`<p class="product-code">${code}</p>`), '')}
                         </div>
                         ${syncUntil(chain(data, ({price}) => html`
-                            <div class="price">${price}</div>`), '')}
+                            <div class="price">${currency.format(price)}</div>`), '')}
                     </div>
                     <br>
                     ${syncUntil(chain(data, ({composition}) => html`<p>Состав: ${composition}</p>`), '')}

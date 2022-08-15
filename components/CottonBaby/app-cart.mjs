@@ -1,5 +1,5 @@
 import {css, html, LitElement} from "lit";
-import {all, chain} from "#utils"
+import {all, chain, currency} from "#utils"
 import './product-variant.mjs'
 import styles from "#styles"
 import Cart from "#root/controllers/cart.mjs";
@@ -12,7 +12,7 @@ export class AppCart extends LitElement {
     cart = new Cart(this)
 
     static get properties() {
-        return {hydrated: {state: true}}
+        return {hydrated: {state: true}, count: {reflect: true}}
     }
 
     static get styles() {
@@ -110,6 +110,7 @@ export class AppCart extends LitElement {
           }
 
           .price, .count {
+            flex-shrink: 0;
             padding: 0 1ch;
             min-width: 34px;
             line-height: 32px;
@@ -118,6 +119,7 @@ export class AppCart extends LitElement {
             white-space: nowrap;
             display: inline-block;
             border: solid 1px black;
+            font-family: HelveticaNeue, sans-serif, -apple-system;
           }
 
           .count {
@@ -125,10 +127,10 @@ export class AppCart extends LitElement {
             border: solid 1px #979797;
           }
 
-          .price:after {
+          /*.price:after {
             content: ' ₽';
             font-family: HelveticaNeue, sans-serif, -apple-system;
-          }
+          }*/
 
           .price.summary {
             background-color: rgb(233 233 235);
@@ -164,6 +166,10 @@ export class AppCart extends LitElement {
             padding-right: var(--root-padding-left);
           }
 
+          .checkout:before, .checkout:after {
+            white-space: nowrap;
+          }
+
           .checkout:before {
             content: 'Заказ на';
           }
@@ -180,7 +186,7 @@ export class AppCart extends LitElement {
 
           @media (min-width: 1024px) {
             :host:before {
-              content: 'Корзина';
+              content: 'Корзина • ' attr(count);
               font-size: 34px;
               font-weight: 600;
               position: absolute;
@@ -242,11 +248,11 @@ export class AppCart extends LitElement {
                     </div>
                 </a>
                 <div class="price-content">
-                    <div class="price">${price}</div>
+                    <div class="price">${currency.format(price)}</div>
                     <div class="multiply symbol"></div>
                     <div class="count">${count}</div>
                     <div class="equals symbol"></div>
-                    <div class="summary price">${sum}</div>
+                    <div class="summary price">${currency.format(sum)}</div>
                 </div>
                 <div class="variants">
                     ${variants ? Object.values(variants).map(({id, title, count} = {}) => html`
@@ -268,9 +274,10 @@ export class AppCart extends LitElement {
         const productsList = Object.entries(this.cart.getItems()),
             productsData = all(productsList.map(([id]) => this.catalog.fetchProductByID(id))),
             sum = () => productsList.map(([id, item]) => this.productSum(id, item)).reduce((a, b) => a + b, 0)
-        return syncUntil(chain(productsData, sum, sum => sum ? html`<a href="/checkout" class="checkout">
-            <div class="price">${sum}</div>
-        </a>` : html`<p>Корзина пуста</p>`))
+        return productsList.length ? syncUntil(chain(productsData, sum, sum =>
+            html`<a href="/checkout" class="checkout">
+                <div class="price">${currency.format(sum)}</div>
+            </a>`)) : html`<p>Корзина пуста</p>`
     }
 
     productSum(id, cartItem = {}) {
@@ -285,6 +292,7 @@ export class AppCart extends LitElement {
     }
 
     render() {
+        if (this.hydrated) this.setAttribute('count', this.cart.getItemsCount())
         return this.hydrated ? html`
             <div class="products-section">${this.renderProductsList()}</div>
             ${this.renderCartPrice()}

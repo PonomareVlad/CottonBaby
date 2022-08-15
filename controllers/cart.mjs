@@ -49,4 +49,8 @@ export default class Cart {
         return document.dispatchEvent(new Event('cart', {bubbles: true, composed: true}))
     }
 
+    getItemsCount() {
+        return Object.values(this.getItems()).flatMap(item => Object.values(item)).reduce((a, b) => a + b, 0)
+    }
+
 }

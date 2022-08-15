@@ -1,8 +1,16 @@
+import Cart from "#root/controllers/cart.mjs";
 import {css, html, LitElement} from "lit"
 import styles from "#styles"
 import "./app-cart.mjs"
+import {ifDefined} from "lit/directives/if-defined.js";
 
 export class AppHeader extends LitElement {
+    cart = new Cart(this)
+
+    static get properties() {
+        return {hydrated: {state: true}}
+    }
+
     static get styles() {
         return [styles, css`
           :host {
@@ -93,8 +101,32 @@ export class AppHeader extends LitElement {
           }
 
           .cart.button {
-            background-image: url("/assets/images/cart.svg");
+            font-size: 12px;
+            overflow: revert;
+            position: relative;
             background-size: 15px;
+            background-image: url("/assets/images/cart.svg");
+          }
+
+          .cart.button[count]:after {
+            --size: 1.3em;
+            left: 11.5px;
+            bottom: 10px;
+            z-index: 1;
+            color: white;
+            display: block;
+            font-weight: bold;
+            position: absolute;
+            text-align: center;
+            content: attr(count);
+            min-width: var(--size);
+            line-height: var(--size);
+            background-color: #FC1F14;
+            border-radius: var(--size);
+          }
+
+          .cart.button[count="0"]:after {
+            content: none;
           }
 
           #headerSearch {
@@ -233,6 +265,15 @@ export class AppHeader extends LitElement {
               display: none;
             }
 
+            .cart.button {
+              font-size: inherit;
+            }
+
+            .cart.button[count]:after{
+              bottom: 0;
+              left: 0;
+            }
+
             .logo {
               padding: unset;
               display: block;
@@ -353,6 +394,11 @@ export class AppHeader extends LitElement {
         window.addEventListener('popstate', this.setDefaultState.bind(this));
         this.shadowRoot.querySelectorAll('[name="state"]').forEach(state =>
             state.addEventListener('change', this.menuStateHandler.bind(this)))
+        this.hydrated = true
+    }
+
+    renderCartCount(template = count => count) {
+        return this.hydrated && this.cart.getItemsCount() ? template(this.cart.getItemsCount()) : null
     }
 
     render() {
@@ -364,9 +410,10 @@ export class AppHeader extends LitElement {
                 <label title="Открыть меню" for="menuState" id="menuOpen" class="menu button">Меню</label>
                 <label title="Закрыть меню" for="defaultState" id="menuClose" class="close button">Закрыть</label>
                 <a title="Перейти на главную страницу" href="/#" class="logo image button">Главная</a>
-                <span id="cartTitle">Корзина</span>
+                <span id="cartTitle">Корзина${this.renderCartCount(count => html` • ${count}`)}</span>
                 <input placeholder="Поиск по каталогу" id="headerSearch" type="search">
-                <label title="Перейти в корзину" for="cartState" id="cartOpen" class="cart image button">Корзина</label>
+                <label title="Перейти в корзину" for="cartState" id="cartOpen" class="cart image button"
+                       count="${this.renderCartCount() || '0'}">Корзина</label>
                 <label title="Закрыть корзину" for="defaultState" id="cartClose" class="close button">Закрыть</label>
                 <label title="Закрыть" for="defaultState" id="backdrop"></label>
             </div>

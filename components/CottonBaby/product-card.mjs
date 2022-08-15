@@ -1,6 +1,7 @@
 import {css, html, LitElement} from "lit"
 import {ifDefined} from 'lit/directives/if-defined.js'
 import './app-image.mjs'
+import {currency} from "#utils";
 
 export class ProductCard extends LitElement {
     static get properties() {
@@ -84,12 +85,12 @@ export class ProductCard extends LitElement {
             position: absolute;
             right: var(--padding);
             top: var(--padding);
-          }
-
-          .price:after {
-            content: ' ₽';
             font-family: HelveticaNeue, sans-serif, -apple-system;
           }
+
+          /*.price:after {
+            content: ' ₽';
+          }*/
 
           .background {
             position: absolute;
@@ -136,7 +137,7 @@ export class ProductCard extends LitElement {
                             ${this.variants.map(variant => html` <span>${variant}</span> `)}</p>` : ''}
                     </div>` : ''}
                 ${this.price ? html`
-                    <div class="price">${this.price}</div>` : ''}
+                    <div class="price">${currency.format(this.price)}</div>` : ''}
                 <app-image src="${ifDefined(this.src)}" class="background" loading="lazy" decoding="async"
                            cdn="true" width="1024" quality="75"></app-image>
             </a>
