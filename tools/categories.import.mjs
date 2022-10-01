@@ -3,9 +3,9 @@ import {mongo} from "#db"
 import {argv} from '#utils'
 import {JSDOM} from "jsdom"
 
-const db = mongo.db(process.env.DB),
+const file = argv('file'),
+    db = mongo.db(process.env.DB),
     categories = db.collection('categories'),
-    file = argv('file') || '../.templates/62337.xml',
     filter = ({textContent}) => textContent.toLowerCase().trim() !== 'каталог'
 
 if (!file) console.error('Please specify file path by argument --file=...') || process.exit(0)

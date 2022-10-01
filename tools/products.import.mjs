@@ -3,10 +3,10 @@ import {mongo} from "#db"
 import {argv} from '#utils'
 import {readFileSync} from "fs"
 
-const db = mongo.db(process.env.DB),
+const file = argv('file'),
+    db = mongo.db(process.env.DB),
     products = db.collection('products'),
     categories = db.collection('categories'),
-    file = argv('file') || '../.templates/shop_data-16.07.2022.csv',
     productFields = ["id", "sex", "path", "code", "title", "price", "color", "images", "caption", "category", "published", "basePrice", "composition", "description"],
     variantFields = ["size", "count", "variantId"],
     schema = Object.fromEntries(Object.entries({
