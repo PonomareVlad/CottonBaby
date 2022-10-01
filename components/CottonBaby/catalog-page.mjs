@@ -1,10 +1,11 @@
-import {css, html, LitElement} from "lit"
+import "./product-card.mjs"
 import styles from "#styles"
-import './product-card.mjs'
-import {chain} from "#lib/utils.mjs";
-import {syncUntil} from "#lib/directives.mjs";
-import {ref, createRef} from 'lit/directives/ref.js'
-import Catalog from "#root/controllers/catalog.mjs";
+import {chain} from "#lib/utils.mjs"
+import {css, html, LitElement} from "lit"
+import {live} from "lit/directives/live.js"
+import {syncUntil} from "#lib/directives.mjs"
+import Catalog from "#root/controllers/catalog.mjs"
+import {ref, createRef} from "lit/directives/ref.js"
 
 export class CatalogPage extends LitElement {
     catalog = new Catalog(this)
@@ -228,10 +229,10 @@ export class CatalogPage extends LitElement {
                 </div>
                 <div class="controls">Сортировка:
                     <input value="date" name="sort" type="radio" id="sort_date" @change="${this.sortChange}"
-                           ?checked="${this.sort !== 'price'}">
+                           .checked="${live(this.sort !== 'price')}">
                     <label for="sort_date" class="button">По дате</label>
                     <input value="price" name="sort" type="radio" id="sort_price" @change="${this.sortChange}"
-                           ?checked="${this.sort === 'price'}">
+                           .checked="${live(this.sort === 'price')}">
                     <label for="sort_price" class="button">По цене</label>
                 </div>
             </div>

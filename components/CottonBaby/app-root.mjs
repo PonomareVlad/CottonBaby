@@ -1,53 +1,40 @@
 import "urlpattern-polyfill"
+import {isClient} from "#utils"
 import {css, html, LitElement} from "lit"
 import {SafeUntil} from "svalit/directives.mjs"
+import {ifDefined} from 'lit/directives/if-defined.js'
 import {Router} from '@svalit/router'
 import styles from "#styles"
+import './checkout-page.mjs'
+import './catalog-page.mjs'
+import './product-page.mjs'
 import './app-header.mjs'
 import './index-page.mjs'
 import './order-page.mjs'
-import './catalog-page.mjs'
-import './product-page.mjs'
-import './checkout-page.mjs'
 
 export class AppRoot extends LitElement {
     safeUntil = new SafeUntil(this)
+    pages = {
+        index: () => html`
+            <index-page .setMeta="${this.setMeta}"></index-page>`,
+        catalog: ({category} = {}) => html`
+            <catalog-page category="${ifDefined(category)}" .setMeta="${this.setMeta}"
+                          sort="${ifDefined(this.getSearch('sort'))}"></catalog-page>`,
+        product: ({product} = {}) => html`
+            <product-page product="${ifDefined(product)}" .setMeta="${this.setMeta}"></product-page>`,
+        checkout: () => html`
+            <checkout-page .setMeta="${this.setMeta}"></checkout-page>`,
+        order: ({order} = {}) => html`
+            <order-page order="${ifDefined(order)}" .setMeta="${this.setMeta}"></order-page>`
+    }
     router = new Router(this, [
-        {
-            path: '/',
-            render: () => html`
-                <index-page .setMeta="${this.setMeta}"></index-page>`
-        },
-        {
-            path: '/catalog',
-            render: ({category}) => html`
-                <catalog-page category="${category}" .setMeta="${this.setMeta}"></catalog-page>`
-        },
-        {
-            path: '/catalog/:category',
-            render: ({category}) => html`
-                <catalog-page category="${category}" .setMeta="${this.setMeta}"></catalog-page>`
-        },
-        {
-            path: '/catalog/:category/:product',
-            render: ({product}) => html`
-                <product-page product="${product}" .setMeta="${this.setMeta}"></product-page>`
-        },
-        {
-            path: '/product/:product',
-            render: ({product}) => html`
-                <product-page product="${product}" .setMeta="${this.setMeta}"></product-page>`
-        },
-        {
-            path: '/checkout',
-            render: () => html`
-                <checkout-page .setMeta="${this.setMeta}"></checkout-page>`
-        },
-        {
-            path: '/order/:order',
-            render: ({order}) => html`
-                <order-page order="${order}" .setMeta="${this.setMeta}"></order-page>`
-        },
+        {path: '/', render: this.pages.index},
+        {path: '/catalog', render: this.pages.catalog},
+        {path: '/catalog/:category', render: this.pages.catalog},
+        {path: '/catalog/:category/:product', render: this.pages.product},
+        {path: '/product/:product', render: this.pages.product},
+        {path: '/order/:order', render: this.pages.order},
+        {path: '/checkout', render: this.pages.checkout},
     ], {
         fallback: {
             render: () => {
@@ -121,16 +108,26 @@ export class AppRoot extends LitElement {
         `]
     }
 
+    getSearch(parameter) {
+        return this.location.searchParams.get(parameter)
+    }
+
     setMeta({title = 'Cotton Baby'} = {}) {
         if (typeof process === 'object') return;
         history.replaceState(history.state, title)
         document.title = title
     }
 
+    firstUpdated(_changedProperties) {
+        if (isClient) window.router = this.router
+    }
+
     render() {
         attachStateProxy()
+        if (isClient && location) this.url = location.href
         if (window.scrollTo && this.hasUpdated) window.scrollTo(0, 0)
-        this.router.serverPath = new URL(this.url).pathname;
+        this.location = new URL(this.url)
+        this.router.serverPath = this.location.pathname
         return html`
             <app-header></app-header>
             <main>${this.safeUntil(this.router.outlet())}</main>

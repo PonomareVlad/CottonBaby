@@ -12,6 +12,7 @@
     "zeplin-connect-dev-mode": "zeplin connect --dev"
   },
   "dependencies": {
+    "@lit-labs/router": "^0.1.1",
     "@lit-labs/ssr": "npm:@svalit/ssr@latest",
     "@lit-labs/ssr-client": "npm:@svalit/ssr-client@latest",
     "@svalit/router": "^0.1.0-alpha.3",
