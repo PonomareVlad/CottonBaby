@@ -220,7 +220,7 @@ export class ProductPage extends LitElement {
     }
 
     render() {
-        const data = this.catalog.fetchProductByID(this.product)
+        const data = chain(this.catalog.fetchProductByID(this.product), data => this.data = data)
         const category = chain(data, ({category}) => this.catalog.fetchProducts({category}, {limit: 16}))
         chain(data, ({title}) => this?.setMeta({title}))
         return html`
