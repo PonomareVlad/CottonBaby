@@ -21,6 +21,6 @@
     "@svalit/router": "https://cdn.jsdelivr.net/npm/@svalit/router",
     "bson-objectid": "https://cdn.skypack.dev/bson-objectid",
     "svalit/": "https://cdn.jsdelivr.net/npm/svalit/",
-    "core-js/": "https://cdn.skypack.dev/core-js/"
+    "core-js/": "https://esm.run/core-js/"
   }
 }

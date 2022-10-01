@@ -1,14 +1,15 @@
+import "./app-image.mjs"
+import styles from "#styles"
+import "./product-variant.mjs"
+import {chain, currency} from "#utils"
 import {css, html, LitElement} from "lit"
-import {unsafeHTML} from 'lit/directives/unsafe-html.js';
 import {syncUntil} from "#lib/directives.mjs"
 import Cart from "#root/controllers/cart.mjs"
-import './product-variant.mjs'
-import {chain, currency} from "#utils"
-import styles from "#styles"
-import './app-image.mjs'
-import {db} from '#db'
+import Catalog from "#root/controllers/catalog.mjs"
+import {unsafeHTML} from "lit/directives/unsafe-html.js"
 
 export class ProductPage extends LitElement {
+    catalog = new Catalog(this)
     cart = new Cart(this)
 
     static get properties() {
@@ -198,14 +199,6 @@ export class ProductPage extends LitElement {
         history.back()
     }
 
-    fetchProductDataByID(id = this.product) {
-        return chain(db.collection('products').findOne({id}), data => (this.data = data || {}))
-    }
-
-    fetchCategoryProducts(category) {
-        return chain(db.collection('products').find({category}, {limit: 16}), data => data || [])
-    }
-
     renderProductCard({id, images, title, price, variants} = {}) {
         const href = `/product/${id}`,
             src = images && images[0] ? images[0] : '',
@@ -227,8 +220,8 @@ export class ProductPage extends LitElement {
     }
 
     render() {
-        const data = this.fetchProductDataByID()
-        const category = chain(data, ({category}) => this.fetchCategoryProducts(category))
+        const data = this.catalog.fetchProductByID(this.product)
+        const category = chain(data, ({category}) => this.catalog.fetchProducts({category}, {limit: 16}))
         chain(data, ({title}) => this?.setMeta({title}))
         return html`
             <a href="../" class="back-button" @click="${this.back}">Назад</a>
