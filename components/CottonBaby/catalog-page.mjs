@@ -3,19 +3,22 @@ import styles from "#styles"
 import {chain} from "#lib/utils.mjs"
 import {css, html, LitElement} from "lit"
 import {live} from "lit/directives/live.js"
+import {cache} from "lit/directives/cache.js"
 import {syncUntil} from "#lib/directives.mjs"
+import {repeat} from "lit/directives/repeat.js"
 import Catalog from "#root/controllers/catalog.mjs"
 import {ref, createRef} from "lit/directives/ref.js"
 
 export class CatalogPage extends LitElement {
     catalog = new Catalog(this)
+    categorySelect = createRef()
     list = createRef()
 
     static get properties() {
         return {
-            category: {type: Number, reflect: true},
-            variant: {type: String, reflect: true},
-            sort: {type: String, reflect: true}
+            category: {type: Number},
+            variant: {type: String},
+            sort: {type: String}
         }
     }
 
@@ -146,14 +149,17 @@ export class CatalogPage extends LitElement {
         `]
     }
 
-    categoryChange(e) {
-        if (this.category !== e.target.value) history.pushState(null, null, `/catalog/${e.target.value}`)
-        this.category = e.target.value
+    getPathByProps({category = this.category, sort = this.sort} = {}) {
+        const path = ['catalog', category].filter(Boolean).join('/'),
+            query = sort ? new URLSearchParams({sort}) : undefined;
+        return `/${path}${query ? `?${query}` : ''}`
     }
 
-    sortChange(e) {
-        if (this.sort !== e.target.value) history.pushState(null, null, `?sort=${e.target.value}`)
-        this.sort = e.target.value
+    propertyChange({target: {name, value}} = {}) {
+        if (!name || !value || this[name] === value) return;
+        const path = this.getPathByProps({[name]: value})
+        history.pushState(null, null, path)
+        return globalThis.router.goto(path)
     }
 
     renderProductCard({id, images, title, price, variants} = {}) {
@@ -196,6 +202,10 @@ export class CatalogPage extends LitElement {
         Array.from(this.list.value.children).forEach(this.observer.observe.bind(this.observer))
     }*/
 
+    updated() {
+        if (!this.category) this.categorySelect.value.selectedIndex = 0;
+    }
+
     render() {
         const filter = {}, options = {}
         if (this.category) filter.category = this.category
@@ -210,10 +220,10 @@ export class CatalogPage extends LitElement {
             <h1 class="root-padding">${syncUntil(chain(category, ({title = 'Каталог'} = {}) => title), 'Каталог')}</h1>
             <div class="controls-section">
                 <div class="controls">
-                    <select class="button" style="--length: 15" @change="${this.categoryChange}">
+                    <select class="button" name="category" @change="${this.propertyChange}" ${ref(this.categorySelect)}>
                         <option selected disabled>Категория</option>
                         ${syncUntil(chain(categories, categories => categories.map(({id, title}) => html`
-                            <option value="${id}" ?selected="${this.category === id}">${title}</option>`)))}
+                            <option value="${id}" ?selected="${live(this.category === id)}">${title}</option>`)))}
                     </select>
                     <select class="button" style="--length: 10">
                         <option selected disabled>Коллекция</option>
@@ -228,16 +238,16 @@ export class CatalogPage extends LitElement {
                     </select>
                 </div>
                 <div class="controls">Сортировка:
-                    <input value="date" name="sort" type="radio" id="sort_date" @change="${this.sortChange}"
+                    <input value="date" name="sort" type="radio" id="sort_date" @change="${this.propertyChange}"
                            .checked="${live(this.sort !== 'price')}">
                     <label for="sort_date" class="button">По дате</label>
-                    <input value="price" name="sort" type="radio" id="sort_price" @change="${this.sortChange}"
+                    <input value="price" name="sort" type="radio" id="sort_price" @change="${this.propertyChange}"
                            .checked="${live(this.sort === 'price')}">
                     <label for="sort_price" class="button">По цене</label>
                 </div>
             </div>
             <section class="root-padding products-list" ${ref(this.list)}>
-                ${syncUntil(chain(products, products => products.map(this.renderProductCard)), 'Загрузка ...')}
+                ${cache(syncUntil(chain(products, products => repeat(products, ({id} = {}) => id, this.renderProductCard))))}
             </section>
         `
     }

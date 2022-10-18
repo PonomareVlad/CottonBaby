@@ -1,6 +1,7 @@
 import "urlpattern-polyfill"
-import {isClient} from "#utils"
+import {isClient, isSSR} from "#utils"
 import {css, html, LitElement} from "lit"
+import {cache} from "lit/directives/cache.js"
 import {SafeUntil} from "svalit/directives.mjs"
 import {ifDefined} from 'lit/directives/if-defined.js'
 import {Router} from '@svalit/router'
@@ -113,13 +114,13 @@ export class AppRoot extends LitElement {
     }
 
     setMeta({title = 'Cotton Baby'} = {}) {
-        if (typeof process === 'object') return;
+        if (isSSR) return;
         history.replaceState(history.state, title)
         document.title = title
     }
 
     firstUpdated(_changedProperties) {
-        if (isClient) window.router = this.router
+        if (isClient) globalThis.router = this.router
     }
 
     render() {
@@ -130,7 +131,7 @@ export class AppRoot extends LitElement {
         this.router.serverPath = this.location.pathname
         return html`
             <app-header></app-header>
-            <main>${this.safeUntil(this.router.outlet())}</main>
+            <main>${cache(this.safeUntil(this.router.outlet()))}</main>
         `
     }
 }

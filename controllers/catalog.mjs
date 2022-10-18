@@ -22,6 +22,7 @@ export default class Catalog {
     }
 
     fetchCategoryByID(id) {
+        if (!id) return {}
         return fetchCache('categories', id) ||
             chain(db.collection('categories').findOne({id}), data => cacheOne('categories', data || {}))
     }
@@ -32,11 +33,13 @@ export default class Catalog {
     }
 
     fetchProductByID(id) {
+        if (!id) return {}
         return fetchCache('products', id) ||
             chain(db.collection('products').findOne({id}), data => cacheOne('products', data || {}))
     }
 
     fetchProductsByID(products = []) {
+        if (!products.length) return products;
         return all(products.map(id => this.fetchProductByID(id)))
     }
 
