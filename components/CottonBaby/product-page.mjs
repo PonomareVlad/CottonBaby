@@ -164,10 +164,21 @@ export class ProductPage extends LitElement {
               max-width: 45%;
               aspect-ratio: 1;
               max-height: 500px;
+              border-radius: 40px;
+              position: relative;
+              overflow: hidden;
+            }
+
+            .product-gallery app-image {
+              border-radius: 40px;
+              position: relative;
+              overflow: hidden;
             }
 
             .product-gallery::part(container) {
               border-radius: 40px;
+              position: relative;
+              overflow: hidden;
             }
 
             .product-content {
