@@ -11,14 +11,18 @@ import {ref, createRef} from "lit/directives/ref.js"
 
 export class CatalogPage extends LitElement {
     catalog = new Catalog(this)
+    collectionSelect = createRef()
     categorySelect = createRef()
+    variantSelect = createRef()
     list = createRef()
+    selectRefs = [this.collectionSelect, this.categorySelect, this.variantSelect]
 
     static get properties() {
         return {
             category: {type: Number},
             variant: {type: String},
-            sort: {type: String}
+            sort: {type: String},
+            size: {type: String}
         }
     }
 
@@ -78,7 +82,7 @@ export class CatalogPage extends LitElement {
 
           select.button {
             --length: 10;
-            --width: calc((var(--length) * 1ch) + (var(--padding) * 2));
+            --width: calc((var(--length) * 1ch) + (var(--padding) * 2) + 1ch);
             overflow-x: hidden;
             text-overflow: ellipsis;
             min-width: var(--width);
@@ -149,13 +153,16 @@ export class CatalogPage extends LitElement {
         `]
     }
 
-    getPathByProps({category = this.category, sort = this.sort} = {}) {
+    getPathByProps({category = this.category, sort = this.sort, variant = this.variant} = {}) {
+        if (category !== this.category) variant = undefined;
         const path = ['catalog', category].filter(Boolean).join('/'),
-            query = sort ? new URLSearchParams({sort}) : undefined;
+            parameters = Object.fromEntries(Object.entries({sort, variant}).filter(([, value]) => value)),
+            query = new URLSearchParams(parameters);
         return `/${path}${query ? `?${query}` : ''}`
     }
 
     propertyChange({target: {name, value}} = {}) {
+        this.updateAllSelects();
         if (!name || !value || this[name] === value) return;
         const path = this.getPathByProps({[name]: value})
         history.pushState(null, null, path)
@@ -204,17 +211,37 @@ export class CatalogPage extends LitElement {
 
     updated() {
         if (!this.category) this.categorySelect.value.selectedIndex = 0;
+        if (!this.variant) this.variantSelect.value.selectedIndex = 0;
+        this.updateAllSelects();
+    }
+
+    updateAllSelects() {
+        return this.selectRefs.forEach(({value: select} = {}) => this.updateSelectLength(select))
+    }
+
+    updateSelectLength(select) {
+        return select.style.setProperty('--length', select.selectedOptions.item(0).text.length)
+    }
+
+    filterProducts(products = []) {
+        return products.filter(({variants} = {}) =>
+            Object.values(variants).some(({title, count} = {}) =>
+                typeof count === 'number' && count > 0 && (this.variant ? this.variant === title : true))
+        )
+    }
+
+    filterVariants(variants = []) {
+        return [...new Set(variants.map(({title} = {}) => title).filter(Boolean))].sort((a, b) => parseInt(a) - parseInt(b))
     }
 
     render() {
         const filter = {}, options = {}
         if (this.category) filter.category = this.category
         options.sort = this.sort === 'price' ? {price: 1} : {id: -1}
-        const products = this.catalog.fetchProducts(filter, options),
+        const products = chain(this.catalog.fetchProducts(filter, options), this.filterProducts.bind(this)),
+            variants = chain(this.catalog.fetchVariants(filter, options), this.filterVariants.bind(this)),
             category = this.catalog.fetchCategoryByID(this.category),
-            categories = this.catalog.fetchCategories(),
-            variants = chain(this.catalog.fetchVariants(), variants =>
-                [...new Set(variants.map(({title} = {}) => title))].sort((a, b) => parseInt(a) - parseInt(b)))
+            categories = this.catalog.fetchCategories();
         chain(category, ({title = 'Каталог'} = {}) => this?.setMeta({title}))
         return html`
             <h1 class="root-padding">${syncUntil(chain(category, ({title = 'Каталог'} = {}) => title), 'Каталог')}</h1>
@@ -223,18 +250,20 @@ export class CatalogPage extends LitElement {
                     <select class="button" name="category" @change="${this.propertyChange}" ${ref(this.categorySelect)}>
                         <option selected disabled>Категория</option>
                         ${syncUntil(chain(categories, categories => categories.map(({id, title}) => html`
-                            <option value="${id}" ?selected="${live(this.category === id)}">${title}</option>`)))}
+                            <option value="${id}" ?selected="${(this.category === id)}">${title}</option>`)))}
                     </select>
-                    <select class="button" style="--length: 10">
+                    <select class="button" name="collection" @change="${this.propertyChange}"
+                            ${ref(this.collectionSelect)}>
                         <option selected disabled>Коллекция</option>
                         <option>Коллекция 1</option>
                         <option>Коллекция 2</option>
                         <option>Коллекция 3</option>
                     </select>
-                    <select class="button" style="--length: 10">
+                    <select class="button" name="variant" @change="${this.propertyChange}" ${ref(this.variantSelect)}>
                         <option selected disabled>Размер</option>
                         ${syncUntil(chain(variants, variants => variants.map(variant => html`
-                            <option value="${variant}" ?selected="${this.variant === variant}">${variant}</option>`)))}
+                            <option value="${variant}" ?selected="${(this.variant === variant)}">${variant}
+                            </option>`)))}
                     </select>
                 </div>
                 <div class="controls">Сортировка:

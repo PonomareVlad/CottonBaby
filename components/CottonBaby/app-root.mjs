@@ -20,6 +20,7 @@ export class AppRoot extends LitElement {
             <index-page .setMeta="${this.setMeta}"></index-page>`,
         catalog: ({category} = {}) => html`
             <catalog-page category="${ifDefined(category)}" .setMeta="${this.setMeta}"
+                          variant="${ifDefined(this.getSearch('variant'))}"
                           sort="${ifDefined(this.getSearch('sort'))}"></catalog-page>`,
         product: ({product} = {}) => html`
             <product-page product="${ifDefined(product)}" .setMeta="${this.setMeta}"></product-page>`,

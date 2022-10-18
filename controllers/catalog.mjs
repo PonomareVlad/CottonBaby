@@ -43,8 +43,8 @@ export default class Catalog {
         return all(products.map(id => this.fetchProductByID(id)))
     }
 
-    fetchVariants(filter = {}) {
-        return chain(this.fetchProducts(filter), products => products.flatMap(({variants} = {}) => Object.values(variants)))
+    fetchVariants(filter, options) {
+        return chain(this.fetchProducts(filter, options), products => products.flatMap(({variants} = {}) => Object.values(variants)))
     }
 
     getProductsSum(products = {}) {
