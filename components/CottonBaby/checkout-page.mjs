@@ -3,6 +3,7 @@ import {css, html, LitElement} from "lit"
 import styles from "#styles"
 import Cart from "#root/controllers/cart.mjs"
 import Catalog from "#root/controllers/catalog.mjs"
+import {scheduleTask} from "#utils";
 
 export class CheckoutPage extends LitElement {
     form = createRef()
@@ -116,7 +117,7 @@ export class CheckoutPage extends LitElement {
     }
 
     firstUpdated() {
-        this.hydrated = true;
+        scheduleTask(() => this.hydrated = true)
     }
 
     render() {

@@ -1,6 +1,6 @@
 import {html, LitElement} from "lit"
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
-import {SafeUntil} from "#lib/directives.mjs";
+import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
 import {all, catcher, chain} from "#utils";
 import './context-node.js'
 import './app-context.mjs'
@@ -17,8 +17,6 @@ const page404 = {
 }
 
 class AppPage extends LitElement {
-    safeUntil = new SafeUntil(this)
-
     static get properties() {
         return {
             url: {type: String, reflect: true},
@@ -62,7 +60,7 @@ class AppPage extends LitElement {
         })
         return html`
             <context-node .data="${page}">
-                ${this.safeUntil(chain(all([page, content]), ([, content]) =>
+                ${serverUntil(chain(all([page, content]), ([, content]) =>
                         unsafeHTML(`<app-context>${content}</app-context>`)))}
             </context-node>`
     }

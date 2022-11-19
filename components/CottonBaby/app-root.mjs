@@ -1,8 +1,8 @@
 import "urlpattern-polyfill"
-import {isClient, isSSR} from "#utils"
+import {isClient, isSSR, scheduleTask} from "#utils"
 import {css, html, LitElement} from "lit"
 import {cache} from "lit/directives/cache.js"
-import {SafeUntil} from "svalit/directives.mjs"
+import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
 import {ifDefined} from 'lit/directives/if-defined.js'
 import {Router} from '@svalit/router'
 import styles from "#styles"
@@ -14,7 +14,6 @@ import './index-page.mjs'
 import './order-page.mjs'
 
 export class AppRoot extends LitElement {
-    safeUntil = new SafeUntil(this)
     pages = {
         index: () => html`
             <index-page .setMeta="${this.setMeta}"></index-page>`,
@@ -120,8 +119,10 @@ export class AppRoot extends LitElement {
         document.title = title
     }
 
-    firstUpdated(_changedProperties) {
-        if (isClient) globalThis.router = this.router
+    firstUpdated() {
+        scheduleTask(() => {
+            if (isClient) globalThis.router = this.router;
+        })
     }
 
     render() {
@@ -132,7 +133,7 @@ export class AppRoot extends LitElement {
         this.router.serverPath = this.location.pathname
         return html`
             <app-header></app-header>
-            <main>${cache(this.safeUntil(this.router.outlet()))}</main>
+            <main>${cache(serverUntil(this.router.outlet()))}</main>
         `
     }
 }

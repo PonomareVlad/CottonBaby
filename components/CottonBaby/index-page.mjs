@@ -5,7 +5,7 @@ import './product-hero.mjs'
 import './categories-list.mjs'
 import './drag-scroll.mjs'
 import {chain} from "#lib/utils.mjs";
-import {syncUntil} from "#lib/directives.mjs";
+import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
 import Catalog from "#root/controllers/catalog.mjs";
 
 export class IndexPage extends LitElement {
@@ -199,7 +199,7 @@ export class IndexPage extends LitElement {
             <categories-list class="root-padding"></categories-list>
             <h2 class="root-padding">Новинки</h2>
             <drag-scroll class="products-slider" dragging="true">
-                ${syncUntil(chain(data, products => products.map(this.renderProductCard)), html`
+                ${serverUntil(chain(data, products => products.map(this.renderProductCard)), html`
                     <product-card></product-card>`)}
             </drag-scroll>
             <div class="about">

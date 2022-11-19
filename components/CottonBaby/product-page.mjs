@@ -1,9 +1,9 @@
 import "./app-image.mjs"
 import styles from "#styles"
 import "./product-variant.mjs"
-import {chain, currency} from "#utils"
+import {chain, currency, scheduleTask} from "#utils"
 import {css, html, LitElement} from "lit"
-import {syncUntil} from "#lib/directives.mjs"
+import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
 import Cart from "#root/controllers/cart.mjs"
 import Catalog from "#root/controllers/catalog.mjs"
 import {unsafeHTML} from "lit/directives/unsafe-html.js"
@@ -226,8 +226,8 @@ export class ProductPage extends LitElement {
 
     firstUpdated() {
         this.addEventListener('change', (event, variant = event.composedPath().shift()) =>
-            this.cart.setItem(this.data.id, {[variant.id]: parseInt(variant.value)}))
-        this.hydrated = true
+            this.cart.setItem(this.data.id, {[variant.id]: parseInt(variant.value)}));
+        scheduleTask(() => this.hydrated = true);
     }
 
     render() {
@@ -238,7 +238,7 @@ export class ProductPage extends LitElement {
             <a href="../" class="back-button" @click="${this.back}">Назад</a>
             <div class="product-section">
                 <drag-scroll class="product-gallery">
-                    ${syncUntil(chain(data, ({images}) => images && images.length ? images.map(image => html`
+                    ${serverUntil(chain(data, ({images}) => images && images.length ? images.map(image => html`
                         <app-image src="${image}" decoding="async" cdn="true">
                             <app-image src="${image}" decoding="async" cdn="true" quality="75" width="1024"></app-image>
                         </app-image>`) : html`
@@ -248,15 +248,15 @@ export class ProductPage extends LitElement {
                 <div class="product-content">
                     <div class="title-row">
                         <div class="title-content">
-                            ${syncUntil(chain(data, ({title}) => html`<h1 class="title">${title}</h1>`), '')}
-                            ${syncUntil(chain(data, ({code}) => html`<p class="product-code">${code}</p>`), '')}
+                            ${serverUntil(chain(data, ({title}) => html`<h1 class="title">${title}</h1>`), '')}
+                            ${serverUntil(chain(data, ({code}) => html`<p class="product-code">${code}</p>`), '')}
                         </div>
-                        ${syncUntil(chain(data, ({price}) => html`
+                        ${serverUntil(chain(data, ({price}) => html`
                             <div class="price">${currency.format(price)}</div>`), '')}
                     </div>
                     <br>
-                    ${syncUntil(chain(data, ({composition}) => html`<p>Состав: ${composition}</p>`), '')}
-                    ${syncUntil(chain(data, ({id, variants}) => html`
+                    ${serverUntil(chain(data, ({composition}) => html`<p>Состав: ${composition}</p>`), '')}
+                    ${serverUntil(chain(data, ({id, variants}) => html`
                         <div>
                             <h2>Размеры в наличии:</h2>
                             <div class="variants">${Object.values(variants).map(({id: vid, title, count}) => html`
@@ -264,13 +264,13 @@ export class ProductPage extends LitElement {
                                                  id="${vid}"></product-variant> `)}
                             </div>
                         </div>`), '')}
-                    ${syncUntil(chain(data, ({description}) => description ? html`<br>
+                    ${serverUntil(chain(data, ({description}) => description ? html`<br>
                     <div><h2>Описание:</h2>${unsafeHTML(description)}</div>` : ''), '')}
                 </div>
             </div>
-            ${syncUntil(chain(category, products => html`<h2 class="root-padding">Из этой коллекции:</h2>
+            ${serverUntil(chain(category, products => html`<h2 class="root-padding">Из этой коллекции:</h2>
             <drag-scroll dragging="true">${[...products].reverse().map(this.renderProductCard)}</drag-scroll>`), '')}
-            ${syncUntil(chain(category, products => html`<h2 class="root-padding">Похожие товары:</h2>
+            ${serverUntil(chain(category, products => html`<h2 class="root-padding">Похожие товары:</h2>
             <drag-scroll dragging="true">${products.map(this.renderProductCard)}</drag-scroll>`), '')}
         `
     }

@@ -1,5 +1,5 @@
 import {css, html, LitElement} from "lit"
-import {SafeUntil} from "#lib/directives.mjs";
+import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
 import {ContextController} from "#lib/context.mjs";
 import {all, chain} from "#utils";
 import {db} from "#db";
@@ -9,7 +9,6 @@ import {fetchTemplate} from "#lib/template.mjs";
 
 class AppContext extends LitElement {
     context = new ContextController(this)
-    safeUntil = new SafeUntil(this)
 
     static get styles() {
         return css`
@@ -52,7 +51,7 @@ class AppContext extends LitElement {
     render() {
         const templateLoader = chain(fetchTemplate('../includes/link.html', 'link', import.meta.url), template => this.template = template)
         const linksLoader = chain(this.fetchLinks(), links => this.links = links)
-        return this.safeUntil(chain(all([templateLoader, linksLoader]), () => html`
+        return serverUntil(chain(all([templateLoader, linksLoader]), () => html`
             <slot></slot><h2>Pages</h2>
             <nav>
                 <app-iterator key="links"></app-iterator>

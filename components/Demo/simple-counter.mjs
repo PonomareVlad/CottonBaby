@@ -1,5 +1,6 @@
 import {html, css, LitElement} from "lit"
 import {state} from '#lib/router.mjs'
+import {scheduleTask} from "#utils";
 
 class SimpleCounter extends LitElement {
     static get properties() {
@@ -19,7 +20,7 @@ class SimpleCounter extends LitElement {
     }
 
     firstUpdated() {
-        this.count = state.count || 0
+        scheduleTask(() => this.count = state.count || 0);
     }
 
     render() {

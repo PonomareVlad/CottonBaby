@@ -1,10 +1,10 @@
 import "./product-card.mjs"
 import styles from "#styles"
-import {chain} from "#lib/utils.mjs"
+import {chain, scheduleTask} from "#lib/utils.mjs"
 import {css, html, LitElement} from "lit"
 import {live} from "lit/directives/live.js"
 import {cache} from "lit/directives/cache.js"
-import {syncUntil} from "#lib/directives.mjs"
+import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
 import {repeat} from "lit/directives/repeat.js"
 import Catalog from "#root/controllers/catalog.mjs"
 import {ref, createRef} from "lit/directives/ref.js"
@@ -210,9 +210,11 @@ export class CatalogPage extends LitElement {
     }*/
 
     updated() {
-        if (!this.category) this.categorySelect.value.selectedIndex = 0;
-        if (!this.variant) this.variantSelect.value.selectedIndex = 0;
-        this.updateAllSelects();
+        scheduleTask(() => {
+            if (!this.category && this?.categorySelect?.value) this.categorySelect.value.selectedIndex = 0;
+            if (!this.variant && this?.variantSelect?.value) this.variantSelect.value.selectedIndex = 0;
+            this.updateAllSelects();
+        })
     }
 
     updateAllSelects() {
@@ -244,12 +246,13 @@ export class CatalogPage extends LitElement {
             categories = this.catalog.fetchCategories();
         chain(category, ({title = 'Каталог'} = {}) => this?.setMeta({title}))
         return html`
-            <h1 class="root-padding">${syncUntil(chain(category, ({title = 'Каталог'} = {}) => title), 'Каталог')}</h1>
+            <h1 class="root-padding">
+                ${serverUntil(Promise.resolve(chain(category, ({title = 'Каталог'} = {}) => title), 'Каталог'))}</h1>
             <div class="controls-section">
                 <div class="controls">
                     <select class="button" name="category" @change="${this.propertyChange}" ${ref(this.categorySelect)}>
                         <option selected disabled>Категория</option>
-                        ${syncUntil(chain(categories, categories => categories.map(({id, title}) => html`
+                        ${serverUntil(chain(categories, categories => categories.map(({id, title}) => html`
                             <option value="${id}" ?selected="${(this.category === id)}">${title}</option>`)))}
                     </select>
                     <select class="button" name="collection" @change="${this.propertyChange}"
@@ -261,7 +264,7 @@ export class CatalogPage extends LitElement {
                     </select>
                     <select class="button" name="variant" @change="${this.propertyChange}" ${ref(this.variantSelect)}>
                         <option selected disabled>Размер</option>
-                        ${syncUntil(chain(variants, variants => variants.map(variant => html`
+                        ${serverUntil(chain(variants, variants => variants.map(variant => html`
                             <option value="${variant}" ?selected="${(this.variant === variant)}">${variant}
                             </option>`)))}
                     </select>
@@ -276,7 +279,7 @@ export class CatalogPage extends LitElement {
                 </div>
             </div>
             <section class="root-padding products-list" ${ref(this.list)}>
-                ${cache(syncUntil(chain(products, products => repeat(products, ({id} = {}) => id, this.renderProductCard))))}
+                ${cache(serverUntil(chain(products, products => repeat(products, ({id} = {}) => id, this.renderProductCard))))}
             </section>
         `
     }

@@ -1,5 +1,6 @@
 import {css, html, LitElement} from "lit"
 import {ref, createRef} from 'lit/directives/ref.js'
+import {scheduleTask} from "#utils"
 import styles from "#styles"
 
 export class DragScroll extends LitElement {
@@ -181,9 +182,11 @@ export class DragScroll extends LitElement {
     }
 
     firstUpdated() {
-        const {dragging} = this
-        this.setEventHandlers({dragging})
-        this.scroll()
+        scheduleTask(() => {
+            const {dragging} = this
+            this.setEventHandlers({dragging})
+            this.scroll()
+        })
     }
 
     scrollToPrevNode() {

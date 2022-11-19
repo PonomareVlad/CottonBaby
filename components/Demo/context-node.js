@@ -1,11 +1,10 @@
-import {chain} from "#utils";
+import {chain, scheduleTask} from "#utils";
 import {html, LitElement} from "lit"
-import {SafeUntil} from "#lib/directives.mjs";
+import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
 import {ContextController} from "#lib/context.mjs";
 
 class ContextNode extends LitElement {
     context = new ContextController(this, {anyProperty: true})
-    safeUntil = new SafeUntil(this)
 
     static get properties() {
         return {
@@ -35,13 +34,13 @@ class ContextNode extends LitElement {
     }
 
     firstUpdated() {
-        requestAnimationFrame(() => this._hydrated = true)
+        scheduleTask(() => this._hydrated = true)
     }
 
     render() {
         const json = this.fetchJSONData()
         const data = chain(this.data, this.assignPropertyData.bind(this))
-        return this.safeUntil(chain(data, data => html([`${this.renderJSON(json, data)}<slot></slot>`])))
+        return serverUntil(chain(data, data => html([`${this.renderJSON(json, data)}<slot></slot>`])))
     }
 }
 

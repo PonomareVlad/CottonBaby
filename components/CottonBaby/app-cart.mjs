@@ -1,10 +1,10 @@
 import {css, html, LitElement} from "lit";
-import {all, chain, currency} from "#utils"
+import {all, chain, currency, scheduleTask} from "#utils"
 import './product-variant.mjs'
 import styles from "#styles"
 import Cart from "#root/controllers/cart.mjs";
 import {repeat} from 'lit/directives/repeat.js';
-import {syncUntil} from "svalit/directives.mjs";
+import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
 import Catalog from "#root/controllers/catalog.mjs";
 
 export class AppCart extends LitElement {
@@ -265,7 +265,7 @@ export class AppCart extends LitElement {
     renderProductsList() {
         const productsList = Object.entries(this.cart.getItems())
         return repeat(productsList, ([id]) => id, ([id, item]) =>
-            syncUntil(chain(this.catalog.fetchProductByID(id),
+            serverUntil(chain(this.catalog.fetchProductByID(id),
                     product => this.productTemplate(product, item)),
                 this.productTemplate({title: 'Загрузка...', price: 0})))
     }
@@ -274,7 +274,7 @@ export class AppCart extends LitElement {
         const productsList = Object.entries(this.cart.getItems()),
             productsData = all(productsList.map(([id]) => this.catalog.fetchProductByID(id))),
             sum = () => productsList.map(([id, item]) => this.productSum(id, item)).reduce((a, b) => a + b, 0)
-        return productsList.length ? syncUntil(chain(productsData, sum, sum =>
+        return productsList.length ? serverUntil(chain(productsData, sum, sum =>
             html`<a href="/checkout" class="checkout">
                 <div class="price">${currency.format(sum)}</div>
             </a>`)) : html`<p>Корзина пуста</p>`
@@ -287,12 +287,14 @@ export class AppCart extends LitElement {
 
     firstUpdated() {
         this.addEventListener('change', (event, variant = event.composedPath().shift()) =>
-            this.cart.setItem(variant.product, {[variant.id]: parseInt(variant.value)}))
-        this.hydrated = true
+            this.cart.setItem(variant.product, {[variant.id]: parseInt(variant.value)}));
+        scheduleTask(() => {
+            this.setAttribute('count', this.cart.getItemsCount());
+            this.hydrated = true;
+        })
     }
 
     render() {
-        if (this.hydrated) this.setAttribute('count', this.cart.getItemsCount())
         return this.hydrated ? html`
             <div class="products-section">${this.renderProductsList()}</div>
             ${this.renderCartPrice()}

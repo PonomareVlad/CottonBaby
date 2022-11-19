@@ -1,6 +1,6 @@
 import Catalog from "#root/controllers/catalog.mjs"
 import {css, html, LitElement} from "lit"
-import {syncUntil} from "svalit/directives.mjs"
+import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
 import {chain} from "#utils"
 import './category-card.mjs'
 
@@ -52,7 +52,7 @@ export class CategoriesList extends LitElement {
     }
 
     renderCategoriesList() {
-        return syncUntil(chain(this.catalog.fetchCategoriesWithProducts(),
+        return serverUntil(chain(this.catalog.fetchCategoriesWithProducts(),
             categories => Object.values(categories).splice(0, 8).map(({title, id, products} = {}) => {
                 const href = `/catalog/${id}`, src = products.reduce((image, {images} = {}) =>
                     image || Array.isArray(images) ? images.shift() : undefined, undefined)

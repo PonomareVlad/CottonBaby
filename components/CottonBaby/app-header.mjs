@@ -3,6 +3,7 @@ import {css, html, LitElement} from "lit"
 import styles from "#styles"
 import "./app-cart.mjs"
 import {ifDefined} from "lit/directives/if-defined.js";
+import {scheduleTask} from "#utils";
 
 export class AppHeader extends LitElement {
     cart = new Cart(this)
@@ -392,9 +393,11 @@ export class AppHeader extends LitElement {
     firstUpdated() {
         this.addEventListener('click', this.onClick)
         window.addEventListener('popstate', this.setDefaultState.bind(this));
-        this.shadowRoot.querySelectorAll('[name="state"]').forEach(state =>
-            state.addEventListener('change', this.menuStateHandler.bind(this)))
-        this.hydrated = true
+        scheduleTask(() => {
+            this.shadowRoot.querySelectorAll('[name="state"]').forEach(state =>
+                state.addEventListener('change', this.menuStateHandler.bind(this)))
+            this.hydrated = true;
+        })
     }
 
     renderCartCount(template = count => count) {

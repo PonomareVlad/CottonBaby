@@ -1,6 +1,7 @@
 import {css, html, LitElement} from "lit"
 import {ifDefined} from 'lit/directives/if-defined.js'
 import {ref, createRef} from "lit/directives/ref.js"
+import {scheduleTask} from "#utils";
 
 export class AppImage extends LitElement {
     img = createRef()
@@ -68,7 +69,9 @@ export class AppImage extends LitElement {
     }
 
     updated() {
-        if (!this.img.value.complete) this.img.value.classList.toggle('loading', true)
+        scheduleTask(() => {
+            if (!this.img.value.complete) this.img.value.classList.toggle('loading', true)
+        })
     }
 
     getImageURL() {

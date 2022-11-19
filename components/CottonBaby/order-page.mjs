@@ -1,6 +1,6 @@
 import {css, html, LitElement} from "lit"
 import styles from "#styles"
-import {syncUntil} from "svalit/directives.mjs";
+import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
 import {db} from '#db'
 import {chain} from "#utils";
 
@@ -36,8 +36,8 @@ export class OrderPage extends LitElement {
         return html`<h1 class="root-padding">Информация о заказе</h1>
         <div class="root-padding">
             <p>ID: ${this.order}</p>
-            <p>Сумма: ${syncUntil(chain(order, ({sum} = {}) => sum))}</p>
-            <p>Статус: ${syncUntil(chain(order, ({paid} = {}) => paid ? 'Оплачен' : 'Не оплачен'))}</p>
+            <p>Сумма: ${serverUntil(chain(order, ({sum} = {}) => sum))}</p>
+            <p>Статус: ${serverUntil(chain(order, ({paid} = {}) => paid ? 'Оплачен' : 'Не оплачен'))}</p>
         </div>
         `
     }
