@@ -12,23 +12,23 @@
     "zeplin-connect-dev-mode": "zeplin connect --dev"
   },
   "dependencies": {
-    "@lit-labs/router": "^0.1.1",
-    "@lit-labs/ssr": "npm:@lit-async/ssr@2.2.3-mirror.1",
-    "@lit-labs/ssr-client": "npm:@lit-async/ssr-client@1.0.1-mirror.1",
     "@lit-async/ssr-client": "1.0.1-mirror.1",
-    "@svalit/router": "latest",
-    "@svalit/vercel": "latest",
-    "bson-objectid": "latest",
-    "clean-stack": "latest",
-    "core-js": "^3.23.5",
-    "dotenv": "^16.0.1",
-    "jsdom": "^20.0.0",
-    "lit": "npm:@lit-async/lit@2.4.1-mirror.1",
-    "mongodb": "latest",
-    "serialize-error": "latest",
-    "string.prototype.replaceall": "latest",
-    "@svalit/core": "latest",
-    "urlpattern-polyfill": "^6.0.1"
+    "@lit-labs/router": "^0.1.1",
+    "@lit-labs/ssr": "npm:@lit-async/ssr@^2.2.3-mirror.1",
+    "@lit-labs/ssr-client": "npm:@lit-async/ssr-client@^1.0.1-mirror.1",
+    "@svalit/core": "^0.1.5",
+    "@svalit/router": "^0.1.5",
+    "@svalit/vercel": "^0.1.5",
+    "bson-objectid": "^2.0.3",
+    "clean-stack": "^5.0.1",
+    "core-js": "^3.26.1",
+    "dotenv": "^16.0.3",
+    "jsdom": "^20.0.2",
+    "lit": "npm:@lit-async/lit@^2.4.1-mirror.1",
+    "mongodb": "^4.12.0",
+    "serialize-error": "^11.0.0",
+    "string.prototype.replaceall": "^1.0.7",
+    "urlpattern-polyfill": "^6.0.2"
   },
   "imports": {
     "#root/*": "./*",
@@ -38,27 +38,27 @@
     "#styles": "./includes/styles.mjs"
   },
   "devDependencies": {
-    "@ponomarevlad/dev-server": "latest",
-    "@ponomarevlad/dev-server-storybook": "latest",
-    "@zeplin/cli": "latest",
-    "servor": "latest"
+    "@ponomarevlad/dev-server": "^0.1.31",
+    "@ponomarevlad/dev-server-storybook": "^0.5.1",
+    "@zeplin/cli": "^2.0.1",
+    "servor": "^4.0.2"
   },
   "overrides": {
-    "lit": "npm:@lit-async/lit@2.4.1-mirror.1",
-    "lit-html": "npm:@lit-async/lit-html@2.4.0-mirror.1",
-    "@lit-labs/ssr": "npm:@lit-async/ssr@2.2.3-mirror.1",
-    "@lit-labs/task": "npm:@lit-async/task@2.0.0-mirror.1",
-    "lit-element": "npm:@lit-async/lit-element@3.2.2-mirror.1",
-    "@lit-labs/ssr-client": "npm:@lit-async/ssr-client@1.0.1-mirror.1",
-    "@lit/reactive-element": "npm:@lit-async/reactive-element@1.4.2-mirror.1"
+    "lit": "npm:@lit-async/lit@^2.4.1-mirror.1",
+    "lit-html": "npm:@lit-async/lit-html@^2.4.0-mirror.1",
+    "@lit-labs/ssr": "npm:@lit-async/ssr@^2.2.3-mirror.1",
+    "@lit-labs/task": "npm:@lit-async/task@^2.0.0-mirror.1",
+    "lit-element": "npm:@lit-async/lit-element@^3.2.2-mirror.2",
+    "@lit-labs/ssr-client": "npm:@lit-async/ssr-client@^1.0.1-mirror.1",
+    "@lit/reactive-element": "npm:@lit-async/reactive-element@^1.4.2-mirror.1"
   },
   "resolutions": {
-    "lit": "npm:@lit-async/lit@2.4.1-mirror.1",
-    "lit-html": "npm:@lit-async/lit-html@2.4.0-mirror.1",
-    "@lit-labs/ssr": "npm:@lit-async/ssr@2.2.3-mirror.1",
-    "@lit-labs/task": "npm:@lit-async/task@2.0.0-mirror.1",
-    "lit-element": "npm:@lit-async/lit-element@3.2.2-mirror.1",
-    "@lit-labs/ssr-client": "npm:@lit-async/ssr-client@1.0.1-mirror.1",
-    "@lit/reactive-element": "npm:@lit-async/reactive-element@1.4.2-mirror.1"
+    "lit": "npm:@lit-async/lit@^2.4.1-mirror.1",
+    "lit-html": "npm:@lit-async/lit-html@^2.4.0-mirror.1",
+    "@lit-labs/ssr": "npm:@lit-async/ssr@^2.2.3-mirror.1",
+    "@lit-labs/task": "npm:@lit-async/task@^2.0.0-mirror.1",
+    "lit-element": "npm:@lit-async/lit-element@^3.2.2-mirror.2",
+    "@lit-labs/ssr-client": "npm:@lit-async/ssr-client@^1.0.1-mirror.1",
+    "@lit/reactive-element": "npm:@lit-async/reactive-element@^1.4.2-mirror.1"
   }
 }
