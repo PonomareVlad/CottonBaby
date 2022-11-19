@@ -224,7 +224,7 @@ export class CatalogPage extends LitElement {
     }
 
     updateSelectLength(select) {
-        return select.style.setProperty('--length', select.selectedOptions.item(0).text.length)
+        return select?.style?.setProperty('--length', select.selectedOptions.item(0).text.length)
     }
 
     filterProducts(products = []) {
