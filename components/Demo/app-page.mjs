@@ -1,6 +1,6 @@
 import {html, LitElement} from "lit"
 import {unsafeHTML} from 'lit/directives/unsafe-html.js';
-import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
+import {safeUntil as serverUntil} from "#utils";
 import {all, catcher, chain} from "#utils";
 import './context-node.js'
 import './app-context.mjs'

@@ -3,7 +3,7 @@ import styles from "#styles"
 import "./product-variant.mjs"
 import {chain, currency, scheduleTask} from "#utils"
 import {css, html, LitElement} from "lit"
-import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
+import {safeUntil as serverUntil} from "#utils";
 import Cart from "#root/controllers/cart.mjs"
 import Catalog from "#root/controllers/catalog.mjs"
 import {unsafeHTML} from "lit/directives/unsafe-html.js"

@@ -5,7 +5,7 @@ import './product-hero.mjs'
 import './categories-list.mjs'
 import './drag-scroll.mjs'
 import {chain} from "#lib/utils.mjs";
-import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
+import {safeUntil as serverUntil} from "#utils";
 import Catalog from "#root/controllers/catalog.mjs";
 
 export class IndexPage extends LitElement {

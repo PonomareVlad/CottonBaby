@@ -1,6 +1,6 @@
 import {css, html, LitElement} from "lit"
 import styles from "#styles"
-import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
+import {safeUntil as serverUntil} from "#utils";
 import {db} from '#db'
 import {chain} from "#utils";
 

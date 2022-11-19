@@ -2,7 +2,7 @@ import "urlpattern-polyfill"
 import {isClient, isSSR, scheduleTask} from "#utils"
 import {css, html, LitElement} from "lit"
 import {cache} from "lit/directives/cache.js"
-import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
+import {safeUntil as serverUntil} from "#utils";
 import {ifDefined} from 'lit/directives/if-defined.js'
 import {Router} from '@svalit/router'
 import styles from "#styles"

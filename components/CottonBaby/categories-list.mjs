@@ -1,6 +1,6 @@
 import Catalog from "#root/controllers/catalog.mjs"
 import {css, html, LitElement} from "lit"
-import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
+import {safeUntil as serverUntil} from "#utils";
 import {chain} from "#utils"
 import './category-card.mjs'
 

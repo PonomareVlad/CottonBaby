@@ -1,5 +1,5 @@
 import {css, html, LitElement} from "lit"
-import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
+import {safeUntil as serverUntil} from "#utils";
 import {ContextController} from "#lib/context.mjs";
 import {all, chain} from "#utils";
 import {db} from "#db";

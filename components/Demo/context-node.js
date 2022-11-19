@@ -1,6 +1,6 @@
 import {chain, scheduleTask} from "#utils";
 import {html, LitElement} from "lit"
-import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
+import {safeUntil as serverUntil} from "#utils";
 import {ContextController} from "#lib/context.mjs";
 
 class ContextNode extends LitElement {

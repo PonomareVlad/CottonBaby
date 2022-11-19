@@ -4,7 +4,7 @@ import {chain, scheduleTask} from "#lib/utils.mjs"
 import {css, html, LitElement} from "lit"
 import {live} from "lit/directives/live.js"
 import {cache} from "lit/directives/cache.js"
-import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
+import {safeUntil as serverUntil} from "#utils";
 import {repeat} from "lit/directives/repeat.js"
 import Catalog from "#root/controllers/catalog.mjs"
 import {ref, createRef} from "lit/directives/ref.js"
@@ -157,16 +157,18 @@ export class CatalogPage extends LitElement {
         if (category !== this.category) variant = undefined;
         const path = ['catalog', category].filter(Boolean).join('/'),
             parameters = Object.fromEntries(Object.entries({sort, variant}).filter(([, value]) => value)),
-            query = new URLSearchParams(parameters);
+            query = new URLSearchParams(parameters).toString();
         return `/${path}${query ? `?${query}` : ''}`
     }
 
     propertyChange({target: {name, value}} = {}) {
-        this.updateAllSelects();
-        if (!name || !value || this[name] === value) return;
-        const path = this.getPathByProps({[name]: value})
-        history.pushState(null, null, path)
-        return globalThis.router.goto(path)
+        scheduleTask(() => {
+            this.updateAllSelects();
+            if (!name || !value || this[name] === value) return;
+            const path = this.getPathByProps({[name]: value})
+            history.pushState(null, null, path)
+            globalThis.router.goto(new URL(path, location).pathname)
+        });
     }
 
     renderProductCard({id, images, title, price, variants} = {}) {

@@ -4,7 +4,7 @@ import './product-variant.mjs'
 import styles from "#styles"
 import Cart from "#root/controllers/cart.mjs";
 import {repeat} from 'lit/directives/repeat.js';
-import {serverUntil} from "@lit-async/ssr-client/directives/server-until.js";
+import {safeUntil as serverUntil} from "#utils";
 import Catalog from "#root/controllers/catalog.mjs";
 
 export class AppCart extends LitElement {
