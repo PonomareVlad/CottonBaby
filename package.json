@@ -27,7 +27,7 @@
     "mongodb": "latest",
     "serialize-error": "latest",
     "string.prototype.replaceall": "latest",
-    "svalit": "latest",
+    "@svalit/core": "latest",
     "urlpattern-polyfill": "^6.0.1"
   },
   "imports": {
