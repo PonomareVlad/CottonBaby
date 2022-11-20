@@ -15,7 +15,7 @@
     "lit-html/": "https://cdn.jsdelivr.net/npm/@lit-async/lit-html@2.4.0-mirror.1/",
     "@lit-labs/router/": "https://ga.jspm.io/npm:@lit-labs/router@0.1.0/development/",
     "urlpattern-polyfill": "https://cdn.jsdelivr.net/npm/urlpattern-polyfill/index.js",
-    "lit-element/": "https://cdn.jsdelivr.net/npm/@lit-async/lit-element@3.2.2-mirror.2/",
+    "lit-element/": "https://cdn.jsdelivr.net/npm/@lit-async/lit-element@3.2.2-mirror.4/",
     "@lit-labs/router": "https://ga.jspm.io/npm:@lit-labs/router@0.1.0/development/index.js",
     "@lit-labs/ssr-client/": "https://cdn.jsdelivr.net/npm/@lit-async/ssr-client@1.0.1-mirror.1/",
     "@lit-async/ssr-client/": "https://cdn.jsdelivr.net/npm/@lit-async/ssr-client@1.0.1-mirror.1/",
