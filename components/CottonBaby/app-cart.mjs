@@ -285,13 +285,18 @@ export class AppCart extends LitElement {
         return parseFloat(price) * Object.values(cartItem).reduce((a, b) => a + b, 0)
     }
 
-    firstUpdated() {
+    firstUpdated(_changedProperties) {
+        super.firstUpdated(_changedProperties);
         this.addEventListener('change', (event, variant = event.composedPath().shift()) =>
             this.cart.setItem(variant.product, {[variant.id]: parseInt(variant.value)}));
-        scheduleTask(() => {
-            this.setAttribute('count', this.cart.getItemsCount());
-            this.hydrated = true;
-        })
+        this.hydrated = true;
+        this.requestUpdate();
+        this.scheduleUpdate();
+    }
+
+    update(changedProperties) {
+        super.update(changedProperties);
+        this.count = this.cart.getItemsCount();
     }
 
     render() {
