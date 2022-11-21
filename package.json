@@ -12,7 +12,7 @@
     "zeplin-connect-dev-mode": "zeplin connect --dev"
   },
   "dependencies": {
-    "@lit-async/ssr-client": "1.0.1-mirror.1",
+    "@lit-async/ssr-client": "1.0.1-mirror.4",
     "@lit-labs/router": "^0.1.1",
     "@lit-labs/ssr": "npm:@lit-async/ssr@^2.2.3-mirror.1",
     "@lit-labs/ssr-client": "npm:@lit-async/ssr-client@^1.0.1-mirror.1",
