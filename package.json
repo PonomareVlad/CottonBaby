@@ -23,7 +23,7 @@
     "clean-stack": "^5.0.1",
     "core-js": "^3.26.1",
     "dotenv": "^16.0.3",
-    "jsdom": "^20.0.2",
+    "jsdom": "^21.0.0",
     "lit": "npm:@lit-async/lit@2.4.1-mirror.4",
     "mongodb": "^4.12.0",
     "serialize-error": "^11.0.0",
